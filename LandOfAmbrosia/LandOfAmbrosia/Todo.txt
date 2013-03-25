@@ -1,0 +1,39 @@
+﻿Todo list of things to do:
+	Iteration 1: Basic Character setup
+		1) Get a FFXIII Lightning model to use as the female protagonist
+			- http://thefree3dmodels.com/stuff/characters/lightning/14-1-0-924
+		2) Put a character in the empty scene
+
+	Iteration 2: Basic Level setup
+		1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
+		2) Add a level to the game and render it
+		3) Render both a character and the level to the screen
+
+	Iteration 3: Increased Character control
+		1) Add xbox controller control to the player model
+		2) Get a FFXIII Cloud model to use as the male protagonist
+		3) Render Cloud, Lightning, and the Level to the screen
+		4) Add control for two characters, using two different xbox controllers
+
+	Iteration 4: Basic Minion setup
+		1) Find/Create a model for melee minion
+		2) Draw the minion to the scene, doing nothing
+
+	Iteration 5: PlayerCharacter attack setup
+		1) Add code to let PlayerCharacters attack with melee
+		2) Add collision detection code to damage enemies that are hit by melee attacks
+		3) Find/Create model for magic attacks
+		4) Add magic attacks for Player characters
+		5) Add collision detection code to damage enemies thta are hit by magic attacks
+
+	Iteration 6: Increased Minion abilities
+		1) Find/Create minion model for mage and range class
+		2) Implement code to let minions attack depending on which class they are
+
+	Iteration 7: Increased Level Stuff
+		1) Create simple level editor that reads and writes text file
+		2) Add other models for levels (Ramps, Gaps, Spikes, Goal, ...)
+		3) Add minions to levels
+
+	Iteration 8: Add in minion AI
+		1) Create movement and attack AI methods for minions	
