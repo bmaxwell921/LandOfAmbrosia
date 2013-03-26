@@ -39,7 +39,9 @@ namespace LandOfAmbrosia
         /// Method to update the character from it's 
         /// old position to it's new position.
         /// </summary>
-        public abstract void Update();
+        public virtual void Update()
+        {
+        }
 
         /// <summary>
         /// Method to draw the character on the screen 
@@ -90,7 +92,7 @@ namespace LandOfAmbrosia
         /// </summary>
         /// <returns>Either an Arrow or a MagicSpell object depending on what type of 
         /// RangeWeapon the character has</returns>
-        public Projectile rangeAttack()
+        public virtual Projectile rangeAttack()
         {
             throw new NotImplementedException();
         }

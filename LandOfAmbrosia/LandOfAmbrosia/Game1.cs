@@ -16,6 +16,7 @@ namespace LandOfAmbrosia
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        public Camera camera;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 

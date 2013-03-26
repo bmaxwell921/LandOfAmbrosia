@@ -9,12 +9,7 @@ namespace LandOfAmbrosia.Characters
     {
         public override void Update()
         {
-            //TODO
-        }
-
-        public override void Draw(Camera c)
-        {
-            //TODO
+            throw new NotImplementedException();
         }
     }
 }

@@ -11,10 +11,5 @@ namespace LandOfAmbrosia.Characters
         {
             throw new NotImplementedException();
         }
-
-        public override void Draw(Camera c)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -6,6 +6,7 @@
 
 	Iteration 2: Basic Level setup
 		1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
+			a) Who holds onto the possibleTileModels? The LevelManager or the Level?
 		2) Add a level to the game and render it
 		3) Render both a character and the level to the screen
 
