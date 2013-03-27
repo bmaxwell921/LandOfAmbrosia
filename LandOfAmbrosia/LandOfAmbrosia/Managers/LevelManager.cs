@@ -13,7 +13,7 @@ namespace LandOfAmbrosia.Managers
         #region Level Fields
         private Level currentLevel;
         private Model[] tileModels;
-        private String[] tileModelAssets = { null, "@maleCharacter"};
+        private String[] tileModelAssets = { null, @"Models/character"};//@"Models/platform"};
         //Empty, Ground
         private const int numTileTypes = 2;
         #endregion

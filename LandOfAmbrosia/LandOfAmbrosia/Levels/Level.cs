@@ -114,7 +114,10 @@ namespace LandOfAmbrosia.Levels
             {
                 for (int j = 0; j < height; ++j)
                 {
-                    tiles[i, j].Draw(c);
+                    if (tiles[i, j] != null)
+                    {
+                        tiles[i, j].Draw(c);
+                    }
                 }
             }
         }

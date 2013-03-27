@@ -38,6 +38,9 @@ namespace LandOfAmbrosia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            camera = new Camera(this, new Vector3(0, 0, 20), Vector3.Zero, new Vector3(0, 1, 0));
+            Components.Add(camera);
+
             lm = new LevelManager(this);
             Components.Add(lm);
             base.Initialize();
