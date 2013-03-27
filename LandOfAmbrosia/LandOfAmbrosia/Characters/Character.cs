@@ -18,6 +18,11 @@ namespace LandOfAmbrosia
             protected set;
         }
         public Matrix world;
+
+        public Matrix blenderToXNAFix = Matrix.Identity * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(0)) 
+            * Matrix.CreateRotationZ(MathHelper.ToRadians(0));
+
+        public Matrix scale = Matrix.CreateScale(0.5f);
         #endregion
 
         #region Movement
@@ -35,6 +40,19 @@ namespace LandOfAmbrosia
         public int maxHealth;
         #endregion
 
+        public Character(Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth)
+        {
+            this.model = model;
+            this.speed = speed;
+            this.position = position;
+            this.meleeWeapon = meleeWeapon;
+            this.rangeWeapon = rangeWeapon;
+            this.maxHealth = maxHealth;
+
+            this.health = this.maxHealth;
+            this.world = Matrix.CreateTranslation(this.position);
+        }
+
         /// <summary>
         /// Method to update the character from it's 
         /// old position to it's new position.
@@ -48,7 +66,7 @@ namespace LandOfAmbrosia
         /// at its location
         /// </summary>
         /// <param name="c"></param>
-        public void Draw(Camera c)
+        public void Draw(CameraComponent c)
         {
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -58,9 +76,9 @@ namespace LandOfAmbrosia
                 foreach (BasicEffect be in mesh.Effects)
                 {
                     be.EnableDefaultLighting();
-                    be.Projection = c.projection;
-                    be.View = c.view;
-                    be.World = world * mesh.ParentBone.Transform;
+                    be.Projection = c.ProjectionMatrix;
+                    be.View = c.ViewMatrix;
+                    be.World = blenderToXNAFix * scale * world * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();

@@ -1,6 +1,6 @@
 ﻿Todo list of things to do:
 	Iteration 1: Basic Character setup
-		1) Get a FFXIII Lightning model to use as the female protagonist
+	X	1) Get a model to use as the female protagonist
 			- http://thefree3dmodels.com/stuff/characters/lightning/14-1-0-924
 		2) Put a character in the empty scene
 

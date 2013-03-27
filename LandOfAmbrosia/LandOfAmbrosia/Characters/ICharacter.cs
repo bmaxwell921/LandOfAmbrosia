@@ -9,6 +9,6 @@ namespace LandOfAmbrosia.Characters
     {
         void Update();
 
-        void Draw(Camera c);
+        void Draw(CameraComponent c);
     }
 }

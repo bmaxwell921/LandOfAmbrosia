@@ -108,7 +108,7 @@ namespace LandOfAmbrosia.Levels
             tiles[width, height] = newTile; 
         }
 
-        public void Draw(Camera c)
+        public void Draw(CameraComponent c)
         {
             for (int i = 0; i < width; ++i)
             {

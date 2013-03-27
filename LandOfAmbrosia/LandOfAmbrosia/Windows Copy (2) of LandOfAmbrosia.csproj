@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="CameraComponent.cs" />
     <Compile Include="Characters\AICharacter.cs" />
     <Compile Include="Characters\Boss.cs" />
     <Compile Include="Characters\Character.cs" />

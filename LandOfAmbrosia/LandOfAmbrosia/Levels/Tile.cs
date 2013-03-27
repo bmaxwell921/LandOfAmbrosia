@@ -41,7 +41,7 @@ namespace LandOfAmbrosia.Levels
         /// Draws this tile using the given the camera
         /// </summary>
         /// <param name="c"></param>
-        public void Draw(Camera c)
+        public void Draw(CameraComponent c)
         {
             if (IsEmpty()) return;
             Matrix[] transforms = new Matrix[model.Bones.Count];
@@ -52,8 +52,8 @@ namespace LandOfAmbrosia.Levels
                 foreach (BasicEffect be in mesh.Effects)
                 {
                     be.EnableDefaultLighting();
-                    be.Projection = c.projection;
-                    be.View = c.view;
+                    be.Projection = c.ProjectionMatrix;
+                    be.View = c.ViewMatrix;
                     be.World = world * mesh.ParentBone.Transform;
                 }
 
