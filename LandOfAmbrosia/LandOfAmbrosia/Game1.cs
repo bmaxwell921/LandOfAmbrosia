@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using LandOfAmbrosia.Managers;
 
 namespace LandOfAmbrosia
 {
@@ -17,6 +18,8 @@ namespace LandOfAmbrosia
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         public Camera camera;
+        LevelManager lm;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -35,7 +38,8 @@ namespace LandOfAmbrosia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            lm = new LevelManager(this);
+            Components.Add(lm);
             base.Initialize();
         }
 
@@ -68,7 +72,7 @@ namespace LandOfAmbrosia
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here

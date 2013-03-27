@@ -4,12 +4,19 @@ using System.Linq;
 using System.Text;
 using LandOfAmbrosia.Levels;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LandOfAmbrosia.Managers
 {
     class LevelManager : DrawableGameComponent
     {
+        #region Level Fields
         private Level currentLevel;
+        private Model[] tileModels;
+        private String[] tileModelAssets = { null, "@models/ammo"};
+        //Empty, Ground
+        private const int numTileTypes = 2;
+        #endregion
 
         /// <summary>
         /// Constructs a new LevelManager with the default Level
@@ -18,6 +25,22 @@ namespace LandOfAmbrosia.Managers
             base(game)
         {
             currentLevel = new Level();
+        }
+
+        protected override void LoadContent()
+        {
+            this.LoadTileModels();
+            currentLevel.GenerateLevel(tileModels);
+            base.LoadContent();
+        }
+
+        private void LoadTileModels()
+        {
+            tileModels = new Model[numTileTypes];
+            for (int i = 0; i < numTileTypes; ++i)
+            {
+                tileModels[i] = tileModelAssets[i] == null ? null : Game.Content.Load<Model>(tileModelAssets[i]);
+            }
         }
 
         /// <summary>

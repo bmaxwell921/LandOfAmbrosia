@@ -12,8 +12,6 @@ namespace LandOfAmbrosia.Levels
         private const int DEFAULT_WIDTH = 10;
         private const int DEFAULT_HEIGHT = 5;
         private const int DEFAULT_SEED = 42;
-
-        private Model[] possibleTileModels;
         
         int width, height;
 
@@ -41,7 +39,7 @@ namespace LandOfAmbrosia.Levels
         }
 
         /// <summary>
-        /// Creates a new Level with the given width and height and the default seed
+        /// Creates an empty Level with the given width and height and the default seed
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -51,7 +49,7 @@ namespace LandOfAmbrosia.Levels
         }
 
         /// <summary>
-        /// Creates a new randomly generated level with the given width, height, and seed
+        /// Creates an empty Level with the given height, width, and seed
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -61,19 +59,22 @@ namespace LandOfAmbrosia.Levels
             this.width = width;
             this.height = height;
             gen = new Random(seed);
-
-            this.GenerateLevel();
             //this.SetUpSkybox();
         }
 
-        private void GenerateLevel()
+        /// <summary>
+        /// Called by the LevelManager to randomly initialize the level
+        /// </summary>
+        /// <param name="possibleModels"></param>
+        public void GenerateLevel(Model[] possibleModels)
         {
             int numNonEmptySpaces = gen.Next(width * height / 2);
 
             for (int i = 0; i < numNonEmptySpaces; ++i)
             {
                 Vector2 addLoc = this.GetRandomTileLocation();
-                tiles[(int)addLoc.X, (int) addLoc.Y] = this.GetRandomTile();
+                Model addModel = this.GetRandomModel(possibleModels);
+                tiles[(int)addLoc.X, (int)addLoc.Y] = new Tile(new Vector3(addLoc, 0), addModel);
             }
         }
 
@@ -82,12 +83,9 @@ namespace LandOfAmbrosia.Levels
             return new Vector2(gen.Next(width), gen.Next(height));
         }
 
-        private Tile GetRandomTile()
+        private Model GetRandomModel(Model[] possibleModels)
         {
-            //TODO
-            return null;
-            //int tileType = gen.Next(numTileTypes);
-            
+            return possibleModels[(int) gen.Next(possibleModels.Count())];   
         }
 
         private void SetUpSkybox()
@@ -95,6 +93,12 @@ namespace LandOfAmbrosia.Levels
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets the tile in position tiles[width, height] to the newTile
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="newTile"></param>
         public void SetTile(int width, int height, Tile newTile)
         {
             if (width < 0 || width > this.width || height < 0 || height > this.height)

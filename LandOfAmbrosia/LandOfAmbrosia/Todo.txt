@@ -6,7 +6,6 @@
 
 	Iteration 2: Basic Level setup
 		1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
-			a) Who holds onto the possibleTileModels? The LevelManager or the Level?
 		2) Add a level to the game and render it
 		3) Render both a character and the level to the screen
 
@@ -15,6 +14,7 @@
 		2) Get a FFXIII Cloud model to use as the male protagonist
 		3) Render Cloud, Lightning, and the Level to the screen
 		4) Add control for two characters, using two different xbox controllers
+		5) Change camera to move with the characters
 
 	Iteration 4: Basic Minion setup
 		1) Find/Create a model for melee minion
