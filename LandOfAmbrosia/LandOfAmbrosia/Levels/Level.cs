@@ -74,7 +74,7 @@ namespace LandOfAmbrosia.Levels
             {
                 Vector2 addLoc = this.GetRandomTileLocation();
                 Model addModel = this.GetRandomModel(possibleModels);
-                tiles[(int)addLoc.X, (int)addLoc.Y] = new Tile(new Vector3(addLoc, 0), addModel);
+                tiles[(int)addLoc.X, (int)addLoc.Y] = new Tile(addModel, new Vector3(addLoc, 0));
             }
         }
 

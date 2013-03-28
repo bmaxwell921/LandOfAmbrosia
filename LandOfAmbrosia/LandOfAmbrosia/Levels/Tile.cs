@@ -22,7 +22,7 @@ namespace LandOfAmbrosia.Levels
         /// </summary>
         /// <param name="location"></param>
         /// <param name="model"></param>
-        public Tile(Vector3 location, Model model)
+        public Tile(Model model, Vector3 location)
         {
             this.location = location;
             this.model = model;
