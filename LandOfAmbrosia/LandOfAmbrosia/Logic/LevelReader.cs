@@ -12,7 +12,7 @@ namespace LandOfAmbrosia.Logic
     /// </summary>
     class LevelReader
     {
-        public static String COMMENT = '#';
+        public static String COMMENT = "#";
 
         public static Tile[,] readLevel(String filePath)
         {
