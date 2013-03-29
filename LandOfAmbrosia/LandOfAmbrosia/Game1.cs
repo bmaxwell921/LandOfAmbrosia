@@ -46,7 +46,7 @@ namespace LandOfAmbrosia
             Components.Add(camera);
 
             lm = new LevelManager(this);
-            //Components.Add(lm);
+            Components.Add(lm);
 
             cm = new CharacterManager(this);
             Components.Add(cm);

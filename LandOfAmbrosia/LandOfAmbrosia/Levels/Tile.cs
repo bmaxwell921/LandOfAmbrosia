@@ -12,7 +12,9 @@ namespace LandOfAmbrosia.Levels
     {
         public Vector3 location;
         public Model model;
-        public Matrix world = Matrix.Identity;
+        public Matrix world;
+
+        private Matrix scale = Matrix.CreateScale(0.75f);
 
         //TODO
         public int tileSize;
@@ -26,6 +28,7 @@ namespace LandOfAmbrosia.Levels
         {
             this.location = location;
             this.model = model;
+            this.world = Matrix.CreateTranslation(location);
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace LandOfAmbrosia.Levels
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World = world * mesh.ParentBone.Transform;
+                    be.World = scale * world * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();

@@ -19,8 +19,9 @@ namespace LandOfAmbrosia
         }
         public Matrix world;
 
-        public Matrix blenderToXNAFix = Matrix.Identity * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(0)) 
-            * Matrix.CreateRotationZ(MathHelper.ToRadians(0));
+        //public Matrix blenderToXNAFix = Matrix.Identity * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(0)) 
+        //    * Matrix.CreateRotationZ(MathHelper.ToRadians(0));
+        public Matrix blenderToXNAFix = Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(-90));
 
         public Matrix scale = Matrix.CreateScale(0.5f);
         #endregion
@@ -83,6 +84,23 @@ namespace LandOfAmbrosia
 
                 mesh.Draw();
             }
+
+            //Second copy for testing purposes
+            //transforms = new Matrix[model.Bones.Count];
+            //model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            //foreach (ModelMesh mesh in model.Meshes)
+            //{
+            //    foreach (BasicEffect be in mesh.Effects)
+            //    {
+            //        be.EnableDefaultLighting();
+            //        be.Projection = c.ProjectionMatrix;
+            //        be.View = c.ViewMatrix;
+            //        be.World = scale * 2 * Matrix.CreateTranslation(new Vector3(10, 0, 0)) * mesh.ParentBone.Transform;
+            //    }
+
+            //    mesh.Draw();
+            //}
         }
 
         /// <summary>

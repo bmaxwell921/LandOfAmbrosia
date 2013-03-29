@@ -2,10 +2,10 @@
 	Iteration 1: Basic Character setup
 	X	1) Get a model to use as the female protagonist
 			- http://thefree3dmodels.com/stuff/characters/lightning/14-1-0-924
-		2) Put a character in the empty scene
+	X	2) Put a character in the empty scene
 
 	Iteration 2: Basic Level setup
-		1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
+	X	1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
 		2) Add a level to the game and render it
 		3) Render both a character and the level to the screen
 
