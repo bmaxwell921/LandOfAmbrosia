@@ -49,13 +49,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\character.x">
-      <Name>character</Name>
-      <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\basicModelNew.x">
       <Name>basicModelNew</Name>
       <Importer>XImporter</Importer>
@@ -63,9 +56,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maleCharacter.x">
-      <Name>maleCharacter</Name>
-      <Importer>XImporter</Importer>
+    <Compile Include="swordModel.fbx">
+      <Name>swordModel</Name>
+      <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>

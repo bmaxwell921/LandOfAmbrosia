@@ -22,7 +22,7 @@ namespace LandOfAmbrosia.Managers
 
         //Do as .fbx file
 
-        public String player1ModelAsset = @"Models/basicModelNew";
+        public String player1ModelAsset = @"swordModel";
         public String player2ModelAsset = @"";
         #endregion
 
