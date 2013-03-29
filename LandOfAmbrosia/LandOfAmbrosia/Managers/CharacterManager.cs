@@ -20,8 +20,9 @@ namespace LandOfAmbrosia.Managers
         public Model player1Model;
         public Model player2Model;
 
-        public String player1ModelAsset = @"maleCharacter";
         //Do as .fbx file
+
+        public String player1ModelAsset = @"Models/basicModelNew";
         public String player2ModelAsset = @"";
         #endregion
 
