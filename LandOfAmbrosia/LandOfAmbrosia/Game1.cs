@@ -97,6 +97,9 @@ namespace LandOfAmbrosia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.None;
+            graphics.GraphicsDevice.RasterizerState = rs;
 
             // TODO: Add your drawing code here
             GraphicsDevice.BlendState = BlendState.Opaque;
