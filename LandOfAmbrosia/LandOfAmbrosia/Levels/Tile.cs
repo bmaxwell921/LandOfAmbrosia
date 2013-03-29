@@ -12,12 +12,21 @@ namespace LandOfAmbrosia.Levels
     {
         public Vector3 location;
         public Model model;
-        public Matrix world;
+        private Matrix privWorld;
+        public Matrix world
+        {
+            get
+            {
+                return Game1.blenderToXNA * privWorld;
+            }
+            set
+            {
+                privWorld = value;
+            }
+        }
 
-        private Matrix scale = Matrix.CreateScale(0.75f);
-
-        //TODO
-        public int tileSize;
+        private const float TILE_WIDTH = 4f;
+        private const float TILE_HEIGHT = TILE_WIDTH / 2;
 
         /// <summary>
         /// Constructs a new tile at the given location, using the given model as the object drawn
@@ -28,7 +37,8 @@ namespace LandOfAmbrosia.Levels
         {
             this.location = location;
             this.model = model;
-            this.world = Matrix.CreateTranslation(location);
+            this.world = Matrix.CreateTranslation(new Vector3(TILE_WIDTH * location.X, TILE_HEIGHT * location.Y, location.Z));
+
         }
 
         /// <summary>
@@ -57,7 +67,7 @@ namespace LandOfAmbrosia.Levels
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World = scale * world * mesh.ParentBone.Transform;
+                    be.World = world * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();

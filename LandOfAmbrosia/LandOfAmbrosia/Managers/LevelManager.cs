@@ -15,8 +15,6 @@ namespace LandOfAmbrosia.Managers
         private String[] tileModelAssets = { null, @"Models/newPlatform"};
         //Empty, Ground
         private const int NUM_TILE_TYPES = 2;
-        private const float TILE_WIDTH = 4f;
-        private const float TILE_HEIGHT = TILE_WIDTH / 2;
         #endregion
 
         private const int DEFAULT_SEED = 42;
@@ -84,16 +82,16 @@ namespace LandOfAmbrosia.Managers
         /// <param name="possibleModels"></param>
         public void GenerateLevel(Model[] possibleModels)
         {
-            int numNonEmptySpaces = gen.Next(currentLevel.width * currentLevel.height / 2);
+            //int numNonEmptySpaces = gen.Next(currentLevel.width * currentLevel.height / 2);
 
-            for (int i = 0; i < numNonEmptySpaces; ++i)
-            {
-                //addLoc tells where to put the tile in the Level array, worldLoc tells where we need to draw the tile in the scene
-                Vector3 addLoc = this.GetRandomTileLocation();
-                Vector3 worldLoc = this.AddLocToWorldLoc(addLoc);
-                Model addModel = this.GetRandomModel(possibleModels);
-                currentLevel.SetTile((int)addLoc.X, (int)addLoc.Y, new Tile(addModel, worldLoc));
-            }
+            //for (int i = 0; i < numNonEmptySpaces; ++i)
+            //{
+            //    //addLoc tells where to put the tile in the Level array, worldLoc tells where we need to draw the tile in the scene
+            //    Vector3 addLoc = this.GetRandomTileLocation();
+            //    //Vector3 worldLoc = this.AddLocToWorldLoc(addLoc);
+            //    Model addModel = this.GetRandomModel(possibleModels);
+            //    currentLevel.SetTile((int)addLoc.X, (int)addLoc.Y, new Tile(addModel, addLoc));
+            //}
 
             this.FillFloor(possibleModels);
         }
@@ -104,10 +102,10 @@ namespace LandOfAmbrosia.Managers
             return new Vector3(gen.Next(currentLevel.width), gen.Next(currentLevel.height), 0);
         }
 
-        private Vector3 AddLocToWorldLoc(Vector3 addLoc)
-        {
-            return new Vector3(TILE_WIDTH * addLoc.X, TILE_HEIGHT * addLoc.Y, addLoc.Z);
-        }
+        //private Vector3 AddLocToWorldLoc(Vector3 addLoc)
+        //{
+        //    //return new Vector3(TILE_WIDTH * addLoc.X, TILE_HEIGHT * addLoc.Y, addLoc.Z);
+        //}
 
         private Model GetRandomModel(Model[] possibleModels)
         {
@@ -121,7 +119,7 @@ namespace LandOfAmbrosia.Managers
                 /*
                  * Spot 1 is the basic platform. The y value is 0 because positive y goes up the page
                  */
-                currentLevel.SetTile(i, 0, new Tile(possibleModels[1], this.AddLocToWorldLoc(new Vector3(i, 0, 0))));
+                currentLevel.SetTile(i, 0, new Tile(possibleModels[1], new Vector3(i, 0, 0)));
             }
         }
 
