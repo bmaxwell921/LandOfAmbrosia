@@ -25,7 +25,7 @@ namespace LandOfAmbrosia.Levels
             }
         }
 
-        private const float TILE_WIDTH = 4f;
+        private const float TILE_WIDTH = 8f;
         private const float TILE_HEIGHT = TILE_WIDTH / 2;
 
         /// <summary>

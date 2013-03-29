@@ -23,7 +23,7 @@ namespace LandOfAmbrosia
         LevelManager lm;
         CharacterManager cm;
 
-        public static Matrix blenderToXNA = Matrix.Identity * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(90));
+        public static Matrix blenderToXNA = Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(-90));// * Matrix.CreateRotationY(MathHelper.ToRadians(90));
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;

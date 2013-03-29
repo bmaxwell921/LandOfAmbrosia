@@ -119,7 +119,8 @@ namespace LandOfAmbrosia.Managers
                 /*
                  * Spot 1 is the basic platform. The y value is 0 because positive y goes up the page
                  */
-                currentLevel.SetTile(i, 0, new Tile(possibleModels[1], new Vector3(i, 0, 0)));
+                currentLevel.SetTile(i, 1, new Tile(possibleModels[1], new Vector3(0, -i, 1)));
+                currentLevel.SetTile(i, 0, new Tile(possibleModels[1], new Vector3(0, -i, 0)));
             }
         }
 
