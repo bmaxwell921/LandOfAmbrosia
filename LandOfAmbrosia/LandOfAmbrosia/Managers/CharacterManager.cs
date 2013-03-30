@@ -23,7 +23,7 @@ namespace LandOfAmbrosia.Managers
             : base(game)
         {
             enemies = new List<Character>();
-            player1 = new UserControlledCharacter(AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
+            player1 = new UserControlledCharacter(AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.ConvertToXNAScene(Constants.DEFAULT_PLAYER1_START));
             //player2Model = Game.Content.Load<Model>(AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
         }
 
@@ -35,7 +35,7 @@ namespace LandOfAmbrosia.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            player1.Draw(((Game1)Game).camera);
+            player1.Draw(((LandOfAmbrosiaGame)Game).camera);
             base.Draw(gameTime);
         }
     }

@@ -5,21 +5,23 @@
 #	2			-	Player2 spawn
 #	<Space>		-	Empty location
 #	P 			- 	PlatForm
-PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-P                                      P
-PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+# An idea for making this better: Input the levels as char, int pairs where the int tells how many of the character comes next. 
+# that would make it a lot easier to make big levels
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP

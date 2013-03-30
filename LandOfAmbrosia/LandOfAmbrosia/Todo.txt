@@ -1,17 +1,17 @@
 ﻿Todo list of things to do:
 	Iteration 1: Basic Character setup
-	X	1) Get a model to use as the female protagonist
+	X	1) Get a model to use as the male protagonist
 			- http://thefree3dmodels.com/stuff/characters/lightning/14-1-0-924
 	X	2) Put a character in the empty scene
 
 	Iteration 2: Basic Level setup
 	X	1) Start implementing tiles (empty Tile and Floor Tile) and set up the Level class (has a skybox?)
-		2) Add a level to the game and render it
-		3) Render both a character and the level to the screen
+	X	2) Add a level to the game and render it
+	X	3) Render both a character and the level to the screen
 
-	Iteration 3: Increased Character control
+	Iteration 3: Increased Character control - Finish by 3/31/13
 		1) Add xbox controller control to the player model
-		2) Get a FFXIII Cloud model to use as the male protagonist
+		2) Get a model to use as the female protagonist
 		3) Render Cloud, Lightning, and the Level to the screen
 		4) Add control for two characters, using two different xbox controllers
 		5) Change camera to move with the characters

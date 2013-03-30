@@ -24,7 +24,7 @@ namespace LandOfAmbrosia.Common
         #region Asset Names
         //Tiles
         public static readonly String NULL_MODEL = null;
-        public static readonly String PLATFORM = @"Models/smallBlock"; //@"Models/coloredPlatform";
+        public static readonly String PLATFORM = @"Models/smallBlock";
 
 
         public static readonly float TILE_WIDTH = 2;//8f;
@@ -40,12 +40,15 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = Vector3.Zero;
-        public static readonly Vector3 DEFAULT_PLAYER2_START = Vector3.Zero + new Vector3(5, 0, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(2 * TILE_WIDTH, 2 * TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = DEFAULT_PLAYER1_START - new Vector3(5, 0, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
         public static readonly int NUM_TILE_TYPES = 2;
+
+        //Camera stuff
+        public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 20;
 
         /*
          * Since we need to do the weird transformation to go from Blender coordinates to XNA coordinates
