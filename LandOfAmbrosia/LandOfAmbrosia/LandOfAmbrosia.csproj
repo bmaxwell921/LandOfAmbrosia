@@ -100,6 +100,9 @@
     <Compile Include="Characters\Minion.cs" />
     <Compile Include="Characters\UserControlledCharacter.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Controllers\AbstractInputController.cs" />
+    <Compile Include="Controllers\KeyboardInput.cs" />
+    <Compile Include="Controllers\XboxController.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\Skybox.cs" />

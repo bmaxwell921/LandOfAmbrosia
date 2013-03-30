@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework;
 
 namespace LandOfAmbrosia.Common
 {
+
+    public enum INPUT_TYPE { KEYBOARD, GAMEPAD };
+    public enum ATTACK_TYPE { MELEE, RANGE, MAGIC, NONE};
+
     class Constants
     {
         /*
@@ -27,8 +31,8 @@ namespace LandOfAmbrosia.Common
         public static readonly String PLATFORM = @"Models/smallBlock";
 
 
-        public static readonly float TILE_WIDTH = 2;//8f;
-        public static readonly float TILE_HEIGHT = 2;//TILE_WIDTH / 2;
+        public static readonly float TILE_WIDTH = 2;
+        public static readonly float TILE_HEIGHT = 2;
 
         //Skybox
         public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
@@ -40,14 +44,20 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(2 * TILE_WIDTH, 2 * TILE_HEIGHT, 0);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = DEFAULT_PLAYER1_START - new Vector3(5, 0, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_WIDTH, 3 * TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_WIDTH, TILE_HEIGHT, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
         public static readonly int NUM_TILE_TYPES = 2;
 
+        //Character stuff
+        public static readonly int DEFAULT_MAX_HEALTH = 100;
+        public static readonly int MAX_SPEED_X = 2;
+        public static readonly Matrix scale = Matrix.CreateScale(0.5f);
+
         //Camera stuff
+        //TODO this isn't actually working
         public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 20;
 
         /*

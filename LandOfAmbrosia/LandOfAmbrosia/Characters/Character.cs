@@ -19,8 +19,6 @@ namespace LandOfAmbrosia
             protected set;
         }
         public Matrix world;        
-
-        public Matrix scale = Matrix.CreateScale(0.5f);
         #endregion
 
         #region Movement
@@ -42,13 +40,13 @@ namespace LandOfAmbrosia
         {
             this.model = model;
             this.speed = speed;
-            this.position = position;
+            this.position = Constants.ConvertToXNAScene(position);
             this.meleeWeapon = meleeWeapon;
             this.rangeWeapon = rangeWeapon;
             this.maxHealth = maxHealth;
 
             this.health = this.maxHealth;
-            this.world = Matrix.CreateTranslation(this.position);
+            this.world = Matrix.CreateTranslation(Constants.ConvertToXNAScene(this.position));
         }
 
         /// <summary>
@@ -76,11 +74,16 @@ namespace LandOfAmbrosia
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World = Constants.blenderToXNA * scale * world * mesh.ParentBone.Transform;
+                    be.World =  GetWorld() * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();
             }
+        }
+
+        public virtual Matrix GetWorld()
+        {
+            return Constants.scale * world;
         }
 
         /// <summary>
