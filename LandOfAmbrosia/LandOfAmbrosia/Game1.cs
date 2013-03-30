@@ -18,6 +18,8 @@ namespace LandOfAmbrosia
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        public string levelLoc = @"G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\BasicLevel.txt";
+
         //public Camera camera;
         public Vector3 cameraPos = new Vector3(0, 0, 20);
         public CameraComponent camera;
@@ -59,7 +61,7 @@ namespace LandOfAmbrosia
             AssetUtil.loadAll(Content);
 
             //I need the models for the Managers to be set up correctly so I can't call the constructors until down here
-            lm = new LevelManager(this);
+            lm = new LevelManager(this, levelLoc);
             Components.Add(lm);
 
             cm = new CharacterManager(this);

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LandOfAmbrosia.Levels;
+using LandOfAmbrosia.Common;
+using Microsoft.Xna.Framework;
 
 namespace LandOfAmbrosia.Logic
 {
@@ -14,7 +16,7 @@ namespace LandOfAmbrosia.Logic
     {
         public static String COMMENT = "#";
 
-        public static Tile[,] readLevel(String filePath)
+        public static Tile[,] readLevel(String filePath, out int width, out int height)
         {
             /*
              * First we read the whole level into a list so we can know
@@ -23,21 +25,15 @@ namespace LandOfAmbrosia.Logic
             */
             IList<String> stringLevel = new List<String>();
             TextReader scanner = new StreamReader(filePath);
-
-            String readLine = scanner.ReadLine();
-            if (readLine == null)
-            {
-                return null;
-            }
-
-            int maxWidth = readLine.Length;
+            int maxWidth = 0;
+            String readLine = null;
             while ((readLine = scanner.ReadLine()) != null)
             {
                 //We ignore comments when creating the level
-                if (!readLine.StartsWith(COMMENT))
+                if (!readLine.StartsWith(COMMENT) && (readLine.Count() != 0))
                 {
                     stringLevel.Add(readLine);
-                    Math.Max(maxWidth, readLine.Count());
+                    maxWidth = Math.Max(maxWidth, readLine.Count());
                 }
             }
 
@@ -48,22 +44,14 @@ namespace LandOfAmbrosia.Logic
                 String line = stringLevel.ElementAt(i);
                 for (int j = 0; j < line.Length; ++j)
                 {
-                    tiles[i, j] = ParseCharacter(line.ElementAt(j));
+                    tiles[j, i] = new Tile(AssetUtil.GetTileModel(line.ElementAt(j)), Constants.ConvertToXNAScene(new Vector3(j, i, 0)));
                 }
             }
 
-            return tiles;
-        }
+            width = maxWidth;
+            height = stringLevel.Count;
 
-        public static Tile ParseCharacter(char c)
-        {
-            //Tile ret = null;
-            //switch (c)
-            //{
-            //    case 'T':
-            //        ret = new Tile(
-            //}
-            return null;
+            return tiles;
         }
     }
 }

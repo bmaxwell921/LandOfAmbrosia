@@ -16,21 +16,10 @@ namespace LandOfAmbrosia.Managers
         private Level currentLevel;
         //Empty, Ground
         #endregion
-        public Random gen;
 
-        /// <summary>
-        /// Constructs a new LevelManager with the default Level
-        /// </summary>
-        public LevelManager(Game game) :
-            this(game, Constants.DEFAULT_SEED)
-        {
-            
-        }
-
-        public LevelManager(Game game, int seed): base(game)
+        public LevelManager(Game game): base(game)
         {
             currentLevel = new Level();
-            gen = new Random(seed);
         }
 
         /// <summary>
@@ -41,7 +30,7 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, String levelFileLoc) : 
             base(game)
         {
-            throw new NotImplementedException();
+            currentLevel = new Level(levelFileLoc);
         }
 
         public override void Draw(GameTime gameTime)

@@ -26,9 +26,6 @@ namespace LandOfAmbrosia.Levels
             }
         }
 
-        private const float TILE_WIDTH = 8f;
-        private const float TILE_HEIGHT = TILE_WIDTH / 2;
-
         /// <summary>
         /// Constructs a new tile at the given location, using the given model as the object drawn
         /// </summary>
@@ -38,8 +35,8 @@ namespace LandOfAmbrosia.Levels
         {
             this.location = location;
             this.model = model;
-            this.world = Matrix.CreateTranslation(new Vector3(TILE_WIDTH * location.X, TILE_HEIGHT * location.Y, location.Z));
-
+            //this.world = Matrix.CreateTranslation(new Vector3(Constants.TILE_WIDTH * location.X, Constants.TILE_HEIGHT * location.Y, location.Z));
+            this.world = Matrix.CreateTranslation(new Vector3(location.X, Constants.TILE_WIDTH * location.Y, Constants.TILE_HEIGHT * location.Z));
         }
 
         /// <summary>

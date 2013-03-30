@@ -5,14 +5,21 @@
 #	2			-	Player2 spawn
 #	<Space>		-	Empty location
 #	P 			- 	PlatForm
-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-T                                      T
-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+P                                      P
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
