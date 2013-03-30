@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using LandOfAmbrosia.Managers;
 using LandOfAmbrosia.Logic;
+using System.IO;
 
 namespace LandOfAmbrosia
 {
@@ -18,7 +19,7 @@ namespace LandOfAmbrosia
     /// </summary>
     public class LandOfAmbrosiaGame : Microsoft.Xna.Framework.Game
     {
-        public string levelLoc = @"G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\BasicLevel.txt";
+        public string levelLoc = @".\PreLoadedLevels\BasicLevel.txt";
 
         /* This camera needs to be shared between the LevelManager and the CharacterManager:
          * The LevelManager sets it up based on the width and height of the level, but 
@@ -68,7 +69,8 @@ namespace LandOfAmbrosia
             AssetUtil.loadAll(Content);
 
             //I need the models for the Managers to be set up correctly so I can't call the constructors until down here
-            lm = new LevelManager(this, levelLoc);
+            //lm = new LevelManager(this, levelLoc);
+            lm = new LevelManager(this);
             Components.Add(lm);
 
             cm = new CharacterManager(this);

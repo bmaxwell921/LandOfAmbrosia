@@ -1,0 +1,27 @@
+# Map file for tile-based game
+#	(Lines that start with '#' are comments)
+# Options of tiles:
+#	1 			- 	Player1 spawn
+#	2			-	Player2 spawn
+#	<Space>		-	Empty location
+#	P 			- 	PlatForm
+# An idea for making this better: Input the levels as char, int pairs where the int tells how many of the character comes next. 
+# that would make it a lot easier to make big levels
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+P                                                                              P
+PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP

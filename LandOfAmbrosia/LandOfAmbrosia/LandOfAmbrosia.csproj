@@ -120,6 +120,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="PreLoadedLevels\BasicLevel.txt" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ namespace LandOfAmbrosia.Managers
             base(game)
         {
             currentLevel = new Level(levelFileLoc);
-            this.SetUpCamera();
+            //this.SetUpCamera();
         }
 
         private void SetUpCamera()
