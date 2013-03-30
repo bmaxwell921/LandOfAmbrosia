@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using LandOfAmbrosia.Managers;
+using LandOfAmbrosia.Logic;
 
 namespace LandOfAmbrosia
 {
@@ -22,8 +23,6 @@ namespace LandOfAmbrosia
         public CameraComponent camera;
         LevelManager lm;
         CharacterManager cm;
-
-        public static Matrix blenderToXNA = Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(-90));// * Matrix.CreateRotationY(MathHelper.ToRadians(90));
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -46,12 +45,6 @@ namespace LandOfAmbrosia
             //camera = new Camera(this, new Vector3(0, 0, 20), Vector3.Zero, new Vector3(0, 1, 0));
             camera = new CameraComponent(this, cameraPos);
             Components.Add(camera);
-
-            lm = new LevelManager(this);
-            Components.Add(lm);
-
-            cm = new CharacterManager(this);
-            Components.Add(cm);
             base.Initialize();
         }
 
@@ -63,7 +56,14 @@ namespace LandOfAmbrosia
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            AssetUtil.loadAll(Content);
 
+            //I need the models for the Managers to be set up correctly so I can't call the constructors until down here
+            lm = new LevelManager(this);
+            Components.Add(lm);
+
+            cm = new CharacterManager(this);
+            Components.Add(cm);
             // TODO: use this.Content to load your game content here
         }
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LandOfAmbrosia.Logic;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Levels
 {
@@ -21,7 +23,7 @@ namespace LandOfAmbrosia.Levels
         public Skybox skybox;
 
         /// <summary>
-        /// Constructs a new Level with the default width and height and the given seed
+        /// Constructs a new Level with the default width and height
         /// </summary>
         /// <param name="seed"></param>
         public Level()
@@ -30,20 +32,38 @@ namespace LandOfAmbrosia.Levels
         }
 
         /// <summary>
-        /// Creates an empty Level with the given height, width, and seed
+        /// Creates an empty Level with the given height and width
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
         public Level(int width, int height)
         {
-            tiles = new Tile[width, height];
             this.width = width;
             this.height = height;
+            this.tiles = new Tile[width, height];
+            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
+            this.FillFloor();
         }
 
-        private void SetUpSkybox()
+        /// <summary>
+        /// Constructs a new Level by reading the given file
+        /// </summary>
+        /// <param name="filePath"></param>
+        public Level(String filePath)
         {
-            throw new NotImplementedException();
+            //TODO use the LevelReader
+        }
+
+        private void FillFloor()
+        {
+            for (int i = 0; i < width; ++i)
+            {
+                /*
+                 * Spot 1 is the basic platform. The y value is 0 because positive y goes up the page
+                 */
+                SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, -i, 1)));
+                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, -i, 0)));
+            }
         }
 
         /// <summary>

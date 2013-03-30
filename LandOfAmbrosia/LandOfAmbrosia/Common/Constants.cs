@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+
+namespace LandOfAmbrosia.Common
+{
+    class Constants
+    {
+        /*
+         * Matrix to fix the differences between the Blender coordinate system and the XNA system 
+         */
+        public static Matrix blenderToXNA = Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(-90));
+
+        #region Level Character Reps
+        public static readonly char PLAYER1_CHAR = '1';
+        public static readonly char PLAYER2_CHAR = '2';
+        public static readonly char EMPTY_CHAR = ' ';
+        public static readonly char PLATFORM_CHAR = 'P';
+        //TODO enemy reps
+        #endregion
+
+        #region Asset Names
+        //Tiles
+        public static readonly String NULL_MODEL = null;
+        public static readonly String PLATFORM = @"Models/coloredPlatform";
+
+        //Skybox
+        public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
+        public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
+
+        //Characters
+        public static readonly String PLAYER1_MODEL = @"Models/swordModel";
+        public static readonly String PLAYER2_MODEL = @"Models/TBA";
+        #endregion
+
+        //Default Values
+        public static readonly Vector3 DEFAULT_PLAYER1_START = Vector3.Zero;
+        public static readonly Vector3 DEFAULT_PLAYER2_START = Vector3.Zero + new Vector3(5, 0, 0);
+
+        public static readonly int DEFAULT_SEED = 42;
+
+        public static readonly int NUM_TILE_TYPES = 2;
+    }
+}

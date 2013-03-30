@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Characters;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Levels
 {
@@ -17,7 +18,7 @@ namespace LandOfAmbrosia.Levels
         {
             get
             {
-                return Game1.blenderToXNA * privWorld;
+                return Constants.blenderToXNA * privWorld;
             }
             set
             {

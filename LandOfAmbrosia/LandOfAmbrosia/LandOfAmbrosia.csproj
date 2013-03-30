@@ -99,10 +99,12 @@
     <Compile Include="Characters\ICollidable.cs" />
     <Compile Include="Characters\Minion.cs" />
     <Compile Include="Characters\UserControlledCharacter.cs" />
+    <Compile Include="Common\Constants.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\Skybox.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Logic\LevelReader.cs" />
+    <Compile Include="Logic\AssetUtil.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\IManagable.cs" />
     <Compile Include="Managers\LevelManager.cs" />

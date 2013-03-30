@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Characters;
+using LandOfAmbrosia.Common;
+using LandOfAmbrosia.Logic;
 
 namespace LandOfAmbrosia.Managers
 {
@@ -13,17 +15,6 @@ namespace LandOfAmbrosia.Managers
         #region Character Fields
         public Character player1;
         public Character player2;
-
-        public static Vector3 DEFAULT_PLAYER1_START = Vector3.Zero;
-        public static Vector3 DEFAULT_PLAYER2_START = Vector3.Zero + new Vector3(5, 0, 0);
-
-        public Model player1Model;
-        public Model player2Model;
-
-        //Do as .fbx file
-
-        public String player1ModelAsset = @"Models/swordModel";
-        public String player2ModelAsset = @"";
         #endregion
 
         public IList<Character> enemies;
@@ -32,15 +23,8 @@ namespace LandOfAmbrosia.Managers
             : base(game)
         {
             enemies = new List<Character>();
-        }
-
-        protected override void LoadContent()
-        {
-            player1Model = Game.Content.Load<Model>(player1ModelAsset);
-
-            player1 = new UserControlledCharacter(player1Model, DEFAULT_PLAYER1_START);
-            //player2Model = Game.Content.Load<Model>(player2ModelAsset);
-            base.LoadContent();
+            player1 = new UserControlledCharacter(AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
+            //player2Model = Game.Content.Load<Model>(AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
         }
 
         public override void Update(GameTime gameTime)

@@ -31,21 +31,17 @@ namespace LandOfAmbrosia.Logic
             }
 
             int maxWidth = readLine.Length;
-            int height = 1;
             while ((readLine = scanner.ReadLine()) != null)
             {
                 //We ignore comments when creating the level
                 if (!readLine.StartsWith(COMMENT))
                 {
                     stringLevel.Add(readLine);
-                }
-                if (readLine.Length > maxWidth)
-                {
-                    maxWidth = readLine.Length;
+                    Math.Max(maxWidth, readLine.Count());
                 }
             }
 
-            Tile[,] tiles = new Tile[maxWidth, height];
+            Tile[,] tiles = new Tile[maxWidth, stringLevel.Count];
 
             for (int i = 0; i < stringLevel.Count; ++i )
             {
@@ -61,7 +57,12 @@ namespace LandOfAmbrosia.Logic
 
         public static Tile ParseCharacter(char c)
         {
-            //TODO
+            //Tile ret = null;
+            //switch (c)
+            //{
+            //    case 'T':
+            //        ret = new Tile(
+            //}
             return null;
         }
     }

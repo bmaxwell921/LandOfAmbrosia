@@ -1,0 +1,18 @@
+# Map file for tile-based game
+#	(Lines that start with '#' are comments)
+# Options of tiles:
+#	1 			- 	Player1 spawn
+#	2			-	Player2 spawn
+#	<Space>		-	Empty location
+#	P 			- 	PlatForm
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+T                                      T
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

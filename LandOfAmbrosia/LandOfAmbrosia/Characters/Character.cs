@@ -6,6 +6,7 @@ using LandOfAmbrosia.Characters;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Weapons;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia
 {
@@ -17,11 +18,7 @@ namespace LandOfAmbrosia
             get;
             protected set;
         }
-        public Matrix world;
-
-        //public Matrix blenderToXNAFix = Matrix.Identity * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(0)) 
-        //    * Matrix.CreateRotationZ(MathHelper.ToRadians(0));
-        
+        public Matrix world;        
 
         public Matrix scale = Matrix.CreateScale(0.5f);
         #endregion
@@ -79,28 +76,11 @@ namespace LandOfAmbrosia
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World = Game1.blenderToXNA * scale * world * mesh.ParentBone.Transform;
+                    be.World = Constants.blenderToXNA * scale * world * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();
             }
-
-            //Second copy for testing purposes
-            //transforms = new Matrix[model.Bones.Count];
-            //model.CopyAbsoluteBoneTransformsTo(transforms);
-
-            //foreach (ModelMesh mesh in model.Meshes)
-            //{
-            //    foreach (BasicEffect be in mesh.Effects)
-            //    {
-            //        be.EnableDefaultLighting();
-            //        be.Projection = c.ProjectionMatrix;
-            //        be.View = c.ViewMatrix;
-            //        be.World = scale * 2 * Matrix.CreateTranslation(new Vector3(10, 0, 0)) * mesh.ParentBone.Transform;
-            //    }
-
-            //    mesh.Draw();
-            //}
         }
 
         /// <summary>
