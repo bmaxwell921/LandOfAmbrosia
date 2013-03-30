@@ -17,13 +17,13 @@ namespace LandOfAmbrosia
         {
             get;
             protected set;
-        }
-        public Matrix world;        
+        }       
         #endregion
 
         #region Movement
         public Vector3 speed;
         public Vector3 position;
+        public bool onGround;
         #endregion
 
         #region Weapons
@@ -32,6 +32,7 @@ namespace LandOfAmbrosia
         #endregion
 
         #region Health
+        //TODO: Box this up into a stat object
         public int health;
         public int maxHealth;
         #endregion
@@ -44,9 +45,8 @@ namespace LandOfAmbrosia
             this.meleeWeapon = meleeWeapon;
             this.rangeWeapon = rangeWeapon;
             this.maxHealth = maxHealth;
-
+            this.onGround = false;
             this.health = this.maxHealth;
-            this.world = Matrix.CreateTranslation(Constants.ConvertToXNAScene(this.position));
         }
 
         /// <summary>
@@ -55,6 +55,7 @@ namespace LandOfAmbrosia
         /// </summary>
         public virtual void Update()
         {
+
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace LandOfAmbrosia
 
         public virtual Matrix GetWorld()
         {
-            return Constants.scale * world;
+            return Constants.scale * Matrix.CreateTranslation(position);
         }
 
         /// <summary>

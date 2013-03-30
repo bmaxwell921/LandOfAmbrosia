@@ -53,8 +53,12 @@ namespace LandOfAmbrosia.Common
 
         //Character stuff
         public static readonly int DEFAULT_MAX_HEALTH = 100;
-        public static readonly int MAX_SPEED_X = 2;
+        public static readonly float MAX_SPEED_X = 0.5f;
         public static readonly Matrix scale = Matrix.CreateScale(0.5f);
+
+        //Level stuff
+        public static readonly int DEFAULT_WIDTH = 10;
+        public static readonly int DEFAULT_HEIGHT = 5;
 
         //Camera stuff
         //TODO this isn't actually working

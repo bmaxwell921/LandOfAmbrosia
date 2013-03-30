@@ -108,11 +108,13 @@ namespace LandOfAmbrosia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //Stops the models from being all jacked up
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
             graphics.GraphicsDevice.RasterizerState = rs;
 
-            // TODO: Add your drawing code here
+            //Stops the models from being all jacked up after drawing sprites
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             base.Draw(gameTime);

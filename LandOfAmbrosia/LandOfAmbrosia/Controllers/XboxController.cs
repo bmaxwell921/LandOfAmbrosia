@@ -34,9 +34,9 @@ namespace LandOfAmbrosia.Controllers
         /// far the thumbstick has been pressed and set the movement accordingly
         /// </summary>
         /// <returns></returns>
-        public override Vector2 GetMovement()
+        public override Vector3 GetMovement()
         {
-            Vector2 move = Vector2.Zero;
+            Vector3 move = Vector3.Zero;
 
             move.X = Constants.MAX_SPEED_X * GamePad.GetState(player).ThumbSticks.Left.X;
 

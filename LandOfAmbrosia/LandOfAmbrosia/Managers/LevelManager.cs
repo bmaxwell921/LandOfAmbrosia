@@ -10,6 +10,9 @@ using LandOfAmbrosia.Logic;
 
 namespace LandOfAmbrosia.Managers
 {
+    /// <summary>
+    /// A class to manage a level of the game. The Level is made up of Tiles 
+    /// </summary>
     class LevelManager : DrawableGameComponent
     {
         #region Level Fields

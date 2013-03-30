@@ -9,12 +9,11 @@ using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Levels
 {
+    /// <summary>
+    /// I think the level is the one who holds the enemies and characters
+    /// </summary>
     class Level
-    {
-        private const int DEFAULT_WIDTH = 10;
-        private const int DEFAULT_HEIGHT = 5;
-        private const int DEFAULT_SEED = 42;
-        
+    {     
         public int width, height;
 
         public Tile[,] tiles;
@@ -27,7 +26,7 @@ namespace LandOfAmbrosia.Levels
         /// </summary>
         /// <param name="seed"></param>
         public Level()
-            : this(DEFAULT_WIDTH, DEFAULT_HEIGHT)
+            : this(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT)
         {
         }
 
@@ -77,6 +76,17 @@ namespace LandOfAmbrosia.Levels
                 throw new IndexOutOfRangeException();
             }
             tiles[width, height] = newTile; 
+        }
+
+        //TODO how to handle collision detection?
+        public int XPosToTileX(float xPos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int YPosToTileY(float yPos)
+        {
+            throw new NotImplementedException();
         }
 
         public void Draw(CameraComponent c, GraphicsDevice device)
