@@ -1,8 +1,5 @@
-Content\Models\platform.xnb
-Content\Models\basicModelNew.xnb
 Content\Skybox\skybox2.xnb
 Content\Models\swordModel.xnb
-Content\Models\newPlatform.xnb
 Content\Skybox\effects.xnb
 Content\Skybox\skybox_left.xnb
 Content\Skybox\skybox_bottom.xnb
@@ -16,5 +13,5 @@ Content\Skybox\SkyBox_Left_0.xnb
 Content\Skybox\SkyBox_Front_0.xnb
 Content\Skybox\SkyBox_Back_0.xnb
 Content\Skybox\SkyBox_Bottom_0.xnb
-Content\Models\coloredPlatform.xnb
 Content\Models\smallBlock.xnb
+Content\Models\smallerModel.xnb

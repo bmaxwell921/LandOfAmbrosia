@@ -13,19 +13,21 @@ namespace LandOfAmbrosia.Characters
     {
         private AbstractInputController inputController;
 
-        private readonly float JUMP_VELOCITY = 0.95f;
+        private readonly float JUMP_VELOCITY = 0.02f;
 
         public UserControlledCharacter(char character, Model model, Vector3 position) :
             base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
         {
             inputController = new KeyboardInput();
             //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
+            width = Constants.SMALLER_WIDTH;
+            height = Constants.SMALLER_HEIGHT;
         }
 
         public void CheckInput()
         {
             float xVel = 0;
-            xVel += inputController.GetMovement().X;
+            xVel = inputController.GetMovement().X;
             if (inputController.PressedJump())
             {
                 this.jump(false);
@@ -41,16 +43,6 @@ namespace LandOfAmbrosia.Characters
                 onGround = false;
                 this.setVelocityY(JUMP_VELOCITY);
             }
-        }
-
-        private Vector3 calculateGravity()
-        {
-            //TODO make this proper
-            Vector3 gravity = new Vector3(0, -0.25f, 0);
-
-
-
-            return Constants.ConvertToXNAScene(gravity);
         }
     }
 }

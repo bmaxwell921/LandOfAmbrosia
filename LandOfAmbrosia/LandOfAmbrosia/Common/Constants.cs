@@ -39,7 +39,7 @@ namespace LandOfAmbrosia.Common
         public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
 
         //Characters
-        public static readonly String PLAYER1_MODEL = @"Models/swordModel";
+        public static readonly String PLAYER1_MODEL = @"Models/smallerModel";
         public static readonly String PLAYER2_MODEL = @"Models/TBA";
         #endregion
 
@@ -54,7 +54,10 @@ namespace LandOfAmbrosia.Common
         //Character stuff
         public static readonly int DEFAULT_MAX_HEALTH = 100;
         public static readonly float MAX_SPEED_X = 0.5f;
-        public static readonly Matrix scale = Matrix.CreateScale(0.5f);
+        public static readonly Matrix scale = Matrix.CreateScale(1); // Matrix.CreateScale(0.5f);
+
+        public static readonly float SMALLER_HEIGHT = 15;
+        public static readonly float SMALLER_WIDTH = 10;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 10;

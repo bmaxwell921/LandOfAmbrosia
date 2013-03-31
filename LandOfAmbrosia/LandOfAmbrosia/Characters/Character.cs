@@ -50,8 +50,8 @@ namespace LandOfAmbrosia
             this.onGround = false;
             this.health = this.maxHealth;
 
-            this.width = model.Meshes[0].BoundingSphere.Radius * 2;
-            this.height = model.Meshes[0].BoundingSphere.Radius * 2;
+            //this.width = model.Meshes[0].BoundingSphere.Radius * 2;
+            //this.height = model.Meshes[0].BoundingSphere.Radius * 2;
         }
 
         /// <summary>
@@ -201,6 +201,7 @@ namespace LandOfAmbrosia
         public void collideVertical()
         {
             setVelocityY(0);
+            onGround = true;
         }
     }
 }

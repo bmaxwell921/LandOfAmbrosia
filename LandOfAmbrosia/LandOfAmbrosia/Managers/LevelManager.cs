@@ -86,7 +86,7 @@ namespace LandOfAmbrosia.Managers
         //Updates the player position and handles collisions
         private void UpdateCharacter(Character character, GameTime gameTime)
         {
-            if (!character.isFlying())
+            if (!character.isFlying() && !character.onGround)
             {
                 //update force of gravity
                 character.setVelocityY(character.getVelocityY() + Constants.GRAVITY);
@@ -116,7 +116,7 @@ namespace LandOfAmbrosia.Managers
             }
 
             float dy = character.getVelocityY();
-            float oldY = character.getY();
+            float oldY = character.getY() - character.height;
             float newY = oldY + dy * gameTime.ElapsedGameTime.Milliseconds;
             tile = getTileCollision(character, character.getX(), newY);
             if (tile == Vector3.Zero)
@@ -129,11 +129,11 @@ namespace LandOfAmbrosia.Managers
                 //Going down
                 if (dy < 0)
                 {
-                    character.setY(currentLevel.tileIndexToPos((int)tile.Y) + character.height);
+                    character.setY(currentLevel.tileIndexToPos((int)tile.Y) + character.height / 2);
                 }
                 else if (dy > 0) //Going up
                 {
-                    character.setY(currentLevel.tileIndexToPos((int)tile.Y + 1));
+                    character.setY(currentLevel.tileIndexToPos((int)tile.Y - 1));
                 }
                 character.collideVertical();
             }
@@ -149,9 +149,8 @@ namespace LandOfAmbrosia.Managers
             int fromTileX = currentLevel.posToTileIndex(fromX);
             int fromTileY = currentLevel.posToTileIndex(fromY);
 
-            int toTileX = currentLevel.posToTileIndex(toX + c.width - 1);
-            int toTileY = currentLevel.posToTileIndex(toX + c.height - 1);
-
+            int toTileX = currentLevel.posToTileIndex(toX + c.width / 2);
+            int toTileY = currentLevel.posToTileIndex(toY + c.height);
             for (int x = fromTileX; x <= toTileX; ++x)
             {
                 for (int y = fromTileY; y <= toTileY; ++y)
