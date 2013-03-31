@@ -21,10 +21,12 @@ namespace LandOfAmbrosia
         #endregion
 
         #region Movement
-        public Vector3 speed;
+        public Vector3 velocity;
         public Vector3 position;
         public bool onGround;
         #endregion
+
+        public float width, height;
 
         #region Weapons
         public Weapon meleeWeapon;
@@ -40,18 +42,23 @@ namespace LandOfAmbrosia
         public Character(Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth)
         {
             this.model = model;
-            this.speed = speed;
+            this.velocity = speed;
             this.position = Constants.ConvertToXNAScene(position);
             this.meleeWeapon = meleeWeapon;
             this.rangeWeapon = rangeWeapon;
             this.maxHealth = maxHealth;
             this.onGround = false;
             this.health = this.maxHealth;
+
+            this.width = model.Meshes[0].BoundingSphere.Radius * 2;
+            this.height = model.Meshes[0].BoundingSphere.Radius * 2;
         }
 
         /// <summary>
         /// Method to update the character from it's 
         /// old position to it's new position.
+        /// 
+        /// I think this will actually just update the animation...cause the LevelManager does the position updating
         /// </summary>
         public virtual void Update()
         {
@@ -115,6 +122,85 @@ namespace LandOfAmbrosia
         public virtual Projectile rangeAttack()
         {
             throw new NotImplementedException();
+        }
+
+        public virtual bool isFlying()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Correctly sets the x velocity for the character by converting to the xna coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        public void setVelocityX(float x)
+        {
+            Vector3 oldCorrectVel = Constants.UnconvertFromXNAScene(velocity);
+            oldCorrectVel.X = x;
+            velocity = Constants.ConvertToXNAScene(oldCorrectVel);
+        }
+
+        /// <summary>
+        /// Gets the x component of the velocity in xna coordinates
+        /// </summary>
+        /// <returns></returns>
+        public float getVelocityX()
+        {
+            return Constants.UnconvertFromXNAScene(velocity).X;
+        }
+
+        /// <summary>
+        /// Correctly sets the y velocity for the character by converting to the xna coordinates
+        /// </summary>
+        /// <param name="y"></param>
+        public void setVelocityY(float y)
+        {
+            Vector3 oldCorrectVel = Constants.UnconvertFromXNAScene(velocity);
+            oldCorrectVel.Y = y;
+            velocity = Constants.ConvertToXNAScene(oldCorrectVel);
+        }
+
+        /// <summary>
+        /// Gets the y component of the velocity in xna coordinates
+        /// </summary>
+        /// <returns></returns>
+        public float getVelocityY()
+        {
+            return Constants.UnconvertFromXNAScene(velocity).Y;
+        }
+
+        public float getX()
+        {
+            return Constants.UnconvertFromXNAScene(position).X;
+        }
+
+        public void setX(float x)
+        {
+            Vector3 oldCorrectPos = Constants.UnconvertFromXNAScene(position);
+            oldCorrectPos.X = x;
+            position = Constants.ConvertToXNAScene(oldCorrectPos);
+        }
+
+        public float getY()
+        {
+            return Constants.UnconvertFromXNAScene(position).Y;
+        }
+
+        public void setY(float y)
+        {
+            Vector3 oldCorrectPos = Constants.UnconvertFromXNAScene(position);
+            oldCorrectPos.Y = y;
+            position = Constants.ConvertToXNAScene(oldCorrectPos);
+        }
+
+        public void collideHorizontal()
+        {
+            setVelocityX(-getVelocityX());
+        }
+
+        public void collideVertical()
+        {
+            setVelocityY(0);
         }
     }
 }

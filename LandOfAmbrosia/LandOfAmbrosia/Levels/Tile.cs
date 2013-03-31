@@ -36,7 +36,7 @@ namespace LandOfAmbrosia.Levels
             this.location = location;
             this.model = model;
             //this.world = Matrix.CreateTranslation(new Vector3(Constants.TILE_WIDTH * location.X, Constants.TILE_HEIGHT * location.Y, location.Z));
-            this.world = Matrix.CreateTranslation(new Vector3(location.X, Constants.TILE_WIDTH * location.Y, Constants.TILE_HEIGHT * location.Z));
+            this.world = Matrix.CreateTranslation(new Vector3(location.X, Constants.TILE_SIZE * location.Y, Constants.TILE_SIZE * location.Z));
         }
 
         /// <summary>

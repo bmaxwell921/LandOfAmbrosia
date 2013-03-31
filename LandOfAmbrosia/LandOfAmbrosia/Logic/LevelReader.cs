@@ -44,7 +44,14 @@ namespace LandOfAmbrosia.Logic
                 String line = stringLevel.ElementAt(i);
                 for (int j = 0; j < line.Length; ++j)
                 {
-                    tiles[j, i] = new Tile(AssetUtil.GetTileModel(line.ElementAt(j)), Constants.ConvertToXNAScene(new Vector3(j, i, 0)));
+                    if (line.ElementAt(j) != ' ')
+                    {
+                        tiles[j, i] = new Tile(AssetUtil.GetTileModel(line.ElementAt(j)), Constants.ConvertToXNAScene(new Vector3(j, i, 0)));
+                    }
+                    else
+                    {
+                        tiles[j, i] = null;
+                    }
                 }
             }
 

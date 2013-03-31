@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Common;
+using LandOfAmbrosia.Characters;
 
 namespace LandOfAmbrosia.Levels
 {
@@ -13,10 +14,15 @@ namespace LandOfAmbrosia.Levels
     /// I think the level is the one who holds the enemies and characters
     /// </summary>
     class Level
-    {     
+    {   
+        //Map data
         public int width, height;
-
         public Tile[,] tiles;
+
+        //Character data
+        public UserControlledCharacter player1;
+        public UserControlledCharacter player2;
+        public IList<Character> enemies;
 
         //Made this a whole skybox cause I already had skybox code
         public Skybox skybox;
@@ -42,6 +48,10 @@ namespace LandOfAmbrosia.Levels
             this.tiles = new Tile[width, height];
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
             this.FillFloor();
+
+            enemies = new List<Character>();
+            player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
+            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER2_START);
         }
 
         /// <summary>
@@ -54,11 +64,12 @@ namespace LandOfAmbrosia.Levels
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
         }
 
+        //For auto generation we automatically fill in the floor with platforms
         private void FillFloor()
         {
             for (int i = 0; i < width; ++i)
             {
-                SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 1, 0))));
+                //SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 1, 0))));
                 SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 0, 0))));
             }
         }
@@ -71,22 +82,35 @@ namespace LandOfAmbrosia.Levels
         /// <param name="newTile"></param>
         public void SetTile(int width, int height, Tile newTile)
         {
-            if (width < 0 || width > this.width || height < 0 || height > this.height)
+            if (width < 0 || width >= this.width || height < 0 || height >= this.height)
             {
-                throw new IndexOutOfRangeException();
+                return;
             }
             tiles[width, height] = newTile; 
         }
 
-        //TODO how to handle collision detection?
-        public int XPosToTileX(float xPos)
+        public Tile GetTile(int width, int height)
         {
-            throw new NotImplementedException();
+            if (width < 0 || width >= this.width || height < 0 || height >= this.height)
+            {
+                return null;
+            }
+            return tiles[width, height];
         }
 
-        public int YPosToTileY(float yPos)
+        public int posToTileIndex(float pix)
         {
-            throw new NotImplementedException();
+            return posToTileIndex((int) Math.Round(pix));
+        }
+
+        public int posToTileIndex(int pix)
+        {
+            return (int) Math.Floor((float) pix / Constants.TILE_SIZE);
+        }
+
+        public int tileIndexToPos(int numTiles)
+        {
+            return numTiles * Constants.TILE_SIZE;
         }
 
         public void Draw(CameraComponent c, GraphicsDevice device)
@@ -94,8 +118,11 @@ namespace LandOfAmbrosia.Levels
             skybox.Draw(c, device);
 
             this.DrawTiles(c);
+            this.DrawPlayers(c);
+            this.DrawEnemies(c);
         }
 
+        //Draws all the tiles to the screen
         private void DrawTiles(CameraComponent c)
         {
             for (int i = 0; i < width; ++i)
@@ -106,6 +133,32 @@ namespace LandOfAmbrosia.Levels
                     {
                         tiles[i, j].Draw(c);
                     }
+                }
+            }
+        }
+
+        //Draws the players
+        private void DrawPlayers(CameraComponent c)
+        {
+            if (player1 != null)
+            {
+                player1.Draw(c);
+            }
+
+            if (player2 != null)
+            {
+                player2.Draw(c);
+            }
+        }
+
+        //Draw the enemies
+        private void DrawEnemies(CameraComponent c)
+        {
+            foreach (Character enemy in enemies)
+            {
+                if (enemy != null)
+                {
+                    enemy.Draw(c);
                 }
             }
         }

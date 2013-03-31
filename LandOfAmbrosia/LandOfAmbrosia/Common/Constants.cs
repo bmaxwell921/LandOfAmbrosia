@@ -9,6 +9,7 @@ namespace LandOfAmbrosia.Common
 
     public enum INPUT_TYPE { KEYBOARD, GAMEPAD };
     public enum ATTACK_TYPE { MELEE, RANGE, MAGIC, NONE};
+    public enum JUMP_STATE { JUMP, DOUBLE_JUMP, FALLING, NONE };
 
     class Constants
     {
@@ -31,8 +32,7 @@ namespace LandOfAmbrosia.Common
         public static readonly String PLATFORM = @"Models/smallBlock";
 
 
-        public static readonly float TILE_WIDTH = 2;
-        public static readonly float TILE_HEIGHT = 2;
+        public static readonly int TILE_SIZE = 2;
 
         //Skybox
         public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
@@ -44,8 +44,8 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_WIDTH, 3 * TILE_HEIGHT, 0);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_WIDTH, TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE, 10 * TILE_SIZE, 0);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_SIZE, TILE_SIZE, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
@@ -64,6 +64,8 @@ namespace LandOfAmbrosia.Common
         //TODO this isn't actually working
         public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 20;
 
+        public static readonly float GRAVITY = -0.0001f;
+
         /*
          * Since we need to do the weird transformation to go from Blender coordinates to XNA coordinates
          * I think all the translations will be messed up so this is an easy way to fix the translations
@@ -72,6 +74,12 @@ namespace LandOfAmbrosia.Common
         public static Vector3 ConvertToXNAScene(Vector3 regularVector)
         {
             return new Vector3(regularVector.Z, -1 * regularVector.X, regularVector.Y);
+        }
+
+        //Does the opposite of the above method
+        public static Vector3 UnconvertFromXNAScene(Vector3 XNAVector)
+        {
+            return new Vector3(-1 * XNAVector.Y, XNAVector.Z, XNAVector.X);
         }
     }
 }

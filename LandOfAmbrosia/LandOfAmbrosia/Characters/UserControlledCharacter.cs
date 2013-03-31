@@ -13,25 +13,34 @@ namespace LandOfAmbrosia.Characters
     {
         private AbstractInputController inputController;
 
+        private readonly float JUMP_VELOCITY = 0.95f;
+
         public UserControlledCharacter(char character, Model model, Vector3 position) :
             base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
         {
-            //inputController = new KeyboardInput();
-            inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
-            onGround = true;
+            inputController = new KeyboardInput();
+            //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
         }
 
-        public override void Update()
+        public void CheckInput()
         {
-            Vector3 change = Vector3.Zero;
-            if (!onGround)
+            float xVel = 0;
+            xVel += inputController.GetMovement().X;
+            if (inputController.PressedJump())
             {
-                change += this.calculateGravity();
+                this.jump(false);
             }
+            this.setVelocityX(xVel);
+        }
 
-            change += Constants.ConvertToXNAScene(inputController.GetMovement());
-            
-            this.position += change;
+        //Makes the character jump. Set forceJump to true for an in-air jump
+        private void jump(bool forceJump)
+        {
+            if (onGround || forceJump)
+            {
+                onGround = false;
+                this.setVelocityY(JUMP_VELOCITY);
+            }
         }
 
         private Vector3 calculateGravity()
