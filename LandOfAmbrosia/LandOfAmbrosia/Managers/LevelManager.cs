@@ -24,7 +24,7 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game): base(game)
         {
             currentLevel = new Level();
-            this.SetUpCamera();
+            this.SetUpCameraDefault();
         }
 
         /// <summary>
@@ -39,13 +39,26 @@ namespace LandOfAmbrosia.Managers
             //this.SetUpCamera();
         }
 
-        private void SetUpCamera()
+        //TODO this method doesn't work right
+        //private void SetUpCamera()
+        //{
+        //    CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
+        //    Vector3 eye, target, up;
+
+        //    eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
+        //    target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
+        //    up = Vector3.Up;
+
+        //    camera.LookAt(eye, target, up);
+        //}
+
+        
+        private void SetUpCameraDefault()
         {
             CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
             Vector3 eye, target, up;
-
-            eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
-            target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
+            eye = new Vector3(0, 0, 20);
+            target = new Vector3(0, 0, 0);
             up = Vector3.Up;
 
             camera.LookAt(eye, target, up);
@@ -152,11 +165,6 @@ namespace LandOfAmbrosia.Managers
 
             int toTileX = currentLevel.posToTileIndex(toX + c.width / 2 - 1);
             int toTileY = currentLevel.posToTileIndex(toY - c.height / 2 - 1);
-
-            if (fromTileY <= 0 || toTileY <= 0)
-            {
-                int asdf;
-            }
 
             for (int x = fromTileX; x <= toTileX; ++x)
             {

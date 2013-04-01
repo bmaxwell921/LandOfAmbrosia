@@ -13,18 +13,6 @@ namespace LandOfAmbrosia.Levels
     {
         public Vector3 location;
         public Model model;
-        private Matrix privWorld;
-        public Matrix world
-        {
-            get
-            {
-                return Constants.blenderToXNA * privWorld;
-            }
-            set
-            {
-                privWorld = value;
-            }
-        }
 
         /// <summary>
         /// Constructs a new tile at the given location, using the given model as the object drawn
@@ -33,10 +21,9 @@ namespace LandOfAmbrosia.Levels
         /// <param name="model"></param>
         public Tile(Model model, Vector3 location)
         {
-            this.location = location;
+            //Location is the actual location in 3D space
+            this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_HEIGHT, 0));
             this.model = model;
-            //this.world = Matrix.CreateTranslation(new Vector3(Constants.TILE_WIDTH * location.X, Constants.TILE_HEIGHT * location.Y, location.Z));
-            this.world = Matrix.CreateTranslation(new Vector3(location.X, Constants.TILE_SIZE * location.Y, Constants.TILE_SIZE * location.Z));
         }
 
         /// <summary>
@@ -65,11 +52,16 @@ namespace LandOfAmbrosia.Levels
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World = world * mesh.ParentBone.Transform;
+                    be.World = GetWorld() * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();
             }
+        }
+
+        public Matrix GetWorld()
+        {
+            return Matrix.Identity * Matrix.CreateTranslation(location);
         }
 
         public bool CollidesWith(ICollidable other)

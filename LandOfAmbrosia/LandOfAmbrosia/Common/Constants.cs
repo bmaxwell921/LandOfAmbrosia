@@ -32,7 +32,9 @@ namespace LandOfAmbrosia.Common
         public static readonly String PLATFORM = @"Models/smallBlock";
 
 
-        public static readonly int TILE_SIZE = 2;
+        //public static readonly int TILE_SIZE = 28;
+        public static readonly int TILE_WIDTH = 2;
+        public static readonly int TILE_HEIGHT = 28;
 
         //Skybox
         public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
@@ -44,8 +46,8 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE, 2 * TILE_SIZE, 0);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_SIZE, TILE_SIZE, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_WIDTH / 2, 2 * TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_WIDTH, TILE_HEIGHT, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
