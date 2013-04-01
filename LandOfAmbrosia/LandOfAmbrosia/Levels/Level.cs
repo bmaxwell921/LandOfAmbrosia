@@ -69,8 +69,10 @@ namespace LandOfAmbrosia.Levels
         {
             for (int i = 0; i < width; ++i)
             {
-                //SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 1, 0))));
+                SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(0, i, 0))));
+                SetTile(width - 1, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(width - 1, i, 0))));
                 SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 0, 0))));
+                SetTile(i, height - 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, height - 1, 0))));
             }
         }
 

@@ -39,12 +39,12 @@ namespace LandOfAmbrosia.Common
         public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
 
         //Characters
-        public static readonly String PLAYER1_MODEL = @"Models/smallerModel";
+        public static readonly String PLAYER1_MODEL = @"Models/blockSizeModel";
         public static readonly String PLAYER2_MODEL = @"Models/TBA";
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE, 10 * TILE_SIZE, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE, 2 * TILE_SIZE, 0);
         public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_SIZE, TILE_SIZE, 0);
 
         public static readonly int DEFAULT_SEED = 42;
@@ -54,10 +54,10 @@ namespace LandOfAmbrosia.Common
         //Character stuff
         public static readonly int DEFAULT_MAX_HEALTH = 100;
         public static readonly float MAX_SPEED_X = 0.5f;
-        public static readonly Matrix scale = Matrix.CreateScale(1); // Matrix.CreateScale(0.5f);
+        public static readonly Matrix scale = Matrix.CreateScale(1);
 
-        public static readonly float SMALLER_HEIGHT = 15;
-        public static readonly float SMALLER_WIDTH = 10;
+        public static readonly float SMALLER_HEIGHT = 28.0f;
+        public static readonly float SMALLER_WIDTH = 2f;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 10;
@@ -65,9 +65,9 @@ namespace LandOfAmbrosia.Common
 
         //Camera stuff
         //TODO this isn't actually working
-        public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 20;
+        public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 5;
 
-        public static readonly float GRAVITY = -0.0001f;
+        public static readonly float GRAVITY = -0.01f;
 
         /*
          * Since we need to do the weird transformation to go from Blender coordinates to XNA coordinates

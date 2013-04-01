@@ -44,7 +44,7 @@ namespace LandOfAmbrosia.Managers
             CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
             Vector3 eye, target, up;
 
-            eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 70);
+            eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
             target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
             up = Vector3.Up;
 
@@ -94,10 +94,10 @@ namespace LandOfAmbrosia.Managers
 
             float dx = character.getVelocityX();
             float oldX = character.getX();
-            float newX = oldX + dx * gameTime.ElapsedGameTime.Milliseconds;
-
-            Vector3 tile = getTileCollision(character, newX, character.getY());
-            if (tile == Vector3.Zero)
+            float newX = oldX + dx;
+            bool hasCollision;
+            Vector3 tile = getTileCollision(character, newX, character.getY(), out hasCollision);
+            if (!hasCollision)
             {
                 character.setX(newX);
             }
@@ -116,10 +116,11 @@ namespace LandOfAmbrosia.Managers
             }
 
             float dy = character.getVelocityY();
-            float oldY = character.getY() - character.height;
-            float newY = oldY + dy * gameTime.ElapsedGameTime.Milliseconds;
-            tile = getTileCollision(character, character.getX(), newY);
-            if (tile == Vector3.Zero)
+            //The center of the character is in the middle, so to check the feet we need to move the point down half the size of the character
+            float oldY = character.getY();
+            float newY = oldY + dy;
+            tile = getTileCollision(character, character.getX(), newY, out hasCollision);
+            if (!hasCollision)
             {
                 character.setY(newY);
             }
@@ -133,13 +134,13 @@ namespace LandOfAmbrosia.Managers
                 }
                 else if (dy > 0) //Going up
                 {
-                    character.setY(currentLevel.tileIndexToPos((int)tile.Y - 1));
+                    character.setY(currentLevel.tileIndexToPos((int)tile.Y + 1));
                 }
                 character.collideVertical();
             }
         }
 
-        private Vector3 getTileCollision(Character c, float newX, float newY)
+        private Vector3 getTileCollision(Character c, float newX, float newY, out bool hasCollision)
         {
             float fromX = Math.Min(c.getX(), newX);
             float fromY = Math.Min(c.getY(), newY);
@@ -149,20 +150,28 @@ namespace LandOfAmbrosia.Managers
             int fromTileX = currentLevel.posToTileIndex(fromX);
             int fromTileY = currentLevel.posToTileIndex(fromY);
 
-            int toTileX = currentLevel.posToTileIndex(toX + c.width / 2);
-            int toTileY = currentLevel.posToTileIndex(toY + c.height);
+            int toTileX = currentLevel.posToTileIndex(toX + c.width / 2 - 1);
+            int toTileY = currentLevel.posToTileIndex(toY - c.height / 2 - 1);
+
+            if (fromTileY <= 0 || toTileY <= 0)
+            {
+                int asdf;
+            }
+
             for (int x = fromTileX; x <= toTileX; ++x)
             {
                 for (int y = fromTileY; y <= toTileY; ++y)
                 {
                     if (x < 0 || x >= currentLevel.width|| currentLevel.GetTile(x, y) != null)
                     {
+                        hasCollision = true;
                         return new Vector3(x, y, 0);
                     }
                 }
             }
 
             //No collision
+            hasCollision = false;
             return Vector3.Zero;
         }
     }

@@ -13,7 +13,7 @@ namespace LandOfAmbrosia.Characters
     {
         private AbstractInputController inputController;
 
-        private readonly float JUMP_VELOCITY = 0.02f;
+        private readonly float JUMP_VELOCITY = 0.5f;
 
         public UserControlledCharacter(char character, Model model, Vector3 position) :
             base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
