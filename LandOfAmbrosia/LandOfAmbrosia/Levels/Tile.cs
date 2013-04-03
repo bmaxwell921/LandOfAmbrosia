@@ -22,7 +22,7 @@ namespace LandOfAmbrosia.Levels
         public Tile(Model model, Vector3 location)
         {
             //Location is the actual location in 3D space
-            this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_HEIGHT, 0));
+            this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
             this.model = model;
         }
 

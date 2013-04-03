@@ -76,7 +76,7 @@ namespace LandOfAmbrosia.Levels
                 
                 //Passing in the location unconverted
                 SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 0, 0)));
-                SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 1, 0)));
+                //SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 1, 0)));
             }
         }
 

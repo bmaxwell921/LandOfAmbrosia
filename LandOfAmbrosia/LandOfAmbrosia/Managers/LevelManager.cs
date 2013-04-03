@@ -166,6 +166,11 @@ namespace LandOfAmbrosia.Managers
             int toTileX = currentLevel.posToTileIndex(toX + c.width / 2 - 1);
             int toTileY = currentLevel.posToTileIndex(toY - c.height / 2 - 1);
 
+            if (fromTileY == 1 && toTileY == 1)
+            {
+                int x;
+            }
+
             for (int x = fromTileX; x <= toTileX; ++x)
             {
                 for (int y = fromTileY; y <= toTileY; ++y)
