@@ -163,14 +163,17 @@ namespace LandOfAmbrosia.Managers
             int fromTileX = currentLevel.posToTileIndex(fromX);
             int fromTileY = currentLevel.posToTileIndex(fromY);
 
-            int toTileX = currentLevel.posToTileIndex(toX + c.width / 2 - 1);
-            int toTileY = currentLevel.posToTileIndex(toY - c.height / 2 - 1);
+            int toTileX = currentLevel.posToTileIndex(toX + c.height / 2 - 1);
+            int toTileY = currentLevel.posToTileIndex(toY + c.height / 2 - 1);
 
-            if (fromTileY == 1 && toTileY == 1)
+            if (toTileX < 0 || fromTileX < 0)
             {
-                int x;
+                Console.WriteLine();
             }
 
+            /*
+             * fromTileX must be <= toTileX and fromTileY must be <= toTileY
+             */
             for (int x = fromTileX; x <= toTileX; ++x)
             {
                 for (int y = fromTileY; y <= toTileY; ++y)
