@@ -96,13 +96,13 @@ namespace LandOfAmbrosia.Managers
             {
                 player1.CheckInput();
                 this.UpdateCharacter(player1, gameTime);
-                //player1.update(gameTime) updates the animation
+                player1.Update(gameTime);//updates the animation
             }
 
             if (player2 != null)
             {
                 player2.CheckInput();
-                //this.UpdateCharacter(currentLevel.player2, gameTime);
+                this.UpdateCharacter(currentLevel.player2, gameTime);
                 //player2.update(gameTime) updates the animation
             }
         }
@@ -154,9 +154,9 @@ namespace LandOfAmbrosia.Managers
             }
         }
 
+        float buffer = 0.01f;
         private Vector3 getTileCollision(Character c, float newX, float newY, bool leftRight, out bool hasCollision)
         {
-            float buffer = 0.01f;
             //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
             
@@ -165,17 +165,24 @@ namespace LandOfAmbrosia.Managers
 
             //Top right corner
             cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - buffer, 0));
-
+         
             //Bottom left corner
             cornerPositions.Add(new Vector3(newX + buffer, newY - c.height + buffer, 0));
 
             //Bottom right corner
             cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - c.height + buffer, 0));
 
+            if (newX + c.width - buffer > 6)
+            {
+                bool stop;
+            }
+
+            Console.WriteLine("Y bottom is: " + (newY - c.height + buffer));
+
             for (int i = 0; i < cornerPositions.Count; ++i)
             {
                 Vector3 curPos = cornerPositions.ElementAt(i);
-                Vector2 curTile = new Vector2(currentLevel.posToTileIndex(curPos.X), currentLevel.posToTileIndex(curPos.Y));
+                Vector2 curTile = new Vector2(currentLevel.GetTileIndexFromXPos(curPos.X), currentLevel.GetTileIndexFromYPos(curPos.Y));
 
                 Tile intersectingTile = currentLevel.GetTile((int)curTile.X, (int)curTile.Y);
                 if (intersectingTile != null)
@@ -203,56 +210,18 @@ namespace LandOfAmbrosia.Managers
             Vector3 tilePt = Vector3.Zero;
             if (leftRight)
             {
-                float tileLeft = intersectingTile.getX();
+                float tileLeft = intersectingTile.getX() - buffer;
                 float tileRight = intersectingTile.getX() + intersectingTile.width;
                 //If we are moving to the left, ie newX < curX, the tile point we need is the right side 
                 tilePt.X = (newX < c.getX()) ? tileRight : tileLeft;
             }
             else
             {
-                float tileTop = intersectingTile.getY() ;
+                float tileTop = intersectingTile.getY();
                 float tileBottom = intersectingTile.getY() - intersectingTile.height;
                 tilePt.Y = (newY < c.getY()) ? tileTop : tileBottom;
             }
             return tilePt;
-        }
-
-        private Vector3 getTileCollision2(Character c, float newX, float newY, out bool hasCollision)
-        {
-            float fromX = Math.Min(c.getX(), newX);
-            float fromY = Math.Min(c.getY(), newY);
-            float toX = Math.Max(c.getX(), newX);
-            float toY = Math.Max(c.getY(), newY);
-
-            int fromTileX = currentLevel.posToTileIndex(fromX);
-            int fromTileY = currentLevel.posToTileIndex(fromY);
-
-            int toTileX = currentLevel.posToTileIndex(toX + c.height / 2 - 1);
-            int toTileY = currentLevel.posToTileIndex(toY + c.height / 2 - 1);
-
-            if (toTileX < 0 || fromTileX < 0)
-            {
-                Console.WriteLine();
-            }
-
-            /*
-             * fromTileX must be <= toTileX and fromTileY must be <= toTileY
-             */
-            for (int x = fromTileX; x <= toTileX; ++x)
-            {
-                for (int y = fromTileY; y <= toTileY; ++y)
-                {
-                    if (x < 0 || x >= currentLevel.width|| currentLevel.GetTile(x, y) != null)
-                    {
-                        hasCollision = true;
-                        return new Vector3(x, y, 0);
-                    }
-                }
-            }
-
-            //No collision
-            hasCollision = false;
-            return Vector3.Zero;
         }
     }
 }

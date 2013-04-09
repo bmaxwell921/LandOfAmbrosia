@@ -47,8 +47,6 @@ namespace LandOfAmbrosia.Levels
 
             enemies = new List<Character>();
             TestLevelSetUp();
-            //player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
-            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(1, 0, 0));
         }
 
         //Just for testing, obviously
@@ -105,6 +103,9 @@ namespace LandOfAmbrosia.Levels
                 SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, 0, 0)));
                 SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, i * Constants.TILE_SIZE, 0)));
             }
+            SetTile(3, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(3 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
+            SetTile(4, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
+            SetTile(4, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
         }
 
         /// <summary>
@@ -131,16 +132,15 @@ namespace LandOfAmbrosia.Levels
             return tiles[width, height];
         }
 
-        public int posToTileIndex(float pix)
+        public int GetTileIndexFromXPos(float x)
         {
-            //return posToTileIndex((int) Math.Round(pix));
-            return (int)Math.Ceiling(pix / Constants.TILE_SIZE);
+            return (int)(x / Constants.TILE_SIZE);
         }
 
-        //public int posToTileIndex(int pix)
-        //{
-        //    return (int) Math.Floor((float) pix / Constants.TILE_SIZE);
-        //}
+        public int GetTileIndexFromYPos(float y)
+        {
+            return (y > 0) ? (int)(y / Constants.TILE_SIZE) + 1 : 0;
+        }
 
         public int tileIndexToPos(int numTiles)
         {

@@ -60,7 +60,7 @@ namespace LandOfAmbrosia
         /// 
         /// I think this will actually just update the animation...cause the LevelManager does the position updating
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
 
         }

@@ -49,7 +49,7 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE + TILE_SIZE/ 2.0f, TILE_SIZE * 2, CHARACTER_DEPTH);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(3, 2, CHARACTER_DEPTH);//new Vector3(TILE_SIZE  + TILE_SIZE/ 2.0f, TILE_SIZE, CHARACTER_DEPTH);
         public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(1, 0, 0);
 
         public static readonly int DEFAULT_SEED = 42;
@@ -58,7 +58,7 @@ namespace LandOfAmbrosia.Common
 
         //Character stuff
         public static readonly int DEFAULT_MAX_HEALTH = 100;
-        public static readonly float MAX_SPEED_X = 0.5f;
+        public static readonly float MAX_SPEED_X = 0.25f;
         public static readonly Matrix scale = Matrix.CreateScale(1);
 
         public static readonly float CHARACTER_WIDTH = 0.32f;

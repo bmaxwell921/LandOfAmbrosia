@@ -18,7 +18,7 @@ namespace LandOfAmbrosia.Characters
             : base(model, DEFAULT_SPEED, position, meleeWeapon, rangeWeapon, maxHealth)
         {
         }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             throw new NotImplementedException();
         }
