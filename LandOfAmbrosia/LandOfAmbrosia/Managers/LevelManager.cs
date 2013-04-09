@@ -28,6 +28,17 @@ namespace LandOfAmbrosia.Managers
         }
 
         /// <summary>
+        /// Constructor for testing purposes
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="testConstructor"></param>
+        public LevelManager(Game game, bool testConstructor) : base(game)
+        {
+            currentLevel = new Level(testConstructor);
+            this.SetUpCameraDefault();
+        }
+
+        /// <summary>
         /// Constructor that creates a level by reading in the level from a file
         /// </summary>
         /// <param name="game"></param>
@@ -36,21 +47,21 @@ namespace LandOfAmbrosia.Managers
             base(game)
         {
             currentLevel = new Level(levelFileLoc);
-            //this.SetUpCamera();
+            this.SetUpCameraDefault();//this.SetUpCamera();
         }
 
         //TODO this method doesn't work right
-        //private void SetUpCamera()
-        //{
-        //    CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
-        //    Vector3 eye, target, up;
+        private void SetUpCamera()
+        {
+            CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
+            Vector3 eye, target, up;
 
-        //    eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
-        //    target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
-        //    up = Vector3.Up;
+            eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
+            target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
+            up = Vector3.Up;
 
-        //    camera.LookAt(eye, target, up);
-        //}
+            camera.LookAt(eye, target, up);
+        }
 
         
         private void SetUpCameraDefault()
@@ -91,7 +102,7 @@ namespace LandOfAmbrosia.Managers
             if (player2 != null)
             {
                 player2.CheckInput();
-                this.UpdateCharacter(currentLevel.player2, gameTime);
+                //this.UpdateCharacter(currentLevel.player2, gameTime);
                 //player2.update(gameTime) updates the animation
             }
         }
@@ -117,7 +128,7 @@ namespace LandOfAmbrosia.Managers
             else
             {
                 //posFix will be the vector needed to fix the collision, so just add the fix to the vector that's messing everything up
-                character.setX(oldX + posFix.X);
+                character.setX(newX + posFix.X);
                 character.collideHorizontal();
             }
 
@@ -132,7 +143,7 @@ namespace LandOfAmbrosia.Managers
             }
             else
             {
-                character.setY(oldY + posFix.Y);
+                character.setY(newY + posFix.Y);
                 character.collideVertical();
             }
 
@@ -142,53 +153,29 @@ namespace LandOfAmbrosia.Managers
                 character.velocity = Vector3.Zero;
             }
         }
-        float oldNewX = 0;
-        float oldNewY = 0;
+
         private Vector3 getTileCollision(Character c, float newX, float newY, bool leftRight, out bool hasCollision)
         {
-            float divValue = 2.0f;
-            //Get the four corners of the 'bounding box' and check those tile locations for objects
+            float buffer = 0.01f;
+            //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
             
             //Top left corner
-            cornerPositions.Add(new Vector3(newX - c.width / 2, newY + c.height / divValue, 0));
+            cornerPositions.Add(new Vector3(newX + buffer, newY - buffer, 0));
 
             //Top right corner
-            cornerPositions.Add(new Vector3(newX + c.width / 2, newY + c.height / divValue, 0));
+            cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - buffer, 0));
 
             //Bottom left corner
-            cornerPositions.Add(new Vector3(newX - c.width / 2, newY - c.height / divValue, 0));
+            cornerPositions.Add(new Vector3(newX + buffer, newY - c.height + buffer, 0));
 
             //Bottom right corner
-            cornerPositions.Add(new Vector3(newX + c.width / 2, newY - c.height / divValue, 0));
-
-            if (newX != oldNewX)
-            {
-                Console.WriteLine("X changed from: " + oldNewX + " to: "+ newX);
-                oldNewX = newX;
-            }
-            if (newY != oldNewY)
-            {
-                Console.WriteLine("Y changed from: " + oldNewY + " to: " + newY);
-                oldNewY = newY;
-            }
+            cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - c.height + buffer, 0));
 
             for (int i = 0; i < cornerPositions.Count; ++i)
             {
                 Vector3 curPos = cornerPositions.ElementAt(i);
-
-                //TODO figure out why we need to add 1
-                Vector2 curTile = new Vector2(currentLevel.posToTileIndex(curPos.X), currentLevel.posToTileIndex(curPos.Y)) + new Vector2(0, 1);
-
-                if (i % cornerPositions.Count == 2)
-                {
-                    //Console.WriteLine(curTile);
-                }
-
-                if (curTile == new Vector2(0, 1))
-                {
-                    int stop;
-                }
+                Vector2 curTile = new Vector2(currentLevel.posToTileIndex(curPos.X), currentLevel.posToTileIndex(curPos.Y));
 
                 Tile intersectingTile = currentLevel.GetTile((int)curTile.X, (int)curTile.Y);
                 if (intersectingTile != null)
@@ -202,26 +189,29 @@ namespace LandOfAmbrosia.Managers
                     hasCollision = true;
                     return tilePt - curPos;
                 }
+
+                //Check that we aren't off the edge of the level
             }
 
             hasCollision = false;
             return Vector3.Zero;
         }
 
+        //Returns the Vector3 of the point that we need to move the character to
         private Vector3 findTilePoint(Character c, Tile intersectingTile, float newX, float newY, bool leftRight)
         {
             Vector3 tilePt = Vector3.Zero;
             if (leftRight)
             {
-                float tileLeft = intersectingTile.getX();// -intersectingTile.width / 2;
-                float tileRight = intersectingTile.getX() + intersectingTile.width;// / 2;
+                float tileLeft = intersectingTile.getX();
+                float tileRight = intersectingTile.getX() + intersectingTile.width;
                 //If we are moving to the left, ie newX < curX, the tile point we need is the right side 
                 tilePt.X = (newX < c.getX()) ? tileRight : tileLeft;
             }
             else
             {
-                float tileTop = intersectingTile.getY() * Constants.TILE_HEIGHT;// -(intersectingTile.height / 2);
-                float tileBottom = intersectingTile.getY() * Constants.TILE_HEIGHT - intersectingTile.height;
+                float tileTop = intersectingTile.getY() ;
+                float tileBottom = intersectingTile.getY() - intersectingTile.height;
                 tilePt.Y = (newY < c.getY()) ? tileTop : tileBottom;
             }
             return tilePt;

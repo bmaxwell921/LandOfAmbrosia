@@ -73,9 +73,7 @@ namespace LandOfAmbrosia.Logic
         private static void loadPlayerModels(ContentManager content)
         {
             playerModels.Add(Constants.PLAYER1_CHAR, content.Load<Model>(Constants.PLAYER1_MODEL));
-
-            //TODO
-            //playerModels.Add(Constants.PLAYER2_CHAR, content.Load<Model>(Constants.PLAYER2_MODEL));
+            playerModels.Add(Constants.PLAYER2_CHAR, content.Load<Model>(Constants.PLAYER2_MODEL));
         }
 
         private static void loadEnemyModels(ContentManager content)

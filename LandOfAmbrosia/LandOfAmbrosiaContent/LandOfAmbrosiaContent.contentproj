@@ -42,13 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\swordModel.fbx">
-      <Name>swordModel</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Skybox\effects.fx">
       <Name>effects</Name>
       <Importer>EffectImporter</Importer>
@@ -93,22 +86,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\smallBlock.fbx">
-      <Name>smallBlock</Name>
+    <Compile Include="Models\upperLeftBlock.fbx">
+      <Name>upperLeftBlock</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\smallerModel.fbx">
-      <Name>smallerModel</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\blockSizeModel.fbx">
-      <Name>blockSizeModel</Name>
+    <Compile Include="Models\upperLeftChar.fbx">
+      <Name>upperLeftChar</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

@@ -29,9 +29,7 @@ namespace LandOfAmbrosia
          */
         public CameraComponent camera;
 
-        //public Camera camera;
         LevelManager lm;
-        //CharacterManager cm;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -70,12 +68,11 @@ namespace LandOfAmbrosia
 
             //I need the models for the Managers to be set up correctly so I can't call the constructors until down here
             //lm = new LevelManager(this, levelLoc);
-            lm = new LevelManager(this);
-            Components.Add(lm);
 
-            //cm = new CharacterManager(this);
-            //Components.Add(cm);
-            // TODO: use this.Content to load your game content here
+            lm = new LevelManager(this);
+
+            //lm = new LevelManager(this, true);
+            Components.Add(lm);
         }
 
         /// <summary>

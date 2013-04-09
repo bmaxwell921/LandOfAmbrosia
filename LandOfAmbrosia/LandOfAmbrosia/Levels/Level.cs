@@ -14,7 +14,9 @@ namespace LandOfAmbrosia.Levels
     /// I think the level is the one who holds the enemies and characters
     /// </summary>
     class Level
-    {   
+    {
+
+        readonly bool DEBUGGING = false;
         //Map data
         public int width, height;
         public Tile[,] tiles;
@@ -36,6 +38,35 @@ namespace LandOfAmbrosia.Levels
         {
         }
 
+        public Level(bool testConstructor)
+        {
+            this.width = Constants.DEFAULT_WIDTH;
+            this.height = Constants.DEFAULT_HEIGHT;
+            this.tiles = new Tile[width, height];
+            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
+
+            enemies = new List<Character>();
+            TestLevelSetUp();
+            //player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
+            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(1, 0, 0));
+        }
+
+        //Just for testing, obviously
+        private void TestLevelSetUp()
+        {
+            Model tileModel = AssetUtil.GetTileModel(Constants.PLATFORM_CHAR);
+            Model playerModel = AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR);
+            int x = 0;
+            int y = 1;
+            //SetTile(0, 0, new Tile(tileModel, Vector3.Zero)); // Bottom Left
+            //SetTile(0, 1, new Tile(tileModel, new Vector3(0, 1, 0))); // Top Left
+            SetTile(x, y, new Tile(tileModel, new Vector3(x, y, 0))); // Bottom Right
+            SetTile(x + 1, y, new Tile(tileModel, new Vector3(x+2, y, 0)));
+            //SetTile(1, 1, new Tile(tileModel, new Vector3(1, 1, 0))); // Top Right
+
+            player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), new Vector3(x,y+2,Constants.CHARACTER_DEPTH));
+        }
+
         /// <summary>
         /// Creates an empty Level with the given height and width
         /// </summary>
@@ -47,11 +78,11 @@ namespace LandOfAmbrosia.Levels
             this.height = height;
             this.tiles = new Tile[width, height];
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-            this.FillFloor();
+            this.FillCage();
 
             enemies = new List<Character>();
             player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
-            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER2_START);
+            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START);
         }
 
         /// <summary>
@@ -64,17 +95,15 @@ namespace LandOfAmbrosia.Levels
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
         }
 
-        //For auto generation we automatically fill in the floor with platforms
-        private void FillFloor()
+        //For auto generation we automatically fill in the box around the level
+        private void FillCage()
         {
+            //TODO fill the rest of the cage
             for (int i = 0; i < width; ++i)
             {          
                 //Passing in the location unconverted
-
-                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 0, 0)));
-
-                //if (i % 4 == 0)
-                //    SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 1, 0)));
+                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, 0, 0)));
+                SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, i * Constants.TILE_SIZE, 0)));
             }
         }
 
@@ -104,17 +133,18 @@ namespace LandOfAmbrosia.Levels
 
         public int posToTileIndex(float pix)
         {
-            return posToTileIndex((int) Math.Round(pix));
+            //return posToTileIndex((int) Math.Round(pix));
+            return (int)Math.Ceiling(pix / Constants.TILE_SIZE);
         }
 
-        public int posToTileIndex(int pix)
-        {
-            return (int) Math.Floor((float) pix / Constants.TILE_HEIGHT);
-        }
+        //public int posToTileIndex(int pix)
+        //{
+        //    return (int) Math.Floor((float) pix / Constants.TILE_SIZE);
+        //}
 
         public int tileIndexToPos(int numTiles)
         {
-            return numTiles * Constants.TILE_HEIGHT;
+            return numTiles * Constants.TILE_SIZE;
         }
 
         public void Draw(CameraComponent c, GraphicsDevice device)
@@ -131,7 +161,7 @@ namespace LandOfAmbrosia.Levels
         //Draws all the tiles to the screen
         private void DrawTiles(CameraComponent c)
         {
-            if (!output)
+            if (DEBUGGING && !output)
             {
                 Console.WriteLine("Tile at: " + Constants.ConvertToXNAScene(tiles[0, 0].location));
                 output = true;
@@ -152,7 +182,7 @@ namespace LandOfAmbrosia.Levels
         //Draws the players
         private void DrawPlayers(CameraComponent c)
         {
-            if (!output2)
+            if (DEBUGGING && !output2)
             {
                 Console.WriteLine("Player at: " + player1.getX() + ", " + player1.getY());
                 output2 = true;

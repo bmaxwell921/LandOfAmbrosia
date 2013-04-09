@@ -18,7 +18,7 @@ namespace LandOfAmbrosia.Levels
         {
             get
             {
-                return Constants.TILE_HEIGHT;
+                return Constants.TILE_SIZE;
             }
         }
 
@@ -26,19 +26,18 @@ namespace LandOfAmbrosia.Levels
         {
             get
             {
-                return Constants.TILE_HEIGHT;
+                return Constants.TILE_SIZE;
             }
         }
 
         /// <summary>
         /// Constructs a new tile at the given location, using the given model as the object drawn
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="location">The actual location in XNA 3D space</param>
         /// <param name="model"></param>
         public Tile(Model model, Vector3 location)
         {
             //Location is the actual location in 3D space
-            //this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
             this.location = location;
             this.model = model;
         }
@@ -78,7 +77,7 @@ namespace LandOfAmbrosia.Levels
 
         public Matrix GetWorld()
         {
-            Vector3 realLoc = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
+            Vector3 realLoc = Constants.ConvertToXNAScene(new Vector3(location.X, location.Y, 0));
             return Matrix.Identity * Matrix.CreateTranslation(realLoc);
         }
 

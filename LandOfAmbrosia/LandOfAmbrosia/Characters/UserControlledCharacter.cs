@@ -20,8 +20,8 @@ namespace LandOfAmbrosia.Characters
         {
             inputController = new KeyboardInput();
             //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
-            width = Constants.SMALLER_WIDTH;
-            height = Constants.SMALLER_HEIGHT;
+            width = Constants.CHARACTER_WIDTH;
+            height = Constants.CHARACTER_HEIGHT;
         }
 
         public void CheckInput()

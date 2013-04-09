@@ -29,25 +29,28 @@ namespace LandOfAmbrosia.Common
         #region Asset Names
         //Tiles
         public static readonly String NULL_MODEL = null;
-        public static readonly String PLATFORM = @"Models/smallBlock";
+        public static readonly String PLATFORM = @"Models/upperLeftBlock";
 
+        /*
+         * These two have to be up here otherwise the DEFAULT_PLAYER1_START initializes wrong...apparently because
+         * c# is too stupid to make sure they've been initialized
+         */
+        public static readonly float CHARACTER_DEPTH = 1f;
 
-        //public static readonly int TILE_SIZE = 28;
-        public static readonly int TILE_WIDTH = 2;
-        public static readonly int TILE_HEIGHT = 28;
+        public static readonly int TILE_SIZE = 2;
 
         //Skybox
         public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
         public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
 
         //Characters
-        public static readonly String PLAYER1_MODEL = @"Models/blockSizeModel";
-        public static readonly String PLAYER2_MODEL = @"Models/TBA";
+        public static readonly String PLAYER1_MODEL = @"Models/upperLeftChar";
+        public static readonly String PLAYER2_MODEL = @"Models/upperLeftChar";
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = Vector3.Zero;//new Vector3(TILE_HEIGHT / 2, TILE_HEIGHT, 0);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_WIDTH, TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE + TILE_SIZE/ 2.0f, TILE_SIZE * 2, CHARACTER_DEPTH);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(1, 0, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
@@ -58,8 +61,8 @@ namespace LandOfAmbrosia.Common
         public static readonly float MAX_SPEED_X = 0.5f;
         public static readonly Matrix scale = Matrix.CreateScale(1);
 
-        public static readonly float SMALLER_HEIGHT = 28.0f;
-        public static readonly float SMALLER_WIDTH = 2f;
+        public static readonly float CHARACTER_WIDTH = 0.32f;
+        public static readonly float CHARACTER_HEIGHT = 2f;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 10;
