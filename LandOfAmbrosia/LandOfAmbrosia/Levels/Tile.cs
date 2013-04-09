@@ -11,8 +11,24 @@ namespace LandOfAmbrosia.Levels
 {
     class Tile : ICollidable
     {
+        //Just the indices into the array
         public Vector3 location;
         public Model model;
+        public int width
+        {
+            get
+            {
+                return Constants.TILE_HEIGHT;
+            }
+        }
+
+        public int height
+        {
+            get
+            {
+                return Constants.TILE_HEIGHT;
+            }
+        }
 
         /// <summary>
         /// Constructs a new tile at the given location, using the given model as the object drawn
@@ -22,7 +38,8 @@ namespace LandOfAmbrosia.Levels
         public Tile(Model model, Vector3 location)
         {
             //Location is the actual location in 3D space
-            this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
+            //this.location = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
+            this.location = location;
             this.model = model;
         }
 
@@ -61,12 +78,25 @@ namespace LandOfAmbrosia.Levels
 
         public Matrix GetWorld()
         {
-            return Matrix.Identity * Matrix.CreateTranslation(location);
+            Vector3 realLoc = Constants.ConvertToXNAScene(new Vector3(location.X * Constants.TILE_WIDTH, location.Y * Constants.TILE_WIDTH, 0));
+            return Matrix.Identity * Matrix.CreateTranslation(realLoc);
         }
 
         public bool CollidesWith(ICollidable other)
         {
             throw new NotImplementedException();
+        }
+
+        public float getX()
+        {
+            //return Constants.UnconvertFromXNAScene(location).X;
+            return location.X;
+        }
+
+        public float getY()
+        {
+            //return Constants.UnconvertFromXNAScene(location).Y;
+            return location.Y;
         }
     }
 }

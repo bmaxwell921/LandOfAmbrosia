@@ -46,7 +46,7 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_WIDTH / 2, 2 * TILE_HEIGHT, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = Vector3.Zero;//new Vector3(TILE_HEIGHT / 2, TILE_HEIGHT, 0);
         public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(TILE_WIDTH, TILE_HEIGHT, 0);
 
         public static readonly int DEFAULT_SEED = 42;

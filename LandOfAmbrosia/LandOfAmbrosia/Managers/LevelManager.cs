@@ -109,22 +109,15 @@ namespace LandOfAmbrosia.Managers
             float oldX = character.getX();
             float newX = oldX + dx;
             bool hasCollision;
-            Vector3 tile = getTileCollision(character, newX, character.getY(), out hasCollision);
+            Vector3 posFix = getTileCollision(character, newX, character.getY(), true, out hasCollision);
             if (!hasCollision)
             {
                 character.setX(newX);
             }
             else
             {
-                //Fix tile collisions by sliding
-                if (dx > 0)
-                {
-                    character.setX(currentLevel.tileIndexToPos((int)tile.X) - character.width);
-                }
-                else if (dx < 0)
-                {
-                    character.setX(currentLevel.tileIndexToPos((int)tile.X + 1));
-                }
+                //posFix will be the vector needed to fix the collision, so just add the fix to the vector that's messing everything up
+                character.setX(oldX + posFix.X);
                 character.collideHorizontal();
             }
 
@@ -132,28 +125,109 @@ namespace LandOfAmbrosia.Managers
             //The center of the character is in the middle, so to check the feet we need to move the point down half the size of the character
             float oldY = character.getY();
             float newY = oldY + dy;
-            tile = getTileCollision(character, character.getX(), newY, out hasCollision);
+            posFix = getTileCollision(character, character.getX(), newY, false, out hasCollision);
             if (!hasCollision)
             {
                 character.setY(newY);
             }
             else
             {
-                //Line up with the tile boundary
-                //Going down
-                if (dy < 0)
-                {
-                    character.setY(currentLevel.tileIndexToPos((int)tile.Y) + character.height / 2);
-                }
-                else if (dy > 0) //Going up
-                {
-                    character.setY(currentLevel.tileIndexToPos((int)tile.Y + 1));
-                }
+                character.setY(oldY + posFix.Y);
                 character.collideVertical();
             }
+
+            if (character.getY() < -20)
+            {
+                character.position = Constants.ConvertToXNAScene(Constants.DEFAULT_PLAYER1_START);
+                character.velocity = Vector3.Zero;
+            }
+        }
+        float oldNewX = 0;
+        float oldNewY = 0;
+        private Vector3 getTileCollision(Character c, float newX, float newY, bool leftRight, out bool hasCollision)
+        {
+            float divValue = 2.0f;
+            //Get the four corners of the 'bounding box' and check those tile locations for objects
+            IList<Vector3> cornerPositions = new List<Vector3>();
+            
+            //Top left corner
+            cornerPositions.Add(new Vector3(newX - c.width / 2, newY + c.height / divValue, 0));
+
+            //Top right corner
+            cornerPositions.Add(new Vector3(newX + c.width / 2, newY + c.height / divValue, 0));
+
+            //Bottom left corner
+            cornerPositions.Add(new Vector3(newX - c.width / 2, newY - c.height / divValue, 0));
+
+            //Bottom right corner
+            cornerPositions.Add(new Vector3(newX + c.width / 2, newY - c.height / divValue, 0));
+
+            if (newX != oldNewX)
+            {
+                Console.WriteLine("X changed from: " + oldNewX + " to: "+ newX);
+                oldNewX = newX;
+            }
+            if (newY != oldNewY)
+            {
+                Console.WriteLine("Y changed from: " + oldNewY + " to: " + newY);
+                oldNewY = newY;
+            }
+
+            for (int i = 0; i < cornerPositions.Count; ++i)
+            {
+                Vector3 curPos = cornerPositions.ElementAt(i);
+
+                //TODO figure out why we need to add 1
+                Vector2 curTile = new Vector2(currentLevel.posToTileIndex(curPos.X), currentLevel.posToTileIndex(curPos.Y)) + new Vector2(0, 1);
+
+                if (i % cornerPositions.Count == 2)
+                {
+                    //Console.WriteLine(curTile);
+                }
+
+                if (curTile == new Vector2(0, 1))
+                {
+                    int stop;
+                }
+
+                Tile intersectingTile = currentLevel.GetTile((int)curTile.X, (int)curTile.Y);
+                if (intersectingTile != null)
+                {
+                    //Collision, return the vector to fix the movement
+
+                    //Will return the point on the tile that can be used to fix the movement
+                    Vector3 tilePt = this.findTilePoint(c, intersectingTile, newX, newY, leftRight);
+
+                    //Based on my math...if we subtract the current point from the colliding tile point we will get the correct movement
+                    hasCollision = true;
+                    return tilePt - curPos;
+                }
+            }
+
+            hasCollision = false;
+            return Vector3.Zero;
         }
 
-        private Vector3 getTileCollision(Character c, float newX, float newY, out bool hasCollision)
+        private Vector3 findTilePoint(Character c, Tile intersectingTile, float newX, float newY, bool leftRight)
+        {
+            Vector3 tilePt = Vector3.Zero;
+            if (leftRight)
+            {
+                float tileLeft = intersectingTile.getX();// -intersectingTile.width / 2;
+                float tileRight = intersectingTile.getX() + intersectingTile.width;// / 2;
+                //If we are moving to the left, ie newX < curX, the tile point we need is the right side 
+                tilePt.X = (newX < c.getX()) ? tileRight : tileLeft;
+            }
+            else
+            {
+                float tileTop = intersectingTile.getY() * Constants.TILE_HEIGHT;// -(intersectingTile.height / 2);
+                float tileBottom = intersectingTile.getY() * Constants.TILE_HEIGHT - intersectingTile.height;
+                tilePt.Y = (newY < c.getY()) ? tileTop : tileBottom;
+            }
+            return tilePt;
+        }
+
+        private Vector3 getTileCollision2(Character c, float newX, float newY, out bool hasCollision)
         {
             float fromX = Math.Min(c.getX(), newX);
             float fromY = Math.Min(c.getY(), newY);

@@ -68,15 +68,13 @@ namespace LandOfAmbrosia.Levels
         private void FillFloor()
         {
             for (int i = 0; i < width; ++i)
-            {
-                //SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(0, i, 0))));
-                //SetTile(width - 1, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(width - 1, i, 0))));
-                //SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, 0, 0))));
-                //SetTile(i, height - 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), Constants.ConvertToXNAScene(new Vector3(i, height - 1, 0))));
-                
+            {          
                 //Passing in the location unconverted
+
                 SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 0, 0)));
-                //SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 1, 0)));
+
+                //if (i % 4 == 0)
+                //    SetTile(i, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i, 1, 0)));
             }
         }
 
@@ -111,12 +109,12 @@ namespace LandOfAmbrosia.Levels
 
         public int posToTileIndex(int pix)
         {
-            return (int) Math.Floor((float) pix / Constants.TILE_HEIGHT);//here
+            return (int) Math.Floor((float) pix / Constants.TILE_HEIGHT);
         }
 
         public int tileIndexToPos(int numTiles)
         {
-            return numTiles * Constants.TILE_HEIGHT;//here
+            return numTiles * Constants.TILE_HEIGHT;
         }
 
         public void Draw(CameraComponent c, GraphicsDevice device)
@@ -128,9 +126,16 @@ namespace LandOfAmbrosia.Levels
             this.DrawEnemies(c);
         }
 
+        bool output = false;
+
         //Draws all the tiles to the screen
         private void DrawTiles(CameraComponent c)
         {
+            if (!output)
+            {
+                Console.WriteLine("Tile at: " + Constants.ConvertToXNAScene(tiles[0, 0].location));
+                output = true;
+            }
             for (int i = 0; i < width; ++i)
             {
                 for (int j = 0; j < height; ++j)
@@ -143,9 +148,15 @@ namespace LandOfAmbrosia.Levels
             }
         }
 
+        bool output2 = false;
         //Draws the players
         private void DrawPlayers(CameraComponent c)
         {
+            if (!output2)
+            {
+                Console.WriteLine("Player at: " + player1.getX() + ", " + player1.getY());
+                output2 = true;
+            }
             if (player1 != null)
             {
                 player1.Draw(c);
