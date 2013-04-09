@@ -65,8 +65,8 @@ namespace LandOfAmbrosia.Common
         public static readonly float CHARACTER_HEIGHT = 2f;
 
         //Level stuff
-        public static readonly int DEFAULT_WIDTH = 10;
-        public static readonly int DEFAULT_HEIGHT = 5;
+        public static readonly int DEFAULT_WIDTH = 15;
+        public static readonly int DEFAULT_HEIGHT = 6;
 
         //Camera stuff
         //TODO this isn't actually working

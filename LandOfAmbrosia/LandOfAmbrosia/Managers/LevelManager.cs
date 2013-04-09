@@ -172,11 +172,6 @@ namespace LandOfAmbrosia.Managers
             //Bottom right corner
             cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - c.height + buffer, 0));
 
-            if (newX + c.width - buffer > 6)
-            {
-                bool stop;
-            }
-
             Console.WriteLine("Y bottom is: " + (newY - c.height + buffer));
 
             for (int i = 0; i < cornerPositions.Count; ++i)
@@ -211,14 +206,14 @@ namespace LandOfAmbrosia.Managers
             if (leftRight)
             {
                 float tileLeft = intersectingTile.getX() - buffer;
-                float tileRight = intersectingTile.getX() + intersectingTile.width;
+                float tileRight = intersectingTile.getX() + intersectingTile.width + buffer;
                 //If we are moving to the left, ie newX < curX, the tile point we need is the right side 
                 tilePt.X = (newX < c.getX()) ? tileRight : tileLeft;
             }
             else
             {
-                float tileTop = intersectingTile.getY();
-                float tileBottom = intersectingTile.getY() - intersectingTile.height;
+                float tileTop = intersectingTile.getY() + buffer;
+                float tileBottom = intersectingTile.getY() - intersectingTile.height - buffer;
                 tilePt.Y = (newY < c.getY()) ? tileTop : tileBottom;
             }
             return tilePt;

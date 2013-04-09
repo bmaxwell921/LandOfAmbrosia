@@ -17,7 +17,7 @@ namespace LandOfAmbrosia
         {
             get;
             protected set;
-        }       
+        }
         #endregion
 
         #region Movement
@@ -49,9 +49,6 @@ namespace LandOfAmbrosia
             this.maxHealth = maxHealth;
             this.onGround = false;
             this.health = this.maxHealth;
-
-            //this.width = model.Meshes[0].BoundingSphere.Radius * 2;
-            //this.height = model.Meshes[0].BoundingSphere.Radius * 2;
         }
 
         /// <summary>
@@ -82,7 +79,7 @@ namespace LandOfAmbrosia
                     be.EnableDefaultLighting();
                     be.Projection = c.ProjectionMatrix;
                     be.View = c.ViewMatrix;
-                    be.World =  GetWorld() * mesh.ParentBone.Transform;
+                    be.World = GetWorld() * mesh.ParentBone.Transform;
                 }
 
                 mesh.Draw();
