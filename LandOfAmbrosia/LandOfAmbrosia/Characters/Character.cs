@@ -183,7 +183,7 @@ namespace LandOfAmbrosia
             return Constants.UnconvertFromXNAScene(position).Y;
         }
 
-        public void setY(float y)
+        public virtual void setY(float y)
         {
             Vector3 oldCorrectPos = Constants.UnconvertFromXNAScene(position);
             oldCorrectPos.Y = y;

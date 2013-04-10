@@ -49,8 +49,8 @@ namespace LandOfAmbrosia.Common
         #endregion
 
         //Default Values
-        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(3, 2, CHARACTER_DEPTH);//new Vector3(TILE_SIZE  + TILE_SIZE/ 2.0f, TILE_SIZE, CHARACTER_DEPTH);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = new Vector3(1, 0, 0);
+        public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE  + TILE_SIZE/ 2.0f, TILE_SIZE, CHARACTER_DEPTH);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = DEFAULT_PLAYER1_START + new Vector3(TILE_SIZE, 0, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
@@ -67,6 +67,9 @@ namespace LandOfAmbrosia.Common
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 15;
         public static readonly int DEFAULT_HEIGHT = 6;
+
+        //Collision Detection
+        public static readonly float BUFFER = 0.01f;
 
         //Camera stuff
         //TODO this isn't actually working

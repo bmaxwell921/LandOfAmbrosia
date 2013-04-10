@@ -10,14 +10,14 @@
 	X	3) Render both a character and the level to the screen
 
 	Iteration 3: Increased Character control - Finish by 3/31/13
-		1) Add xbox controller movement/jumping to the player model
-		2) Add gravity. Maybe we can calculate acceleration due to gravity based on their position relative to the ground?
-		3) Get a model to use as the female protagonist
-		4) Render Cloud, Lightning, and the Level to the screen
-		5) Add control for two characters, using two different xbox controllers
+	X	1) Add xbox controller movement/jumping to the player model
+	X	2) Add gravity. Maybe we can calculate acceleration due to gravity based on their position relative to the ground?
+	X	3) Get a model to use as the female protagonist
+	X	4) Render Cloud, Lightning, and the Level to the screen
+	X	5) Add control for two characters, using two different xbox controllers
 
 	Iteration 3.5: Fix camera
-		1) Make camera initialize correctly
+	X	1) Make camera initialize correctly
 		2) Change camera to move with the characters
 
 	Iteration 4: Basic Minion setup
@@ -37,6 +37,7 @@
 
 	Iteration 7: Increased Level Stuff
 		1) Create simple level editor that reads and writes text file
+			i) Maybe instead do level generation?
 		2) Add other models for levels (Ramps, Gaps, Spikes, Goal, ...)
 		3) Add minions to levels
 

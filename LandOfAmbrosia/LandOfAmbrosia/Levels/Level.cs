@@ -80,7 +80,7 @@ namespace LandOfAmbrosia.Levels
 
             enemies = new List<Character>();
             player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
-            //player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START);
+            player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START);
         }
 
         /// <summary>
@@ -143,6 +143,12 @@ namespace LandOfAmbrosia.Levels
             tiles[width, height] = newTile; 
         }
 
+        /// <summary>
+        /// Gets the tile object located at the given location
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         public Tile GetTile(int width, int height)
         {
             if (width < 0 || width >= this.width || height < 0 || height >= this.height)
@@ -152,16 +158,31 @@ namespace LandOfAmbrosia.Levels
             return tiles[width, height];
         }
 
+        /// <summary>
+        /// Converts an x coordinate from 3D space into an index in the array
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public int GetTileIndexFromXPos(float x)
         {
             return (int)(x / Constants.TILE_SIZE);
         }
 
+        /// <summary>
+        /// Converts a y coordinate from 3D space into an index in the array
+        /// </summary>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public int GetTileIndexFromYPos(float y)
         {
             return (y > 0) ? (int)(y / Constants.TILE_SIZE) + 1 : 0;
         }
 
+        /// <summary>
+        /// Returns the 3D space point where an index in the array starts
+        /// </summary>
+        /// <param name="numTiles"></param>
+        /// <returns></returns>
         public int tileIndexToPos(int numTiles)
         {
             return numTiles * Constants.TILE_SIZE;

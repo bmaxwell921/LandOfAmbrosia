@@ -47,22 +47,8 @@ namespace LandOfAmbrosia.Managers
             base(game)
         {
             currentLevel = new Level(levelFileLoc);
-            this.SetUpCameraDefault();//this.SetUpCamera();
+            this.SetUpCameraDefault();
         }
-
-        //TODO this method doesn't work right
-        private void SetUpCamera()
-        {
-            CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
-            Vector3 eye, target, up;
-
-            eye = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 20);
-            target = new Vector3(Constants.CAMERA_FRAME_WIDTH_BLOCKS * Constants.TILE_SIZE, currentLevel.height / 2 * Constants.TILE_SIZE, 0);
-            up = Vector3.Up;
-
-            camera.LookAt(eye, target, up);
-        }
-
         
         private void SetUpCameraDefault()
         {
@@ -85,6 +71,8 @@ namespace LandOfAmbrosia.Managers
         public override void Update(GameTime gameTime)
         {
             this.UpdatePlayers(gameTime);
+            //this.UpdateEnemies(gameTime);
+            this.UpdateCamera();
             base.Update(gameTime);
         }
 
@@ -97,14 +85,42 @@ namespace LandOfAmbrosia.Managers
                 player1.CheckInput();
                 this.UpdateCharacter(player1, gameTime);
                 player1.Update(gameTime);//updates the animation
+                this.CheckTurnOnGravity(player1);
             }
 
             if (player2 != null)
             {
                 player2.CheckInput();
                 this.UpdateCharacter(currentLevel.player2, gameTime);
-                //player2.update(gameTime) updates the animation
+                player2.Update(gameTime); //updates the animation
+                this.CheckTurnOnGravity(player2);
             }
+        }
+
+        private void UpdateCamera()
+        {
+            //Centers the camera on the average position between the two characters
+            Vector3 target = Vector3.Zero;
+            int numPlayers = 0;
+            float dist = 0;
+            if (currentLevel.player1 != null)
+            {
+                target += Constants.UnconvertFromXNAScene(currentLevel.player1.position);
+                ++numPlayers;
+                dist = target.X;
+            }
+
+            if (currentLevel.player2 != null)
+            {
+                target += Constants.UnconvertFromXNAScene(currentLevel.player2.position);
+                ++numPlayers;
+                dist = Math.Abs(dist - currentLevel.player2.getX());
+            }
+
+            target /= numPlayers;
+            Vector3 eye = target + new Vector3(0, 0, 20 + dist / 2);
+
+            ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
         }
 
         //Updates the player position and handles collisions
@@ -133,7 +149,6 @@ namespace LandOfAmbrosia.Managers
             }
 
             float dy = character.getVelocityY();
-            //The center of the character is in the middle, so to check the feet we need to move the point down half the size of the character
             float oldY = character.getY();
             float newY = oldY + dy;
             posFix = getTileCollision(character, character.getX(), newY, false, out hasCollision);
@@ -154,25 +169,32 @@ namespace LandOfAmbrosia.Managers
             }
         }
 
-        float buffer = 0.01f;
+        private void CheckTurnOnGravity(Character c)
+        {
+            Vector2 belowTile = new Vector2(currentLevel.GetTileIndexFromXPos(c.getX() + Constants.BUFFER), currentLevel.GetTileIndexFromYPos(c.getY() - Constants.BUFFER)) - new Vector2(0, 1);
+            Tile curTile = currentLevel.GetTile((int)belowTile.X, (int)belowTile.Y);
+            if (curTile == null && c.onGround == true)
+            {
+                c.onGround = false;
+            }
+        }
+
         private Vector3 getTileCollision(Character c, float newX, float newY, bool leftRight, out bool hasCollision)
         {
             //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
             
             //Top left corner
-            cornerPositions.Add(new Vector3(newX + buffer, newY - buffer, 0));
+            cornerPositions.Add(new Vector3(newX + Constants.BUFFER, newY - Constants.BUFFER, 0));
 
             //Top right corner
-            cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - buffer, 0));
+            cornerPositions.Add(new Vector3(newX + c.width - Constants.BUFFER, newY - Constants.BUFFER, 0));
          
             //Bottom left corner
-            cornerPositions.Add(new Vector3(newX + buffer, newY - c.height + buffer, 0));
+            cornerPositions.Add(new Vector3(newX + Constants.BUFFER, newY - c.height + Constants.BUFFER, 0));
 
             //Bottom right corner
-            cornerPositions.Add(new Vector3(newX + c.width - buffer, newY - c.height + buffer, 0));
-
-            Console.WriteLine("Y bottom is: " + (newY - c.height + buffer));
+            cornerPositions.Add(new Vector3(newX + c.width - Constants.BUFFER, newY - c.height + Constants.BUFFER, 0));
 
             for (int i = 0; i < cornerPositions.Count; ++i)
             {
@@ -205,15 +227,15 @@ namespace LandOfAmbrosia.Managers
             Vector3 tilePt = Vector3.Zero;
             if (leftRight)
             {
-                float tileLeft = intersectingTile.getX() - buffer;
-                float tileRight = intersectingTile.getX() + intersectingTile.width + buffer;
+                float tileLeft = intersectingTile.getX() - Constants.BUFFER;
+                float tileRight = intersectingTile.getX() + intersectingTile.width + Constants.BUFFER;
                 //If we are moving to the left, ie newX < curX, the tile point we need is the right side 
                 tilePt.X = (newX < c.getX()) ? tileRight : tileLeft;
             }
             else
             {
-                float tileTop = intersectingTile.getY() + buffer;
-                float tileBottom = intersectingTile.getY() - intersectingTile.height - buffer;
+                float tileTop = intersectingTile.getY() + Constants.BUFFER;
+                float tileBottom = intersectingTile.getY() - intersectingTile.height - Constants.BUFFER;
                 tilePt.Y = (newY < c.getY()) ? tileTop : tileBottom;
             }
             return tilePt;
