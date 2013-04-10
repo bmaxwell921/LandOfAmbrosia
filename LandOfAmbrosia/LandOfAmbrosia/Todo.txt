@@ -18,7 +18,7 @@
 
 	Iteration 3.5: Fix camera
 	X	1) Make camera initialize correctly
-		2) Change camera to move with the characters
+	X	2) Change camera to move with the characters
 
 	Iteration 4: Basic Minion setup
 		1) Find/Create a model for melee minion

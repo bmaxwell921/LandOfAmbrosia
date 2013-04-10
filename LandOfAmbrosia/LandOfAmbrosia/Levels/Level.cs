@@ -38,31 +38,14 @@ namespace LandOfAmbrosia.Levels
         {
         }
 
-        public Level(bool testConstructor)
+        public Level(bool testConstructor) : this(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT)
         {
-            this.width = Constants.DEFAULT_WIDTH;
-            this.height = Constants.DEFAULT_HEIGHT;
-            this.tiles = new Tile[width, height];
-            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-
-            enemies = new List<Character>();
             TestLevelSetUp();
         }
 
         //Just for testing, obviously
         private void TestLevelSetUp()
         {
-            Model tileModel = AssetUtil.GetTileModel(Constants.PLATFORM_CHAR);
-            Model playerModel = AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR);
-            int x = 0;
-            int y = 1;
-            //SetTile(0, 0, new Tile(tileModel, Vector3.Zero)); // Bottom Left
-            //SetTile(0, 1, new Tile(tileModel, new Vector3(0, 1, 0))); // Top Left
-            SetTile(x, y, new Tile(tileModel, new Vector3(x, y, 0))); // Bottom Right
-            SetTile(x + 1, y, new Tile(tileModel, new Vector3(x+2, y, 0)));
-            //SetTile(1, 1, new Tile(tileModel, new Vector3(1, 1, 0))); // Top Right
-
-            player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), new Vector3(x,y+2,Constants.CHARACTER_DEPTH));
         }
 
         /// <summary>
@@ -112,20 +95,6 @@ namespace LandOfAmbrosia.Levels
                 //Top
                 SetTile(i, height - 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, (height - 1) * Constants.TILE_SIZE, 0)));
             }
-            SetTile(3, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(3 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-
-            SetTile(4, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-            SetTile(4, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-
-            SetTile(5, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-            SetTile(5, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-            SetTile(5, 3, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 3 * Constants.TILE_SIZE, 0)));
-
-            SetTile(6, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(6 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-            SetTile(6, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(6 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-
-            SetTile(7, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(7 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-
         }
 
         /// <summary>
@@ -188,6 +157,8 @@ namespace LandOfAmbrosia.Levels
             return numTiles * Constants.TILE_SIZE;
         }
 
+        bool once = false;
+
         public void Draw(CameraComponent c, GraphicsDevice device)
         {
             skybox.Draw(c, device);
@@ -197,16 +168,9 @@ namespace LandOfAmbrosia.Levels
             this.DrawEnemies(c);
         }
 
-        bool output = false;
-
         //Draws all the tiles to the screen
         private void DrawTiles(CameraComponent c)
         {
-            if (DEBUGGING && !output)
-            {
-                Console.WriteLine("Tile at: " + Constants.ConvertToXNAScene(tiles[0, 0].location));
-                output = true;
-            }
             for (int i = 0; i < width; ++i)
             {
                 for (int j = 0; j < height; ++j)
@@ -219,17 +183,12 @@ namespace LandOfAmbrosia.Levels
             }
         }
 
-        bool output2 = false;
         //Draws the players
         private void DrawPlayers(CameraComponent c)
         {
-            if (DEBUGGING && !output2)
-            {
-                Console.WriteLine("Player at: " + player1.getX() + ", " + player1.getY());
-                output2 = true;
-            }
             if (player1 != null)
             {
+                Console.WriteLine("Player1 at: " + Constants.UnconvertFromXNAScene(player1.position));
                 player1.Draw(c);
             }
 
@@ -246,6 +205,7 @@ namespace LandOfAmbrosia.Levels
             {
                 if (enemy != null)
                 {
+                    Console.WriteLine("Enemy at: " + Constants.UnconvertFromXNAScene(enemy.position));
                     enemy.Draw(c);
                 }
             }

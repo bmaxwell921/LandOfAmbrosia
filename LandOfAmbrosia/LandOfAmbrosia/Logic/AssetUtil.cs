@@ -78,7 +78,7 @@ namespace LandOfAmbrosia.Logic
 
         private static void loadEnemyModels(ContentManager content)
         {
-            //TODO
+            enemyModels.Add(Constants.MINION_CHAR, content.Load<Model>(Constants.MINION_MODEL));
         }
 
         //Loads the assets for the skybox, including the effect and model

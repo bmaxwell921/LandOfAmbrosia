@@ -13,23 +13,19 @@ namespace LandOfAmbrosia.Common
 
     class Constants
     {
-        /*
-         * Matrix to fix the differences between the Blender coordinate system and the XNA system 
-         */
-        public static Matrix blenderToXNA = Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(-90));
-
         #region Level Character Reps
         public static readonly char PLAYER1_CHAR = '1';
         public static readonly char PLAYER2_CHAR = '2';
         public static readonly char EMPTY_CHAR = ' ';
         public static readonly char PLATFORM_CHAR = 'P';
+        public static readonly char MINION_CHAR = 'M';
         //TODO enemy reps
         #endregion
 
         #region Asset Names
         //Tiles
         public static readonly String NULL_MODEL = null;
-        public static readonly String PLATFORM = @"Models/upperLeftBlock";
+        public static readonly String PLATFORM = @"Models/platform";
 
         /*
          * These two have to be up here otherwise the DEFAULT_PLAYER1_START initializes wrong...apparently because
@@ -44,8 +40,11 @@ namespace LandOfAmbrosia.Common
         public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
 
         //Characters
-        public static readonly String PLAYER1_MODEL = @"Models/upperLeftChar";
-        public static readonly String PLAYER2_MODEL = @"Models/upperLeftChar";
+        public static readonly String PLAYER1_MODEL = @"Models/player1";
+        public static readonly String PLAYER2_MODEL = @"Models/player2";
+
+        //Minions
+        public static readonly String MINION_MODEL = @"Models/minion3";
         #endregion
 
         //Default Values

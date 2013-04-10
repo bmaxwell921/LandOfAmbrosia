@@ -69,9 +69,9 @@ namespace LandOfAmbrosia
             //I need the models for the Managers to be set up correctly so I can't call the constructors until down here
             //lm = new LevelManager(this, levelLoc);
 
-            lm = new LevelManager(this);
+            //lm = new LevelManager(this);
 
-            //lm = new LevelManager(this, true);
+            lm = new LevelManager(this, true);
             Components.Add(lm);
         }
 

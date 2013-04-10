@@ -86,15 +86,48 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\upperLeftBlock.fbx">
-      <Name>upperLeftBlock</Name>
+    <Compile Include="Models\minion3.fbx">
+      <Name>minion3</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\upperLeftChar.fbx">
-      <Name>upperLeftChar</Name>
+    <Compile Include="Models\platform.fbx">
+      <Name>platform</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\minion7.fbx">
+      <Name>minion7</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="player2Color.fbx">
+      <Name>player2Color</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="player2Color2.fbx">
+      <Name>player2Color2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\player1.fbx">
+      <Name>player1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\player2.fbx">
+      <Name>player2</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

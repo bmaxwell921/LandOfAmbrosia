@@ -14,6 +14,8 @@ namespace LandOfAmbrosia.Characters
         public Minion(Model model, Vector3 position)
             : base(model, position, null, null, DEFAULT_MINION_HEALTH)
         {
+            width = .5f;
+            height = 1f;
         }
     }
 }
