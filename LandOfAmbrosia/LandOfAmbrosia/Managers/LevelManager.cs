@@ -71,9 +71,9 @@ namespace LandOfAmbrosia.Managers
 
         private void AddMinion()
         {
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 0, 2)));//Constants.DEFAULT_PLAYER1_START));
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 1, 2)));
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START));
+            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 0, 2)));//Constants.DEFAULT_PLAYER1_START));
+            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 1, 2))); // Hack this to the right spot for draws
+            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START));
         }
         
         private void SetUpCameraDefault()
@@ -98,7 +98,7 @@ namespace LandOfAmbrosia.Managers
         {
             this.UpdatePlayers(gameTime);
             //this.UpdateEnemies(gameTime);
-            //this.UpdateCamera();
+            this.UpdateCamera();
             base.Update(gameTime);
         }
 
