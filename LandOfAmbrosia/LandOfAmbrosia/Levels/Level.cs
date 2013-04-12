@@ -22,8 +22,7 @@ namespace LandOfAmbrosia.Levels
         public Tile[,] tiles;
 
         //Character data
-        public UserControlledCharacter player1;
-        public UserControlledCharacter player2;
+        public IList<UserControlledCharacter> players;
         public IList<Character> enemies;
 
         //Made this a whole skybox cause I already had skybox code
@@ -62,8 +61,9 @@ namespace LandOfAmbrosia.Levels
             this.FillCage();
 
             enemies = new List<Character>();
-            player1 = new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START);
-            player2 = new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START);
+            players = new List<UserControlledCharacter>();
+            players.Add(new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
+            players.Add(new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace LandOfAmbrosia.Levels
                 SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, i * Constants.TILE_SIZE, 0)));
 
                 //Right
-                SetTile(width - 1, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3 ((width - 1) * Constants.TILE_SIZE, i * Constants.TILE_SIZE, 0)));
+                SetTile(width - 1, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3((width - 1) * Constants.TILE_SIZE, i * Constants.TILE_SIZE, 0)));
 
                 //Top
                 SetTile(i, height - 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, (height - 1) * Constants.TILE_SIZE, 0)));
@@ -186,16 +186,23 @@ namespace LandOfAmbrosia.Levels
         //Draws the players
         private void DrawPlayers(CameraComponent c)
         {
-            if (player1 != null)
+            foreach (UserControlledCharacter player in players)
             {
-                Console.WriteLine("Player1 at: " + Constants.UnconvertFromXNAScene(player1.position));
-                player1.Draw(c);
+                if (player != null)
+                {
+                    player.Draw(c);
+                }
             }
+            //if (player1 != null)
+            //{
+            //    Console.WriteLine("Player1 at: " + Constants.UnconvertFromXNAScene(player1.position));
+            //    player1.Draw(c);
+            //}
 
-            if (player2 != null)
-            {
-                player2.Draw(c);
-            }
+            //if (player2 != null)
+            //{
+            //    player2.Draw(c);
+            //}
         }
 
         //Draw the enemies

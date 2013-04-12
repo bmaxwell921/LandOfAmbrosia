@@ -21,7 +21,8 @@ namespace LandOfAmbrosia.Managers
         //Empty, Ground
         #endregion
 
-        public LevelManager(Game game): base(game)
+        public LevelManager(Game game)
+            : base(game)
         {
             currentLevel = new Level();
             this.SetUpCameraDefault();
@@ -32,7 +33,8 @@ namespace LandOfAmbrosia.Managers
         /// </summary>
         /// <param name="game"></param>
         /// <param name="testConstructor"></param>
-        public LevelManager(Game game, bool testConstructor) : base(game)
+        public LevelManager(Game game, bool testConstructor)
+            : base(game)
         {
             currentLevel = new Level(testConstructor);
             this.MakeStairs();
@@ -45,7 +47,7 @@ namespace LandOfAmbrosia.Managers
         /// </summary>
         /// <param name="game"></param>
         /// <param name="levelFileLoc"></param>
-        public LevelManager(Game game, String levelFileLoc) : 
+        public LevelManager(Game game, String levelFileLoc) :
             base(game)
         {
             currentLevel = new Level(levelFileLoc);
@@ -72,10 +74,10 @@ namespace LandOfAmbrosia.Managers
         private void AddMinion()
         {
             //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 0, 2)));//Constants.DEFAULT_PLAYER1_START));
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 1, 2))); // Hack this to the right spot for draws
-            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START));
+            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 1, 2)));
+            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER2_START + new Vector3(0, 3 * Constants.TILE_SIZE, 0)));
         }
-        
+
         private void SetUpCameraDefault()
         {
             CameraComponent camera = ((LandOfAmbrosiaGame)Game).camera;
@@ -97,29 +99,22 @@ namespace LandOfAmbrosia.Managers
         public override void Update(GameTime gameTime)
         {
             this.UpdatePlayers(gameTime);
-            //this.UpdateEnemies(gameTime);
+            this.UpdateEnemies(gameTime);
             this.UpdateCamera();
             base.Update(gameTime);
         }
 
         private void UpdatePlayers(GameTime gameTime)
         {
-            UserControlledCharacter player1 = currentLevel.player1;
-            UserControlledCharacter player2 = currentLevel.player2;
-            if (player1 != null)
+            foreach (UserControlledCharacter player in currentLevel.players)
             {
-                player1.CheckInput();
-                this.UpdateCharacter(player1, gameTime);
-                player1.Update(gameTime);//updates the animation
-                this.CheckTurnOnGravity(player1);
-            }
-
-            if (player2 != null)
-            {
-                player2.CheckInput();
-                this.UpdateCharacter(currentLevel.player2, gameTime);
-                player2.Update(gameTime); //updates the animation
-                this.CheckTurnOnGravity(player2);
+                if (player != null)
+                {
+                    player.CheckInput();
+                    this.UpdateCharacter(player, gameTime);
+                    player.Update(gameTime);
+                    this.CheckTurnOnGravity(player);
+                }
             }
         }
 
@@ -137,27 +132,39 @@ namespace LandOfAmbrosia.Managers
 
         private void UpdateCamera()
         {
-            //Centers the camera on the average position between the two characters
-            Vector3 target = Vector3.Zero;
-            int numPlayers = 0;
-            float dist = 0;
-            if (currentLevel.player1 != null)
+            if (currentLevel.players.Count == 0)
             {
-                target += Constants.UnconvertFromXNAScene(currentLevel.player1.position);
-                ++numPlayers;
-                dist = target.X;
+                return;
+            }
+            float maxX = currentLevel.players.ElementAt(0).getX();
+            float minX = currentLevel.players.ElementAt(0).getX();
+            float maxY = currentLevel.players.ElementAt(0).getY();
+            float minY = currentLevel.players.ElementAt(0).getY();
+            foreach (UserControlledCharacter player in currentLevel.players)
+            {
+                if (player.getX() > maxX)
+                {
+                    maxX = player.getX();
+                }
+                if (player.getX() < minX)
+                {
+                    minX = player.getX();
+                }
+                if (player.getY() > maxY)
+                {
+                    maxY = player.getY();
+                }
+                if (player.getY() < minY)
+                {
+                    minY = player.getY();
+                }
             }
 
-            if (currentLevel.player2 != null)
-            {
-                target += Constants.UnconvertFromXNAScene(currentLevel.player2.position);
-                ++numPlayers;
-                dist = Math.Abs(dist - currentLevel.player2.getX());
-            }
+            float xCam = (maxX + minX) / 2;
+            float yCam = (maxY + minY) / 2;
 
-            target /= numPlayers;
-            Vector3 eye = target + new Vector3(0, 0, 20 + dist / 2);
-
+            Vector3 target = new Vector3(xCam, yCam, 0);
+            Vector3 eye = target + new Vector3(0, 0, 30 + (maxX - minX) / 2);
             ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
         }
 
@@ -225,13 +232,13 @@ namespace LandOfAmbrosia.Managers
             }
             //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
-            
+
             //Top left corner
             cornerPositions.Add(new Vector3(newX + Constants.BUFFER, newY - Constants.BUFFER, 0));
 
             //Top right corner
             cornerPositions.Add(new Vector3(newX + c.width - Constants.BUFFER, newY - Constants.BUFFER, 0));
-         
+
             //Bottom left corner
             cornerPositions.Add(new Vector3(newX + Constants.BUFFER, newY - c.height + Constants.BUFFER, 0));
 

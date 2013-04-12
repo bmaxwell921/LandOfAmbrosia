@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -16,6 +17,12 @@ namespace LandOfAmbrosia.Characters
         {
             width = .5f;
             height = 1f;
+        }
+
+        public override Matrix GetWorld()
+        {
+            Vector3 hackedPos = Constants.ConvertToXNAScene(Constants.UnconvertFromXNAScene(position) + new Vector3(1, -1, 0));
+            return Matrix.CreateTranslation(hackedPos);
         }
     }
 }
