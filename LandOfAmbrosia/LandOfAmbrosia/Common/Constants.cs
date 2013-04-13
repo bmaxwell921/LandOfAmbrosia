@@ -49,7 +49,7 @@ namespace LandOfAmbrosia.Common
 
         //Default Values
         public static readonly Vector3 DEFAULT_PLAYER1_START = new Vector3(TILE_SIZE  + TILE_SIZE/ 2.0f, TILE_SIZE, CHARACTER_DEPTH);
-        public static readonly Vector3 DEFAULT_PLAYER2_START = DEFAULT_PLAYER1_START + new Vector3(TILE_SIZE, 0, 0);
+        public static readonly Vector3 DEFAULT_PLAYER2_START = DEFAULT_PLAYER1_START;// + new Vector3(TILE_SIZE, 0, 0);
 
         public static readonly int DEFAULT_SEED = 42;
 
@@ -65,7 +65,7 @@ namespace LandOfAmbrosia.Common
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 256;
-        public static readonly int DEFAULT_HEIGHT = 32;
+        public static readonly int DEFAULT_HEIGHT = 16;
         public static readonly int CHUNK_SIZE = 8;
 
         //Collision Detection
