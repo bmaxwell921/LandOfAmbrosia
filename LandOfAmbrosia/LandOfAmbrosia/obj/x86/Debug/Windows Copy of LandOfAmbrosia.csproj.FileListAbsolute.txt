@@ -1,0 +1,6 @@
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\bin\x86\Debug\LandOfAmbrosia.exe
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\bin\x86\Debug\LandOfAmbrosia.pdb
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\Windows Copy of LandOfAmbrosia.csprojResolveAssemblyReference.cache
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\LandOfAmbrosia.exe
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\LandOfAmbrosia.pdb
