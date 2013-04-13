@@ -64,7 +64,7 @@ namespace LandOfAmbrosia.Common
         public static readonly float CHARACTER_HEIGHT = 2f;
 
         //Level stuff
-        public static readonly int DEFAULT_WIDTH = 256;
+        public static readonly int DEFAULT_WIDTH = 128;
         public static readonly int DEFAULT_HEIGHT = 16;
         public static readonly int CHUNK_SIZE = 8;
 

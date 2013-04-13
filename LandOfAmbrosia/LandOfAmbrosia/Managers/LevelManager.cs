@@ -36,7 +36,7 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
+            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
             this.SetUpCameraDefault();
         }
 
@@ -51,30 +51,6 @@ namespace LandOfAmbrosia.Managers
             currentLevel = new Level(levelFileLoc);
             this.SetUpCameraDefault();
         }
-
-        //private void MakeStairs()
-        //{
-        //    currentLevel.SetTile(3, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(3 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-
-        //    currentLevel.SetTile(4, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-        //    currentLevel.SetTile(4, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(4 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-
-        //    currentLevel.SetTile(5, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-        //    currentLevel.SetTile(5, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-        //    currentLevel.SetTile(5, 3, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(5 * Constants.TILE_SIZE, 3 * Constants.TILE_SIZE, 0)));
-
-        //    currentLevel.SetTile(6, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(6 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-        //    currentLevel.SetTile(6, 2, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(6 * Constants.TILE_SIZE, 2 * Constants.TILE_SIZE, 0)));
-
-        //    currentLevel.SetTile(7, 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(7 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 0)));
-        //}
-
-        //private void AddMinion()
-        //{
-        //    //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 0, 2)));//Constants.DEFAULT_PLAYER1_START));
-        //    //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(4, 1, 2)));
-        //    currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER2_START + new Vector3(0, 3 * Constants.TILE_SIZE, 0)));
-        //}
 
         private void SetUpCameraDefault()
         {
@@ -224,10 +200,6 @@ namespace LandOfAmbrosia.Managers
 
         private Vector3 getTileCollision(Character c, float newX, float newY, bool leftRight, out bool hasCollision)
         {
-            if (c is Minion)
-            {
-                int stop;
-            }
             //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
 
@@ -251,12 +223,6 @@ namespace LandOfAmbrosia.Managers
                 Tile intersectingTile = currentLevel.GetTile((int)curTile.X, (int)curTile.Y);
                 if (intersectingTile != null)
                 {
-                    if (c is Minion)
-                    {
-                        int stop;
-                    }
-                    //Collision, return the vector to fix the movement
-
                     //Will return the point on the tile that can be used to fix the movement
                     Vector3 tilePt = this.findTilePoint(c, intersectingTile, newX, newY, leftRight);
 

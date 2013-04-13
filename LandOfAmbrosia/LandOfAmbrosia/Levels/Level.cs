@@ -15,8 +15,6 @@ namespace LandOfAmbrosia.Levels
     /// </summary>
     class Level
     {
-
-        readonly bool DEBUGGING = false;
         //Map data
         public int width, height;
         public Tile[,] tiles;
@@ -58,12 +56,11 @@ namespace LandOfAmbrosia.Levels
             this.height = height;
             this.tiles = new Tile[width, height];
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-            this.FillCage();
 
             enemies = new List<Character>();
             players = new List<UserControlledCharacter>();
             players.Add(new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
-            players.Add(new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
+            //players.Add(new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
         }
 
         /// <summary>
@@ -74,27 +71,6 @@ namespace LandOfAmbrosia.Levels
         {
             tiles = LevelReader.readLevel(filePath, out width, out height);
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-        }
-
-        //For auto generation we automatically fill in the box around the level
-        private void FillCage()
-        {
-            //TODO fill the rest of the cage
-            for (int i = 0; i < width; ++i)
-            {          
-                //Passing in the location unconverted
-                //Bottom
-                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, 0, 0)));
-
-                //Left
-                SetTile(0, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(0, i * Constants.TILE_SIZE, 0)));
-
-                //Right
-                SetTile(width - 1, i, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3((width - 1) * Constants.TILE_SIZE, i * Constants.TILE_SIZE, 0)));
-
-                //Top
-                SetTile(i, height - 1, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), new Vector3(i * Constants.TILE_SIZE, (height - 1) * Constants.TILE_SIZE, 0)));
-            }
         }
 
         /// <summary>
@@ -157,8 +133,6 @@ namespace LandOfAmbrosia.Levels
             return numTiles * Constants.TILE_SIZE;
         }
 
-        bool once = false;
-
         public void Draw(CameraComponent c, GraphicsDevice device)
         {
             skybox.Draw(c, device);
@@ -193,16 +167,6 @@ namespace LandOfAmbrosia.Levels
                     player.Draw(c);
                 }
             }
-            //if (player1 != null)
-            //{
-            //    Console.WriteLine("Player1 at: " + Constants.UnconvertFromXNAScene(player1.position));
-            //    player1.Draw(c);
-            //}
-
-            //if (player2 != null)
-            //{
-            //    player2.Draw(c);
-            //}
         }
 
         //Draw the enemies
@@ -212,7 +176,6 @@ namespace LandOfAmbrosia.Levels
             {
                 if (enemy != null)
                 {
-                    Console.WriteLine("Enemy at: " + Constants.UnconvertFromXNAScene(enemy.position));
                     enemy.Draw(c);
                 }
             }

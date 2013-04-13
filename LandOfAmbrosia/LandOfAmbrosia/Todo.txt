@@ -22,7 +22,7 @@
 
 	Iteration 4: Basic Minion setup
 	X	1) Find/Create a model for melee minion
-		2) Draw the minion to the scene, doing nothing
+	X	2) Draw the minion to the scene, doing nothing
 
 	Iteration 5: PlayerCharacter attack setup
 		1) Add code to let PlayerCharacters attack with melee
@@ -36,10 +36,19 @@
 		2) Implement code to let minions attack depending on which class they are
 
 	Iteration 7: Increased Level Stuff
-		1) Create simple level editor that reads and writes text file
-			i) Maybe instead do level generation?
-		2) Add other models for levels (Ramps, Gaps, Spikes, Goal, ...)
-		3) Add minions to levels
+		1) Add minions to levels
 
 	Iteration 8: Add in minion AI
 		1) Create movement and attack AI methods for minions	
+
+	Iteration 9: Sound
+		1) Add ambient music
+		2) Add in sounds for hitting stuff?
+
+	Iteration 10: UI
+		1) Implement the UI
+		2) Change from skybox to parallax scrolling background
+
+	Iteration 11: Upgrade system
+		1) Implement experience stuff
+		2) Implement the level system			

@@ -13,7 +13,6 @@ namespace LandOfAmbrosia.Logic
         private static Random gen;
 
         private enum ChunkType { FLOOR, STAIRS, FLOATING_PLATFORMS_SAFE, FLOATING_PLATFORMS_NOT_SAFE, MOUNTAIN_LEFT, MOUNTAIN_RIGHT, JAGGIES_LEFT, JAGGIES_RIGHT, TALL_GROUND, EMPTY }
-        private static int numChunkTypes = 10;
         /// <summary>
         /// Creates a new, randomly generated level with the given width, height, and seed
         /// 
@@ -78,9 +77,6 @@ namespace LandOfAmbrosia.Logic
 
         private static ChunkType ChooseChunkType(ChunkType[,] chunks, Vector2 chunkLoc)
         {
-            //We need to take a look at the chunks to our left and right to determine whether that places any bounds on what chunk can be generated
-            //int num = gen.Next(numChunkTypes);
-
             //Checks to see if there are any bounds on the chunk type we need to generate and lets us choose randomly from the given stuff
             IList<ChunkType> possibleChunks = GetPossibleChunks(chunks, chunkLoc);
 
@@ -126,48 +122,6 @@ namespace LandOfAmbrosia.Logic
         private static bool EndsAtTop(ChunkType leftTile)
         {
             return leftTile == ChunkType.MOUNTAIN_LEFT || leftTile == ChunkType.TALL_GROUND;
-        }
-
-        private static IList<ChunkType> GetPossibleChunksDeprecated(ChunkType[,] chunks, Vector2 chunkLoc)
-        {
-            
-            IList<ChunkType> possibilites = new List<ChunkType>();
-            possibilites.Add(ChunkType.JAGGIES_RIGHT);
-            return possibilites;
-            ////If we just saw Mountain_Left, we have to have Mountain_right, or platforms, otherwise they player can't go backward
-            //if (chunks[(int)chunkLoc.X, (int)chunkLoc.Y] == ChunkType.MOUNTAIN_LEFT)
-            //{
-            //    possibilites = new List<ChunkType>();
-            //    possibilites.Add(ChunkType.MOUNTAIN_RIGHT);
-            //    possibilites.Add(ChunkType.FLOATING_PLATFORMS_NOT_SAFE);
-            //    possibilites.Add(ChunkType.FLOATING_PLATFORMS_SAFE);
-            //    return possibilites;
-            //}
-
-            ////There are some ChunkTypes that are always possible. In order to make sure the player doesn't get trapped, however, 
-            ////not all types are possible every time.
-            //possibilites = new List<ChunkType>();
-
-            ////We can always choose these chunk types
-            //possibilites.Add(ChunkType.FLOATING_PLATFORMS_NOT_SAFE);
-            //possibilites.Add(ChunkType.FLOATING_PLATFORMS_SAFE);
-            //possibilites.Add(ChunkType.FLOOR);
-            //possibilites.Add(ChunkType.MOUNTAIN_LEFT);
-            //possibilites.Add(ChunkType.STAIRS);
-
-            ////But we only want empty chunks if we aren't on the bottom
-            //if (chunkLoc.Y != 0)
-            //{
-            //    possibilites.Add(ChunkType.EMPTY);
-            //}
-
-            ////Also, we can only have the right mounting if the previous chunk is a type that is able to get to the top of the mountain
-            //if (chunkLoc.X - 1 >= 0 && (chunks[(int)chunkLoc.X - 1, (int)chunkLoc.Y] == ChunkType.MOUNTAIN_LEFT
-            //    || chunks[(int)chunkLoc.X - 1, (int)chunkLoc.Y] == ChunkType.FLOATING_PLATFORMS_NOT_SAFE || chunks[(int)chunkLoc.X - 1, (int)chunkLoc.Y] == ChunkType.FLOATING_PLATFORMS_NOT_SAFE))
-            //{
-            //    possibilites.Add(ChunkType.MOUNTAIN_RIGHT);
-            //}
-            //return possibilites;
         }
 
         private static void FillChunkWith(Level level, Vector2 bottomLeftLoc, ChunkType chunkType)
