@@ -68,6 +68,7 @@ namespace LandOfAmbrosia.Common
 
         public static readonly char MAGIC_CHAR = 'm';
         public static readonly Vector3 MINION_POSITION_HACK = new Vector3(1, -1, 0);
+        public static readonly int DEFAULT_MINION_HEALTH = 50;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 128;

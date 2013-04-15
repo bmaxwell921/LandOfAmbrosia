@@ -198,5 +198,10 @@ namespace LandOfAmbrosia
             setVelocityY(0);
             onGround = true;
         }
+
+        public virtual bool isDead()
+        {
+            return health <= 0;
+        }
     }
 }

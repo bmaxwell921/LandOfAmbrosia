@@ -40,7 +40,9 @@ namespace LandOfAmbrosia.Managers
             : base(game)
         {
             currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Environment.TickCount);
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(4 * Constants.TILE_SIZE, 0, 0)));
+            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(4 * Constants.TILE_SIZE, 0, 0)));
+            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(6 * Constants.TILE_SIZE, 0, 0)));
+            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(0 * Constants.TILE_SIZE, 0, 0)));
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -98,39 +100,48 @@ namespace LandOfAmbrosia.Managers
 
         private void UpdateProjectiles(GameTime gameTime)
         {
+            IList<Projectile> remainingHack = new List<Projectile>();
             foreach (Projectile proj in projectiles)
             {
-                if (proj != null)
+                if (proj != null && !proj.ReadyToDie())
                 {
+                    remainingHack.Add(proj);
                     proj.Update(gameTime);
                 }
             }
+            projectiles = remainingHack;
         }
 
         private void UpdatePlayers(GameTime gameTime)
         {
+            IList<Character> remainingHack = new List<Character>();
             foreach (UserControlledCharacter player in currentLevel.players)
             {
-                if (player != null)
+                if (player != null && !player.isDead())
                 {
+                    remainingHack.Add(player);
                     player.CheckInput();
                     this.UpdateCharacter(player, gameTime);
                     player.Update(gameTime);
                     this.CheckTurnOnGravity(player);
                 }
             }
+            currentLevel.players = remainingHack;
         }
 
         private void UpdateEnemies(GameTime gameTime)
         {
+            IList<Character> remainingHack = new List<Character>();
             foreach (Character enemy in currentLevel.enemies)
             {
-                if (enemy != null)
+                if (enemy != null && !enemy.isDead())
                 {
+                    remainingHack.Add(enemy);
                     this.UpdateCharacter(enemy, gameTime);
-                    //enemy.Update(gameTime);
+                    enemy.Update(gameTime);
                 }
             }
+            currentLevel.enemies = remainingHack;
         }
 
         private void UpdateCamera()
@@ -219,19 +230,11 @@ namespace LandOfAmbrosia.Managers
             //Check if they attacked with a projectile and add it if they did
             if (character.WantsRangeAttack())
             {
-                Console.WriteLine("Character wants to magic attack");
-                Character closest = GetClosestEnemy(character);
-                if (closest != null)
+
+                Projectile proj = character.rangeAttack(gameTime, GetClosestEnemy(character));
+                if (proj != null)
                 {
-                    Projectile proj = character.rangeAttack(gameTime, closest);
-                    if (proj != null)
-                    {
-                        projectiles.Add(proj);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("But didn't get to.");
+                    projectiles.Add(proj);
                 }
             }
         }
@@ -247,7 +250,7 @@ namespace LandOfAmbrosia.Managers
 
                 foreach (Character enemy in enemies)
                 {
-                    float newDist = Vector3.Distance(ret.position, enemy.position);
+                    float newDist = Vector3.Distance(c.position, enemy.position);
                     if (newDist < dist)
                     {
                         dist = newDist;

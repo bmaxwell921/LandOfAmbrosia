@@ -91,6 +91,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
     <Compile Include="Weapons\Projectile.cs" />
+    <Compile Include="Weapons\SmartProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>

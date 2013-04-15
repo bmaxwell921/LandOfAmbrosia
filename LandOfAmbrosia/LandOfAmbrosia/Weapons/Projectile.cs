@@ -19,13 +19,23 @@ namespace LandOfAmbrosia.Weapons
 
         public Vector3 velocity;
         public Vector3 position;
-        public Character target;
-
-        public Projectile(Model model, Vector3 position, Character target)
+        //public Character target;
+        
+        //This vector is UNCONVERTED
+        public Vector3 targetPosition;
+        public bool timeToDie;
+        /// <summary>
+        /// TargetPosition comes in as UNCONVERTED vector
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="position"></param>
+        /// <param name="targetPosition"></param>
+        public Projectile(Model model, Vector3 position, Vector3 targetPosition)
         {
             this.model = model;
             this.position = Constants.ConvertToXNAScene(position);
-            this.target = target;
+            this.targetPosition = targetPosition;
+            timeToDie = false;
             this.UpdateVelocity();
         }
 
@@ -36,10 +46,11 @@ namespace LandOfAmbrosia.Weapons
             float radius = 4;
             float maxSpeed = 0.5f;
             //Hack it into the right spot
-            Vector3 targetPos = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + new Vector3(1, -1, 0) : Constants.UnconvertFromXNAScene(target.position);
+            //Vector3 targetPos = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + new Vector3(1, -1, 0) : Constants.UnconvertFromXNAScene(target.position);
             Vector3 myPos = Constants.UnconvertFromXNAScene(this.position);
 
-            Vector3 desiredVel = targetPos - myPos;
+            //Vector3 desiredVel = targetPos - myPos;
+            Vector3 desiredVel = targetPosition - myPos;
             if (desiredVel.Length() < radius)
             {
                 desiredVel /= 2;
@@ -57,28 +68,68 @@ namespace LandOfAmbrosia.Weapons
 
         public virtual void Update(GameTime gameTime)
         {
-            UpdateVelocity();
-            Vector3 tempPos = Constants.UnconvertFromXNAScene(position);
-            tempPos += velocity;
-            position = Constants.ConvertToXNAScene(tempPos);
+            if (!ReadyToDie())
+            {
+                UpdateTarget();
+                UpdateVelocity();
+                Vector3 tempPos = Constants.UnconvertFromXNAScene(position);
+                tempPos += velocity;
+                position = Constants.ConvertToXNAScene(tempPos);
+                CheckKill();
+            }
+        }
+
+        /// <summary>
+        /// Let subtypes override this to track to enemies
+        /// </summary>
+        protected virtual void UpdateTarget()
+        {
+
+        }
+
+        protected virtual void CheckKill()
+        {
+            //Velocity goes to 0 when we  get close to the guy, so if the velocity is really small let's just say it's good enough
+            //if (velocity.Length() <= 0.01)
+            //{
+            //    target.health -= Constants.DEFAULT_MINION_HEALTH;
+            //}
+
+            //if (target.isDead())
+            //{
+            //    target = null;
+            //}
+            if (velocity.Length() <= 0.01)
+            {
+                timeToDie = true;
+            }
+        }
+
+        public bool ReadyToDie()
+        {
+            //return target == null;
+            return timeToDie;
         }
 
         public virtual void Draw(CameraComponent c)
         {
-            Matrix[] transforms = new Matrix[model.Bones.Count];
-            model.CopyAbsoluteBoneTransformsTo(transforms);
-
-            foreach (ModelMesh mesh in model.Meshes)
+            if (!ReadyToDie())
             {
-                foreach (BasicEffect be in mesh.Effects)
-                {
-                    be.EnableDefaultLighting();
-                    be.Projection = c.ProjectionMatrix;
-                    be.View = c.ViewMatrix;
-                    be.World = GetWorld() * mesh.ParentBone.Transform;
-                }
+                Matrix[] transforms = new Matrix[model.Bones.Count];
+                model.CopyAbsoluteBoneTransformsTo(transforms);
 
-                mesh.Draw();
+                foreach (ModelMesh mesh in model.Meshes)
+                {
+                    foreach (BasicEffect be in mesh.Effects)
+                    {
+                        be.EnableDefaultLighting();
+                        be.Projection = c.ProjectionMatrix;
+                        be.View = c.ViewMatrix;
+                        be.World = GetWorld() * mesh.ParentBone.Transform;
+                    }
+
+                    mesh.Draw();
+                }
             }
         }
 

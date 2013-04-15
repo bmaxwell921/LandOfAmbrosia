@@ -20,7 +20,6 @@ namespace LandOfAmbrosia.Characters
         }
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
 
         public override Projectile rangeAttack(GameTime gametime, Character closestEnemy)

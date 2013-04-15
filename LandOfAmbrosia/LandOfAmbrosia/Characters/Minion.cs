@@ -10,10 +10,8 @@ namespace LandOfAmbrosia.Characters
 {
     class Minion : AICharacter
     {
-        public const int DEFAULT_MINION_HEALTH = 50;
-
         public Minion(Model model, Vector3 position)
-            : base(model, position, null, null, DEFAULT_MINION_HEALTH)
+            : base(model, position, null, null, Constants.DEFAULT_MINION_HEALTH)
         {
             width = .5f;
             height = 1f;
