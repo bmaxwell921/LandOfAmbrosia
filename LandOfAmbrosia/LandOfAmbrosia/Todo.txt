@@ -27,7 +27,7 @@
 	Iteration 5: PlayerCharacter attack setup
 		1) Add code to let PlayerCharacters attack with melee
 		2) Add collision detection code to damage enemies that are hit by melee attacks
-		3) Find/Create model for magic attacks
+	X	3) Find/Create model for magic attacks
 		4) Add magic attacks for Player characters
 		5) Add collision detection code to damage enemies that are hit by magic attacks
 

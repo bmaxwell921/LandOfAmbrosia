@@ -17,6 +17,9 @@ namespace LandOfAmbrosia.Characters
 
         private readonly float JUMP_VELOCITY = 0.3f;
 
+        private readonly long ATTACK_SPEED = 500;
+        private long lastAttacked;
+
         public UserControlledCharacter(char character, Model model, Vector3 position) :
             base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
         {
@@ -24,6 +27,7 @@ namespace LandOfAmbrosia.Characters
             //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
             width = Constants.CHARACTER_WIDTH;
             height = Constants.CHARACTER_HEIGHT;
+            lastAttacked = 0;
         }
 
         public void CheckInput()
@@ -47,14 +51,16 @@ namespace LandOfAmbrosia.Characters
             }
         }
 
-        public override Projectile rangeAttack(Character closestEnemy)
+        public override Projectile rangeAttack(GameTime gameTime, Character closestEnemy)
         {
-            if (inputController.GetAttackType() == ATTACK_TYPE.MAGIC)
+            if (inputController.GetAttackType() == ATTACK_TYPE.MAGIC && lastAttacked <= 0)
             {
+                lastAttacked = ATTACK_SPEED;
                 //TODO make sure the added vector is correct, maybe we can have the projectile start on the correct side
-                Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(1, -0.5f, Constants.CHARACTER_DEPTH);
+                Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
                 return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, closestEnemy);
             }
+            lastAttacked -= gameTime.ElapsedGameTime.Milliseconds;
             return null;
         }
 
@@ -63,7 +69,7 @@ namespace LandOfAmbrosia.Characters
             return inputController.GetAttackType() == ATTACK_TYPE.MAGIC;
         }
 
-        public override void meleeAttack()
+        public override void meleeAttack(GameTime gametime)
         {
             if (inputController.GetAttackType() == ATTACK_TYPE.MELEE)
             {

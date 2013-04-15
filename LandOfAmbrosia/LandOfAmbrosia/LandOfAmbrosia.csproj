@@ -121,6 +121,7 @@
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="PreLoadedLevels\BasicLevel.txt" />
+    <Content Include="PreLoadedLevels\OneChunkLevel.txt" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <ItemGroup>

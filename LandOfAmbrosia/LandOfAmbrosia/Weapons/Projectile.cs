@@ -21,8 +21,6 @@ namespace LandOfAmbrosia.Weapons
         public Vector3 position;
         public Character target;
 
-        private readonly float DEFAULT_SPEED = 2;
-
         public Projectile(Model model, Vector3 position, Character target)
         {
             this.model = model;
@@ -31,17 +29,38 @@ namespace LandOfAmbrosia.Weapons
             this.UpdateVelocity();
         }
 
+        //Lovingly stolen from www.cse.scu.edu. I would put the whole address, but it downloads as a ppt so I don't really know how to get it...
         private void UpdateVelocity()
         {
-            Vector3 normalDirection = Vector3.Normalize(target.position - this.position);
-            velocity = normalDirection * DEFAULT_SPEED;
+            //2 blocks
+            float radius = 4;
+            float maxSpeed = 0.5f;
+            //Hack it into the right spot
+            Vector3 targetPos = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + new Vector3(1, -1, 0) : Constants.UnconvertFromXNAScene(target.position);
+            Vector3 myPos = Constants.UnconvertFromXNAScene(this.position);
+
+            Vector3 desiredVel = targetPos - myPos;
+            if (desiredVel.Length() < radius)
+            {
+                desiredVel /= 2;
+                if (desiredVel.Length() > maxSpeed)
+                {
+                    desiredVel /= desiredVel.Length();
+                }
+            }
+            else
+            {
+                desiredVel /= desiredVel.Length();
+            }
+            velocity = desiredVel;
         }
 
         public virtual void Update(GameTime gameTime)
         {
             UpdateVelocity();
-
-            position += velocity;
+            Vector3 tempPos = Constants.UnconvertFromXNAScene(position);
+            tempPos += velocity;
+            position = Constants.ConvertToXNAScene(tempPos);
         }
 
         public virtual void Draw(CameraComponent c)
@@ -65,7 +84,7 @@ namespace LandOfAmbrosia.Weapons
 
         public virtual Matrix GetWorld()
         {
-            return Matrix.CreateScale(0.25f) * Matrix.CreateTranslation(position);
+            return Matrix.CreateTranslation(position);
         }
     }
 }

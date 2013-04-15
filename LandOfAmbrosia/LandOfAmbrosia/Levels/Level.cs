@@ -69,7 +69,7 @@ namespace LandOfAmbrosia.Levels
         /// <param name="filePath"></param>
         public Level(String filePath)
         {
-            tiles = LevelReader.readLevel(filePath, out width, out height);
+            tiles = LevelReader.readLevel(filePath, out width, out height, out players, out enemies);
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
         }
 

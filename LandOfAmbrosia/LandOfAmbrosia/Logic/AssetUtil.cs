@@ -60,7 +60,7 @@ namespace LandOfAmbrosia.Logic
             loadTileModels(content);
             loadPlayerModels(content);
             loadEnemyModels(content);
-
+            loadProjectileModels(content);
             loadSkyboxAssets(content);
         }
 
@@ -84,7 +84,7 @@ namespace LandOfAmbrosia.Logic
             enemyModels.Add(Constants.MINION_CHAR, content.Load<Model>(Constants.MINION_MODEL));
         }
 
-        private static void loadProjectileModel(ContentManager content)
+        private static void loadProjectileModels(ContentManager content)
         {
             projectileModels.Add(Constants.MAGIC_CHAR, content.Load<Model>(Constants.MAGIC_MODEL));
         }
@@ -153,7 +153,7 @@ namespace LandOfAmbrosia.Logic
 
         public static Model GetProjectileModel(char proj)
         {
-            if (enemyModels.ContainsKey(proj))
+            if (projectileModels.ContainsKey(proj))
             {
                 return projectileModels[proj];
             }

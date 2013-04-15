@@ -106,7 +106,7 @@ namespace LandOfAmbrosia
         /// A method to execute a meleeAttack done
         /// by this character
         /// </summary>
-        public abstract void meleeAttack();
+        public abstract void meleeAttack(GameTime gametime);
 
         public abstract bool WantsMeleeAttack();
 
@@ -115,7 +115,7 @@ namespace LandOfAmbrosia
         /// </summary>
         /// <returns>Either an Arrow or a MagicSpell object depending on what type of 
         /// RangeWeapon the character has</returns>
-        public abstract Projectile rangeAttack(Character closestEnemy);
+        public abstract Projectile rangeAttack(GameTime gameTime, Character closestEnemy);
 
         public abstract bool WantsRangeAttack();
 

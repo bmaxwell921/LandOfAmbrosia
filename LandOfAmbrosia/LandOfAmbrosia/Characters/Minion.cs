@@ -21,7 +21,7 @@ namespace LandOfAmbrosia.Characters
 
         public override Matrix GetWorld()
         {
-            Vector3 hackedPos = Constants.ConvertToXNAScene(Constants.UnconvertFromXNAScene(position) + new Vector3(1, -1, 0));
+            Vector3 hackedPos = Constants.ConvertToXNAScene(Constants.UnconvertFromXNAScene(position) + Constants.MINION_POSITION_HACK);
             return Matrix.CreateTranslation(hackedPos);
         }
     }

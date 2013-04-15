@@ -39,7 +39,8 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
+            currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Environment.TickCount);
+            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(4 * Constants.TILE_SIZE, 0, 0)));
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -71,16 +72,39 @@ namespace LandOfAmbrosia.Managers
         public override void Draw(GameTime gameTime)
         {
             currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
-
+            DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
             base.Draw(gameTime);
+        }
+
+        private void DrawProjectiles(CameraComponent c)
+        {
+            foreach (Projectile proj in projectiles)
+            {
+                if (proj != null)
+                {
+                    proj.Draw(c);
+                }
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
+            this.UpdateProjectiles(gameTime);
             this.UpdatePlayers(gameTime);
             this.UpdateEnemies(gameTime);
             this.UpdateCamera();
             base.Update(gameTime);
+        }
+
+        private void UpdateProjectiles(GameTime gameTime)
+        {
+            foreach (Projectile proj in projectiles)
+            {
+                if (proj != null)
+                {
+                    proj.Update(gameTime);
+                }
+            }
         }
 
         private void UpdatePlayers(GameTime gameTime)
@@ -195,14 +219,19 @@ namespace LandOfAmbrosia.Managers
             //Check if they attacked with a projectile and add it if they did
             if (character.WantsRangeAttack())
             {
+                Console.WriteLine("Character wants to magic attack");
                 Character closest = GetClosestEnemy(character);
                 if (closest != null)
                 {
-                    Projectile proj = character.rangeAttack(closest);
+                    Projectile proj = character.rangeAttack(gameTime, closest);
                     if (proj != null)
                     {
                         projectiles.Add(proj);
                     }
+                }
+                else
+                {
+                    Console.WriteLine("But didn't get to.");
                 }
             }
         }
