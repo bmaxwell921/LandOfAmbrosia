@@ -51,3 +51,4 @@ G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug
 G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\LandOfAmbrosia.exe
 G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\LandOfAmbrosia.pdb
+C:\Users\Brandon\Documents\GitHub\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\obj\x86\Debug\Windows Copy (2) of LandOfAmbrosia.csprojResolveAssemblyReference.cache

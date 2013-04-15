@@ -20,7 +20,7 @@ namespace LandOfAmbrosia.Levels
         public Tile[,] tiles;
 
         //Character data
-        public IList<UserControlledCharacter> players;
+        public IList<Character> players;
         public IList<Character> enemies;
 
         //Made this a whole skybox cause I already had skybox code
@@ -58,7 +58,7 @@ namespace LandOfAmbrosia.Levels
             this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
 
             enemies = new List<Character>();
-            players = new List<UserControlledCharacter>();
+            players = new List<Character>();
             players.Add(new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
             //players.Add(new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
         }

@@ -22,5 +22,25 @@ namespace LandOfAmbrosia.Characters
         {
             throw new NotImplementedException();
         }
+
+        public override Projectile rangeAttack(Character closestEnemy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool WantsRangeAttack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void meleeAttack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool WantsMeleeAttack()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

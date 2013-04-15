@@ -45,6 +45,9 @@ namespace LandOfAmbrosia.Common
 
         //Minions
         public static readonly String MINION_MODEL = @"Models/minion3";
+
+        //Projectiles
+        public static readonly String MAGIC_MODEL = @"Models/platform";
         #endregion
 
         //Default Values
@@ -62,6 +65,8 @@ namespace LandOfAmbrosia.Common
 
         public static readonly float CHARACTER_WIDTH = 0.32f;
         public static readonly float CHARACTER_HEIGHT = 2f;
+
+        public static readonly char MAGIC_CHAR = 'm';
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 128;

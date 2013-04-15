@@ -224,7 +224,8 @@ namespace LandOfAmbrosia.Logic
                 }
 
                 //Adjust the generated value by 1 if we are going right bc everything is in terms of the left start
-                int dist = (int)gen.Next(2, 3) + ((goRight) ? 1 : 0);
+                //Change this to randomly choose an index 0-3 or 4-7 depending on what the last chosen spot was.
+                int dist = (int)gen.Next(1, 5) + ((goRight) ? 1 : 0);
                 int newX = lastStart + ((goRight) ? dist : -dist);
 
                 //Minus 2 again here, -1 for the right block and -2 for the left block

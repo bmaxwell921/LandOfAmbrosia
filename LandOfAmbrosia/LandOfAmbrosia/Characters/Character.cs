@@ -106,20 +106,18 @@ namespace LandOfAmbrosia
         /// A method to execute a meleeAttack done
         /// by this character
         /// </summary>
-        public virtual void meleeAttack()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void meleeAttack();
+
+        public abstract bool WantsMeleeAttack();
 
         /// <summary>
         /// A method to execute a rangeAttack by the character.
         /// </summary>
         /// <returns>Either an Arrow or a MagicSpell object depending on what type of 
         /// RangeWeapon the character has</returns>
-        public virtual Projectile rangeAttack()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Projectile rangeAttack(Character closestEnemy);
+
+        public abstract bool WantsRangeAttack();
 
         public virtual bool isFlying()
         {

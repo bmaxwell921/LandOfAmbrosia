@@ -1,4 +1,3 @@
-Content\Skybox\skybox2.xnb
 Content\Skybox\effects.xnb
 Content\Skybox\skybox_left.xnb
 Content\Skybox\skybox_bottom.xnb
@@ -6,6 +5,7 @@ Content\Skybox\skybox_right.xnb
 Content\Skybox\skybox_front.xnb
 Content\Skybox\skybox_back.xnb
 Content\Skybox\skybox_top.xnb
+Content\Skybox\skybox2.xnb
 Content\Skybox\SkyBox_Top_0.xnb
 Content\Skybox\SkyBox_Right_0.xnb
 Content\Skybox\SkyBox_Left_0.xnb

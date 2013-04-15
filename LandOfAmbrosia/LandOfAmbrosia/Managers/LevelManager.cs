@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Characters;
+using LandOfAmbrosia.Weapons;
 
 namespace LandOfAmbrosia.Managers
 {
@@ -18,6 +19,7 @@ namespace LandOfAmbrosia.Managers
     {
         #region Level Fields
         private Level currentLevel;
+        private IList<Projectile> projectiles;
         //Empty, Ground
         #endregion
 
@@ -26,6 +28,7 @@ namespace LandOfAmbrosia.Managers
         {
             currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
             this.SetUpCameraDefault();
+            this.projectiles = new List<Projectile>();
         }
 
         /// <summary>
@@ -38,6 +41,7 @@ namespace LandOfAmbrosia.Managers
         {
             currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
             this.SetUpCameraDefault();
+            this.projectiles = new List<Projectile>();
         }
 
         /// <summary>
@@ -50,6 +54,7 @@ namespace LandOfAmbrosia.Managers
         {
             currentLevel = new Level(levelFileLoc);
             this.SetUpCameraDefault();
+            this.projectiles = new List<Projectile>();
         }
 
         private void SetUpCameraDefault()
@@ -186,6 +191,43 @@ namespace LandOfAmbrosia.Managers
                 character.position = Constants.ConvertToXNAScene(Constants.DEFAULT_PLAYER1_START);
                 character.velocity = Vector3.Zero;
             }
+
+            //Check if they attacked with a projectile and add it if they did
+            if (character.WantsRangeAttack())
+            {
+                Character closest = GetClosestEnemy(character);
+                if (closest != null)
+                {
+                    Projectile proj = character.rangeAttack(closest);
+                    if (proj != null)
+                    {
+                        projectiles.Add(proj);
+                    }
+                }
+            }
+        }
+
+        private Character GetClosestEnemy(Character c)
+        {
+            IList<Character> enemies = (c is UserControlledCharacter) ? currentLevel.enemies : currentLevel.players;
+
+            if (enemies.Count != 0)
+            {
+                Character ret = enemies.ElementAt(0);
+                float dist = Vector3.Distance(ret.position, c.position);
+
+                foreach (Character enemy in enemies)
+                {
+                    float newDist = Vector3.Distance(ret.position, enemy.position);
+                    if (newDist < dist)
+                    {
+                        dist = newDist;
+                        ret = enemy;
+                    }
+                }
+                return ret;
+            }
+            return null;
         }
 
         private void CheckTurnOnGravity(Character c)

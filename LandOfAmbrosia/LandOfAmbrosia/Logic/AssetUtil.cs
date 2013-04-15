@@ -19,6 +19,9 @@ namespace LandOfAmbrosia.Logic
         //Map of character representation to model for the enmies
         private static IDictionary<char, Model> enemyModels = new Dictionary<char, Model>();
 
+        //Map of character representation to model for projectiles
+        private static IDictionary<char, Model> projectileModels = new Dictionary<char, Model>();
+
         //The actual cube for the skybox
         public static Model skyboxModel
         {
@@ -81,6 +84,11 @@ namespace LandOfAmbrosia.Logic
             enemyModels.Add(Constants.MINION_CHAR, content.Load<Model>(Constants.MINION_MODEL));
         }
 
+        private static void loadProjectileModel(ContentManager content)
+        {
+            projectileModels.Add(Constants.MAGIC_CHAR, content.Load<Model>(Constants.MAGIC_MODEL));
+        }
+
         //Loads the assets for the skybox, including the effect and model
         private static void loadSkyboxAssets(ContentManager content)
         {
@@ -141,6 +149,15 @@ namespace LandOfAmbrosia.Logic
             {
                 return null;
             }
+        }
+
+        public static Model GetProjectileModel(char proj)
+        {
+            if (enemyModels.ContainsKey(proj))
+            {
+                return projectileModels[proj];
+            }
+            return null;
         }
     }
 }
