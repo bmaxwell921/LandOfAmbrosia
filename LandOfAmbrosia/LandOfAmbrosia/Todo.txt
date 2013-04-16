@@ -33,6 +33,7 @@
 
 	Iteration 6: Increased Minion abilities
 		1) Find/Create minion model for mage and range class
+			- No thanks
 		2) Implement code to let minions attack depending on which class they are
 
 	Iteration 7: Increased Level Stuff

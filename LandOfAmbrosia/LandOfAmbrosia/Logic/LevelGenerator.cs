@@ -5,6 +5,7 @@ using System.Text;
 using LandOfAmbrosia.Levels;
 using LandOfAmbrosia.Common;
 using Microsoft.Xna.Framework;
+using LandOfAmbrosia.Characters;
 
 namespace LandOfAmbrosia.Logic
 {
@@ -43,6 +44,28 @@ namespace LandOfAmbrosia.Logic
                 for (int j = 0; j < level.height / Constants.CHUNK_SIZE; ++j)
                 {
                     GenerateChunk(level, chunks, new Vector2(i, j));
+                }
+            }
+
+            //Fill in Minions
+            FillInMinions(level, (level.width / Constants.CHUNK_SIZE) * (level.height / Constants.CHUNK_SIZE));   
+        }
+
+        private static void FillInMinions(Level level, int numChunks)
+        {
+            //Fuck it, let's just randomly put them in places
+            for (int i = 0; i < numChunks; ++i)
+            {
+                int x = gen.Next(Constants.CHUNK_SIZE, level.width);
+                int y = gen.Next(1, level.height);
+
+                if (level.GetTile(x, y) == null)
+                {
+                    level.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH)));
+                }
+                else
+                {
+                    --i;
                 }
             }
         }
@@ -97,7 +120,7 @@ namespace LandOfAmbrosia.Logic
                 return possibilities;
             }
 
-            ChunkType left = chunks[(int)chunkLoc.X - 1, (int) chunkLoc.Y];
+            ChunkType left = chunks[(int)chunkLoc.X - 1, (int)chunkLoc.Y];
             //We can only choose from chunk types that let us move backward or forward, depending on which chunk type was to our left
             if (EndsAtTop(left))
             {
@@ -213,23 +236,11 @@ namespace LandOfAmbrosia.Logic
             level.SetTile(startX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
                 new Vector3((startX + 1 + bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y) * Constants.TILE_SIZE, 0)));
 
-            int lastStart = startX;
+            bool lastWasLeft = startX < Constants.CHUNK_SIZE / 2;
             for (int i = 2; i < Constants.CHUNK_SIZE; i+=2)
             {
-                //Get a random starting location that is 2-3 blocks left or right of the last starting loc
-                bool goRight = false;
-                if (gen.NextDouble() < 0.5)
-                {
-                    goRight = true;
-                }
-
-                //Adjust the generated value by 1 if we are going right bc everything is in terms of the left start
-                //Change this to randomly choose an index 0-3 or 4-7 depending on what the last chosen spot was.
-                int dist = (int)gen.Next(1, 5) + ((goRight) ? 1 : 0);
-                int newX = lastStart + ((goRight) ? dist : -dist);
-
-                //Minus 2 again here, -1 for the right block and -2 for the left block
-                newX = ((goRight) ? ((newX >= Constants.CHUNK_SIZE) ? Constants.CHUNK_SIZE - 2 : newX) : ((newX < 0) ? 0 : newX));
+                //If last time we went to the left, choose a spot on the right and vice versa
+                int newX = (lastWasLeft) ? gen.Next(4, 6) : gen.Next(0, 3);
 
                 level.SetTile(newX + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
                 new Vector3((newX + (int) bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y + i) * Constants.TILE_SIZE, 0)));
@@ -237,7 +248,7 @@ namespace LandOfAmbrosia.Logic
                 level.SetTile(newX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
                     new Vector3((newX + 1 + bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y + i) * Constants.TILE_SIZE, 0)));
 
-                lastStart = newX;
+                lastWasLeft = !lastWasLeft;
             }
         }
 

@@ -40,9 +40,6 @@ namespace LandOfAmbrosia.Managers
             : base(game)
         {
             currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Environment.TickCount);
-            //currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(4 * Constants.TILE_SIZE, 0, 0)));
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(6 * Constants.TILE_SIZE, 0, 0)));
-            currentLevel.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), Constants.DEFAULT_PLAYER1_START + new Vector3(0 * Constants.TILE_SIZE, 0, 0)));
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -94,7 +91,7 @@ namespace LandOfAmbrosia.Managers
             this.UpdateProjectiles(gameTime);
             this.UpdatePlayers(gameTime);
             this.UpdateEnemies(gameTime);
-            this.UpdateCamera();
+            //this.UpdateCamera();
             base.Update(gameTime);
         }
 
@@ -103,13 +100,45 @@ namespace LandOfAmbrosia.Managers
             IList<Projectile> remainingHack = new List<Projectile>();
             foreach (Projectile proj in projectiles)
             {
-                if (proj != null && !proj.ReadyToDie())
+                if (proj != null && (!proj.ReadyToDie() && !ProjectileTileCollision(proj)))
                 {
                     remainingHack.Add(proj);
                     proj.Update(gameTime);
-                }
+                }           
             }
             projectiles = remainingHack;
+        }
+
+        private bool ProjectileTileCollision(Projectile proj)
+        {
+            Vector3 position = Constants.UnconvertFromXNAScene(proj.position);
+             //Get the four corners of the model and check those tile locations for objects
+            IList<Vector3> cornerPositions = new List<Vector3>();
+
+            //Top left corner
+            cornerPositions.Add(new Vector3(position.X, position.Y, position.Z));
+
+            ////Top right corner
+            //cornerPositions.Add(new Vector3(position.X + proj.width, position.Y, position.Z));
+
+            ////Bottom left corner
+            //cornerPositions.Add(new Vector3(position.X, position.Y - proj.height, position.Z));
+
+            ////Bottom right corner
+            //cornerPositions.Add(new Vector3(position.X + proj.width, position.Y - proj.height, position.Z));
+
+            for (int i = 0; i < cornerPositions.Count; ++i)
+            {
+                Vector3 curPos = cornerPositions.ElementAt(i);
+                Vector2 curTile = new Vector2(currentLevel.GetTileIndexFromXPos(curPos.X), currentLevel.GetTileIndexFromYPos(curPos.Y));
+
+                Tile intersectingTile = currentLevel.GetTile((int)curTile.X, (int)curTile.Y);
+                if (intersectingTile != null)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void UpdatePlayers(GameTime gameTime)

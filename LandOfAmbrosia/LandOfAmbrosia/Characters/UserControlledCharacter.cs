@@ -65,14 +65,16 @@ namespace LandOfAmbrosia.Characters
                 lastAttacked = ATTACK_SPEED;
                 if (closestEnemy != null)
                 {
-                    bool enemyToRight = (Constants.UnconvertFromXNAScene(this.position) - Constants.UnconvertFromXNAScene(closestEnemy.position)).X < 0 ? false : true;
-                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(enemyToRight ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
+                    //bool enemyToRight = (Constants.UnconvertFromXNAScene(this.position) - Constants.UnconvertFromXNAScene(closestEnemy.position)).X < 0 ? false : true;
+                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(enemyToRight ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
+                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0,0,Constants.CHARACTER_DEPTH);
                     return new SmartProjectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, closestEnemy);
                 }
                 else
                 {
                     //Just blast some magic 'forward.' Who doesn't love just blasting spells
-                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(lastDirWasLeft ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
+                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(lastDirWasLeft ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
+                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
                     Vector3 target = projStart + new Vector3(5 * ((lastDirWasLeft) ? -Constants.TILE_SIZE : Constants.TILE_SIZE), 0, 0);
                     return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, target);
                 }

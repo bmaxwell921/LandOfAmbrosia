@@ -78,6 +78,10 @@ namespace LandOfAmbrosia.Common
         //Collision Detection
         public static readonly float BUFFER = 0.01f;
 
+        //Magic
+        public static readonly float MAGIC_WIDTH = 0.5f;
+        public static readonly float MAGIC_HEIGHT = 0.05f;
+
         //Camera stuff
         //TODO this isn't actually working
         public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 5;

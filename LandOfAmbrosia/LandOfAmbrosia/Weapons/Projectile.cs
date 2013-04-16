@@ -24,6 +24,8 @@ namespace LandOfAmbrosia.Weapons
         //This vector is UNCONVERTED
         public Vector3 targetPosition;
         public bool timeToDie;
+
+        public float width, height;
         /// <summary>
         /// TargetPosition comes in as UNCONVERTED vector
         /// </summary>
@@ -32,6 +34,8 @@ namespace LandOfAmbrosia.Weapons
         /// <param name="targetPosition"></param>
         public Projectile(Model model, Vector3 position, Vector3 targetPosition)
         {
+            width = Constants.MAGIC_WIDTH;
+            height = Constants.MAGIC_HEIGHT;
             this.model = model;
             this.position = Constants.ConvertToXNAScene(position);
             this.targetPosition = targetPosition;
