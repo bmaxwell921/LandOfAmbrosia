@@ -91,7 +91,7 @@ namespace LandOfAmbrosia.Managers
             this.UpdateProjectiles(gameTime);
             this.UpdatePlayers(gameTime);
             this.UpdateEnemies(gameTime);
-            //this.UpdateCamera();
+            this.UpdateCamera();
             base.Update(gameTime);
         }
 

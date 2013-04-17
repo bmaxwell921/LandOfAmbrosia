@@ -61,7 +61,8 @@ namespace LandOfAmbrosia.Logic
 
                 if (level.GetTile(x, y) == null)
                 {
-                    level.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH)));
+                    level.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
+                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), level.players));
                 }
                 else
                 {
@@ -90,7 +91,7 @@ namespace LandOfAmbrosia.Logic
         private static void GenerateChunk(Level level, ChunkType[,] chunks, Vector2 chunkLocation)
         {
             //First, we need to check the chunks to the left and bottom to see if they bind what we need to choose
-                //If they do, then choose the chunk that takes care of the most binding chunk
+            //If they do, then choose the chunk that takes care of the most binding chunk
             ChunkType chunkType = ChooseChunkType(chunks, chunkLocation);
             //Otherwise, randomly choose a chunktype
             //Fill in the level and the chunks array to reflect what was chosen

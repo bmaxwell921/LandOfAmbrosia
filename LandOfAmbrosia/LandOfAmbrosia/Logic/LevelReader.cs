@@ -53,7 +53,8 @@ namespace LandOfAmbrosia.Logic
                     }
                     else if (line.ElementAt(j) == 'm' || line.ElementAt(j) == 'M')
                     {
-                        enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), new Vector3(j * Constants.TILE_SIZE, i * Constants.TILE_SIZE, Constants.CHARACTER_DEPTH)));
+                        enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
+                            new Vector3(j * Constants.TILE_SIZE, i * Constants.TILE_SIZE, Constants.CHARACTER_DEPTH), players));
                     }
                     else if (line.ElementAt(j) == '1')
                     {

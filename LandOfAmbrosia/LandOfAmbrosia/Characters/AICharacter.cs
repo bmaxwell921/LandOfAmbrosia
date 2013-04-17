@@ -8,19 +8,30 @@ using LandOfAmbrosia.Weapons;
 
 namespace LandOfAmbrosia.Characters
 {
-    class AICharacter : Character
+    abstract class AICharacter : Character
     {
         #region Constants
         public static Vector3 DEFAULT_SPEED = new Vector3(-5f, 0, 0);
         #endregion
 
-        public AICharacter(Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth)
+        protected enum AIState { ATTACKING, PATROLLING, NONE }
+
+        protected AIState currentState;
+
+        public AICharacter(Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth, IList<Character> players)
             : base(model, DEFAULT_SPEED, position, meleeWeapon, rangeWeapon, maxHealth)
         {
+            currentState = AIState.NONE;
         }
         public override void Update(GameTime gameTime)
         {
+            UpdateState(gameTime);
+            MakeDecision();
         }
+
+        protected abstract void UpdateState(GameTime gameTime);
+
+        protected abstract void MakeDecision();
 
         public override Projectile rangeAttack(GameTime gametime, Character closestEnemy)
         {
@@ -34,7 +45,7 @@ namespace LandOfAmbrosia.Characters
 
         public override void meleeAttack(GameTime gameTime)
         {
-            //todo
+            //TODON'T
         }
 
         public override bool WantsMeleeAttack()
