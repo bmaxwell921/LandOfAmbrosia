@@ -90,6 +90,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
+    <Compile Include="Stats\AStat.cs" />
+    <Compile Include="Stats\AttackPower.cs" />
+    <Compile Include="Stats\Defence.cs" />
+    <Compile Include="Stats\Health.cs" />
+    <Compile Include="Stats\IStat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stats\StatBox.cs" />
     <Compile Include="Weapons\Projectile.cs" />
     <Compile Include="Weapons\SmartProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />
