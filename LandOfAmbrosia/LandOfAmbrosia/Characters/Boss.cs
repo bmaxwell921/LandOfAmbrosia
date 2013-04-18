@@ -17,6 +17,11 @@ namespace LandOfAmbrosia.Characters
         {
         }
 
+        protected override void SetUpStats()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void UpdateState(GameTime gameTime)
         {
             throw new NotImplementedException();

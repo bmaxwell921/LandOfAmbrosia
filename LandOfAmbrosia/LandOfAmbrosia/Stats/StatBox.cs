@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Stats
 {
@@ -11,17 +12,27 @@ namespace LandOfAmbrosia.Stats
     class StatBox
     {
         //Maps, Maps, Maps, I love Maps
-        private IDictionary<Type, IStat> stats;
+        private IDictionary<String, IStat> stats;
 
         public StatBox(float baseHealth, float baseAttack, float baseDefence)
         {
-            stats = new Dictionary<Type, IStat>();
-            stats.Add(typeof(Health), new Health(baseHealth));
-            stats.Add(typeof(AttackPower), new AttackPower(baseAttack));
-            stats.Add(typeof(Defence), new Defence(baseDefence));
+            stats = new Dictionary<String, IStat>();
+            stats.Add(Constants.HEALTH_KEY, new Health(baseHealth));
+            stats.Add(Constants.ATTACK_KEY, new AttackPower(baseAttack));
+            stats.Add(Constants.DEFENCE_KEY, new Defence(baseDefence));
         }
 
-        public bool buffStat(Type statType, float percBuff)
+        public bool changeCurrentStat(String statType, float amount)
+        {
+            if (!stats.ContainsKey(statType))
+            {
+                return false;
+            }
+            stats[statType].changeStat(amount);
+            return true;
+        }
+
+        public bool buffStat(String statType, float percBuff)
         {
             if (!stats.ContainsKey(statType))
             {
@@ -31,7 +42,7 @@ namespace LandOfAmbrosia.Stats
             return true;
         }
 
-        public bool debuffStat(Type statType, float percDebuff)
+        public bool debuffStat(String statType, float percDebuff)
         {
             if (!stats.ContainsKey(statType))
             {
@@ -41,7 +52,7 @@ namespace LandOfAmbrosia.Stats
             return true;
         }
 
-        public bool levelUpStat(Type statType)
+        public bool levelUpStat(String statType)
         {
             if (!stats.ContainsKey(statType))
             {
@@ -51,7 +62,7 @@ namespace LandOfAmbrosia.Stats
             return true;
         }
 
-        public bool levelUpStat(Type statType, float perc)
+        public bool levelUpStat(String statType, float perc)
         {
             if (!stats.ContainsKey(statType))
             {
@@ -61,20 +72,20 @@ namespace LandOfAmbrosia.Stats
             return true;
         }
 
-        public float getStatCurrentVal(Type statType)
+        public float getStatCurrentVal(String statType)
         {
             if (!stats.ContainsKey(statType))
             {
-                return 0.0f;
+                return -1.0f;
             }
             return stats[statType].getStatVal();
         }
 
-        public float getStatBaseVal(Type statType)
+        public float getStatBaseVal(String statType)
         {
             if (!stats.ContainsKey(statType))
             {
-                return 0.0f;
+                return -1.0f;
             }
             return stats[statType].getBaseVal();
         }

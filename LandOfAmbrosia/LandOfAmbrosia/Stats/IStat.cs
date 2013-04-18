@@ -11,6 +11,12 @@ namespace LandOfAmbrosia.Stats
         //if they level up, the given buffs are applied to the new base value.
 
         /// <summary>
+        /// Changes the current stat by the given positive or negative amount
+        /// </summary>
+        /// <param name="amount"></param>
+        void changeStat(float amount);
+
+        /// <summary>
         /// Provides a temporary stat buff by the given percent
         /// </summary>
         /// <param name="perc"></param>

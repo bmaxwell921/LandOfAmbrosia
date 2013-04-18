@@ -82,6 +82,11 @@ namespace LandOfAmbrosia.Common
         public static readonly float MAGIC_WIDTH = 0.5f;
         public static readonly float MAGIC_HEIGHT = 0.05f;
 
+        //Stat keys
+        public static readonly String HEALTH_KEY = "Health";
+        public static readonly String ATTACK_KEY = "Attack";
+        public static readonly String DEFENCE_KEY = "Defence";
+
         //Camera stuff
         //TODO this isn't actually working
         public static readonly int CAMERA_FRAME_WIDTH_BLOCKS = 5;

@@ -16,6 +16,11 @@ namespace LandOfAmbrosia.Stats
             this.currentValue = baseValue;
         }
 
+        public void changeStat(float amount)
+        {
+            currentValue += amount;
+        }
+
         public void buffStat(float perc)
         {
             buffDebuff(perc, true);

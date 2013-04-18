@@ -39,7 +39,7 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Environment.TickCount);
+            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }

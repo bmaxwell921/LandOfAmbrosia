@@ -23,6 +23,7 @@ namespace LandOfAmbrosia.Weapons
         
         //This vector is UNCONVERTED
         public Vector3 targetPosition;
+        public Character source;
         public bool timeToDie;
 
         public float width, height;
@@ -32,11 +33,24 @@ namespace LandOfAmbrosia.Weapons
         /// <param name="model"></param>
         /// <param name="position"></param>
         /// <param name="targetPosition"></param>
-        public Projectile(Model model, Vector3 position, Vector3 targetPosition)
+        //public Projectile(Model model, Vector3 position, Vector3 targetPosition)
+        //{
+        //    width = Constants.MAGIC_WIDTH;
+        //    height = Constants.MAGIC_HEIGHT;
+        //    this.model = model;
+        //    this.position = Constants.ConvertToXNAScene(position);
+        //    this.targetPosition = targetPosition;
+        //    timeToDie = false;
+        //    this.UpdateVelocity();
+        //}
+
+        public Projectile(Model model, Vector3 position, Character source, Vector3 targetPosition)
         {
             width = Constants.MAGIC_WIDTH;
             height = Constants.MAGIC_HEIGHT;
             this.model = model;
+            //No conversion necessary because source.position is already in XNA coords
+            this.source = source;
             this.position = Constants.ConvertToXNAScene(position);
             this.targetPosition = targetPosition;
             timeToDie = false;
@@ -94,15 +108,6 @@ namespace LandOfAmbrosia.Weapons
         protected virtual void CheckKill()
         {
             //Velocity goes to 0 when we  get close to the guy, so if the velocity is really small let's just say it's good enough
-            //if (velocity.Length() <= 0.01)
-            //{
-            //    target.health -= Constants.DEFAULT_MINION_HEALTH;
-            //}
-
-            //if (target.isDead())
-            //{
-            //    target = null;
-            //}
             if (velocity.Length() <= 0.01)
             {
                 timeToDie = true;

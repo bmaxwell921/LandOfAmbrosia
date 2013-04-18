@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Common;
+using LandOfAmbrosia.Stats;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -13,11 +14,20 @@ namespace LandOfAmbrosia.Characters
         private readonly long THINK_TIME = 200;
         private long lastDidStuff;
 
+        private readonly float START_HEALTH = 100;
+        private readonly float START_ATTACK = 50;
+        private readonly float START_DEFENCE = 0;
+
         public Minion(Model model, Vector3 position, IList<Character> players)
             : base(model, position, null, null, Constants.DEFAULT_MINION_HEALTH, players)
         {
             width = .5f;
             height = 1f;
+        }
+
+        protected override void SetUpStats()
+        {
+            this.stats = new StatBox(START_HEALTH, START_ATTACK, START_DEFENCE);
         }
 
         public override Matrix GetWorld()

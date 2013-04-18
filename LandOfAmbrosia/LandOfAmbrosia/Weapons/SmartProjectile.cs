@@ -16,7 +16,13 @@ namespace LandOfAmbrosia.Weapons
     {
         public Character target;
 
-        public SmartProjectile(Model model, Vector3 position, Character target) : base(model, position, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
+        //public SmartProjectile(Model model, Vector3 position, Character source, Character target) : base(model, position, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
+        //{
+        //    this.target = target;
+        //}
+
+        public SmartProjectile(Model model, Vector3 position, Character source, Character target)
+            : base(model, position, source, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
         {
             this.target = target;
         }
@@ -31,7 +37,9 @@ namespace LandOfAmbrosia.Weapons
             base.CheckKill();
             if (timeToDie)
             {
-                target.health -= Constants.DEFAULT_MINION_HEALTH;
+                float damage = source.stats.getStatCurrentVal(Constants.ATTACK_KEY) - target.stats.getStatCurrentVal(Constants.DEFENCE_KEY);
+                target.stats.changeCurrentStat(Constants.HEALTH_KEY, -damage);
+                //target.health -= Constants.DEFAULT_MINION_HEALTH;
             }
         }
     }

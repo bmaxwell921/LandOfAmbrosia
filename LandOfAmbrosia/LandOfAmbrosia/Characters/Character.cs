@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Common;
+using LandOfAmbrosia.Stats;
 
 namespace LandOfAmbrosia
 {
@@ -33,11 +34,7 @@ namespace LandOfAmbrosia
         public Weapon rangeWeapon;
         #endregion
 
-        #region Health
-        //TODO: Box this up into a stat object
-        public int health;
-        public int maxHealth;
-        #endregion
+        public StatBox stats;
 
         public Character(Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth)
         {
@@ -46,10 +43,11 @@ namespace LandOfAmbrosia
             this.position = Constants.ConvertToXNAScene(position);
             this.meleeWeapon = meleeWeapon;
             this.rangeWeapon = rangeWeapon;
-            this.maxHealth = maxHealth;
             this.onGround = false;
-            this.health = this.maxHealth;
+            SetUpStats();
         }
+
+        protected abstract void SetUpStats();
 
         /// <summary>
         /// Method to update the character from it's 
@@ -201,7 +199,8 @@ namespace LandOfAmbrosia
 
         public virtual bool isDead()
         {
-            return health <= 0;
+            //return health <= 0;
+            return stats.getStatCurrentVal(Constants.HEALTH_KEY) <= 0;
         }
     }
 }

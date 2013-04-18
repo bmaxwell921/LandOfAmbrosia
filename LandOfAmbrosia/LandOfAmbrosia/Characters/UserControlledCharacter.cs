@@ -8,6 +8,7 @@ using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Controllers;
 using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Logic;
+using LandOfAmbrosia.Stats;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -22,6 +23,10 @@ namespace LandOfAmbrosia.Characters
 
         private bool lastDirWasLeft;
 
+        private readonly float STARTING_HEALTH = 200;
+        private readonly float STARTING_ATTACK = 75;
+        private readonly float STARTING_DEFENCE = 25;
+
         public UserControlledCharacter(char character, Model model, Vector3 position) :
             base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
         {
@@ -31,6 +36,11 @@ namespace LandOfAmbrosia.Characters
             height = Constants.CHARACTER_HEIGHT;
             lastAttacked = 0;
             lastDirWasLeft = false;
+        }
+
+        protected override void SetUpStats()
+        {
+            this.stats = new StatBox(STARTING_HEALTH, STARTING_ATTACK, STARTING_DEFENCE);
         }
 
         public void CheckInput()
@@ -65,18 +75,17 @@ namespace LandOfAmbrosia.Characters
                 lastAttacked = ATTACK_SPEED;
                 if (closestEnemy != null)
                 {
-                    //bool enemyToRight = (Constants.UnconvertFromXNAScene(this.position) - Constants.UnconvertFromXNAScene(closestEnemy.position)).X < 0 ? false : true;
-                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(enemyToRight ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
                     Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0,0,Constants.CHARACTER_DEPTH);
-                    return new SmartProjectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, closestEnemy);
+                    //return new SmartProjectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, closestEnemy);
+                    return new SmartProjectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, closestEnemy);
                 }
                 else
                 {
                     //Just blast some magic 'forward.' Who doesn't love just blasting spells
-                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(lastDirWasLeft ? -Constants.TILE_SIZE : Constants.TILE_SIZE, -Constants.TILE_SIZE, Constants.CHARACTER_DEPTH);
                     Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
                     Vector3 target = projStart + new Vector3(5 * ((lastDirWasLeft) ? -Constants.TILE_SIZE : Constants.TILE_SIZE), 0, 0);
-                    return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, target);
+                    //return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, target);
+                    return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, target);
                 }
             }
             lastAttacked -= gameTime.ElapsedGameTime.Milliseconds;
