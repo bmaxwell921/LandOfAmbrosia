@@ -103,6 +103,8 @@
     <Compile Include="Controllers\AbstractInputController.cs" />
     <Compile Include="Controllers\KeyboardInput.cs" />
     <Compile Include="Controllers\XboxController.cs" />
+    <Compile Include="DecisionTree\ADecisionTreeNode.cs" />
+    <Compile Include="DecisionTree\DecisionTree.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\Skybox.cs" />

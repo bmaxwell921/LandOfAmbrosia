@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -12,8 +13,8 @@ namespace LandOfAmbrosia.Characters
         public const int DEFAULT_BOSS_HEALTH = 500;
 
 
-        public Boss(Model model, Vector3 position, IList<Character> players)
-            : base(model, position, null, null, DEFAULT_BOSS_HEALTH, players)
+        public Boss(Level level, Model model, Vector3 position, IList<Character> players)
+            : base(level, model, position, null, null, players)
         {
         }
 

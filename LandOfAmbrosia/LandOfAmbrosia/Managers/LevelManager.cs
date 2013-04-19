@@ -49,13 +49,13 @@ namespace LandOfAmbrosia.Managers
         /// </summary>
         /// <param name="game"></param>
         /// <param name="levelFileLoc"></param>
-        public LevelManager(Game game, String levelFileLoc) :
-            base(game)
-        {
-            currentLevel = new Level(levelFileLoc);
-            this.SetUpCameraDefault();
-            this.projectiles = new List<Projectile>();
-        }
+        //public LevelManager(Game game, String levelFileLoc) :
+        //    base(game)
+        //{
+        //    currentLevel = new Level(levelFileLoc);
+        //    this.SetUpCameraDefault();
+        //    this.projectiles = new List<Projectile>();
+        //}
 
         private void SetUpCameraDefault()
         {

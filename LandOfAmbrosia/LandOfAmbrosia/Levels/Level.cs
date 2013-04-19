@@ -59,19 +59,19 @@ namespace LandOfAmbrosia.Levels
 
             enemies = new List<Character>();
             players = new List<Character>();
-            players.Add(new UserControlledCharacter(Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
-            //players.Add(new UserControlledCharacter(Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
+            players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
+            //players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
         }
 
         /// <summary>
         /// Constructs a new Level by reading the given file
         /// </summary>
         /// <param name="filePath"></param>
-        public Level(String filePath)
-        {
-            tiles = LevelReader.readLevel(filePath, out width, out height, out players, out enemies);
-            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-        }
+        //public Level(String filePath)
+        //{
+        //    tiles = LevelReader.readLevel(filePath, out width, out height, out players, out enemies);
+        //    this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
+        //}
 
         /// <summary>
         /// Sets the tile in position tiles[width, height] to the newTile

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Stats;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -18,8 +19,8 @@ namespace LandOfAmbrosia.Characters
         private readonly float START_ATTACK = 50;
         private readonly float START_DEFENCE = 0;
 
-        public Minion(Model model, Vector3 position, IList<Character> players)
-            : base(model, position, null, null, Constants.DEFAULT_MINION_HEALTH, players)
+        public Minion(Level level, Model model, Vector3 position, IList<Character> players)
+            : base(level, model, position, null, null, players)
         {
             width = .5f;
             height = 1f;

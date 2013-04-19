@@ -8,35 +8,30 @@ using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Stats;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia
 {
     abstract class Character : ICharacter, ICollidable
     {
-        #region Drawing Fields
         public Model model
         {
             get;
             protected set;
         }
-        #endregion
 
-        #region Movement
         public Vector3 velocity;
         public Vector3 position;
         public bool onGround;
-        #endregion
 
         public float width, height;
 
-        #region Weapons
         public Weapon meleeWeapon;
         public Weapon rangeWeapon;
-        #endregion
 
         public StatBox stats;
 
-        public Character(Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth)
+        public Character(Level currentLevel, Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon)
         {
             this.model = model;
             this.velocity = speed;

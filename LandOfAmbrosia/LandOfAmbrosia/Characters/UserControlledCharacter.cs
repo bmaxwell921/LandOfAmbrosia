@@ -9,6 +9,7 @@ using LandOfAmbrosia.Controllers;
 using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Stats;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -27,8 +28,8 @@ namespace LandOfAmbrosia.Characters
         private readonly float STARTING_ATTACK = 75;
         private readonly float STARTING_DEFENCE = 25;
 
-        public UserControlledCharacter(char character, Model model, Vector3 position) :
-            base(model, Vector3.Zero, position, null, null, Constants.DEFAULT_MAX_HEALTH)
+        public UserControlledCharacter(Level level, char character, Model model, Vector3 position) :
+            base(level, model, Vector3.Zero, position, null, null)
         {
             inputController = new KeyboardInput();
             //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Weapons;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -18,8 +19,8 @@ namespace LandOfAmbrosia.Characters
 
         protected AIState currentState;
 
-        public AICharacter(Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, int maxHealth, IList<Character> players)
-            : base(model, DEFAULT_SPEED, position, meleeWeapon, rangeWeapon, maxHealth)
+        public AICharacter(Level level, Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, IList<Character> players)
+            : base(level, model, DEFAULT_SPEED, position, meleeWeapon, rangeWeapon)
         {
             currentState = AIState.NONE;
         }

@@ -61,7 +61,7 @@ namespace LandOfAmbrosia.Logic
 
                 if (level.GetTile(x, y) == null)
                 {
-                    level.enemies.Add(new Minion(AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
+                    level.enemies.Add(new Minion(level, AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
                         new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), level.players));
                 }
                 else
