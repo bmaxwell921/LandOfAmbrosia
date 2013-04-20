@@ -18,9 +18,12 @@ namespace LandOfAmbrosia.Characters
 
         //The sequence of points that will take this ai to the target's last known location
         //public IList<Vector3> moveToPoints;
-        public Queue<Vector3> pathToTarget;
 
-        public Vector3 idleTimeTarget;
+        //This is in grid coordinates
+        public Queue<Vector2> pathToTarget;
+
+        //This is going to be in grid coordinates
+        public Vector2 idleTimeTarget;
 
         //This controlls how often enemies 'patrol'
         public static readonly int IDLE_TIME = 5000;
@@ -44,27 +47,66 @@ namespace LandOfAmbrosia.Characters
 
         public void gotoIdleState()
         {
-            //TODO
             pathToTarget = null;
             target = null;
-            //Chooses a random position within the chunk for this ai to move to, then sets it as the idleTimeTarget
+
+            //TODO should this be WAIT? Does it matter? Update might just overwrite it anyway...
             curState = AI_STATE.WAIT;
+
+            chooseNewIdlePoint();
         }
 
         protected void chooseNewIdlePoint()
         {
-            //TODO
+            // What if this gets all the top platforms within a 4 tile range and randomly chooses one of them to move on top of?
+
+            //This is going to be a list of grid indicies
+            IList<Vector2> allCloseTiles = new List<Vector2>();
+
+            int idleChoiceRange = 4;
+
+            int minionTileX = containingLevel.GetTileIndexFromXPos(getX());
+            int minionTileY = containingLevel.GetTileIndexFromYPos(getY()) - 1; //Is it bad if this is off by +1?
+
+            for (int i = minionTileX - idleChoiceRange; i < minionTileX + idleChoiceRange; ++i)
+            {
+                for (int j = minionTileY - idleChoiceRange; j < minionTileY + idleChoiceRange; ++j)
+                {
+                    if (i >= 0 && i < containingLevel.width && j >= 0 && j < containingLevel.height)
+                    {
+                        Tile checkTile = containingLevel.GetTile(i, j);
+                        if (checkTile != null && !checkTile.IsEmpty())
+                        {
+                            allCloseTiles.Add(new Vector2(i, j));
+                        }
+                    }
+                }
+            }
+
+            //Now we've got a list of all the nonEmpty tiles, but we only want the tiles that have nothing above them
+            //Also a list of grid indices
+            IList<Vector2> closeTopTiles = new List<Vector2>();
+            foreach (Vector2 tile in allCloseTiles)
+            {
+                Vector2 aboveTile = tile + new Vector2(0, 1);
+                //So if the aboveTile is actually on the grid, check to see that it's empty
+                if (aboveTile.X >= 0 && aboveTile.X < containingLevel.width && aboveTile.Y >= 0 && aboveTile.Y < containingLevel.height)
+                {
+                    //If it is, then we can try to move there
+                    if (containingLevel.GetTile((int)aboveTile.X, (int)aboveTile.Y) == null || containingLevel.GetTile((int)aboveTile.X, (int)aboveTile.Y).IsEmpty())
+                    {
+                        closeTopTiles.Add(aboveTile);
+                    }
+                }
+                else // but if the aboveTile isn't on the grid we know it's still a safe spot to move to
+                {
+                    closeTopTiles.Add(aboveTile);
+                }
+            }
+
+            //Now we have all the tiles that are on the top, so we can choose a random one to move to.
+            idleTimeTarget = closeTopTiles.ElementAt(gen.Next(closeTopTiles.Count));
         }
-
-        //public override Projectile rangeAttack(GameTime gametime, Character closestEnemy)
-        //{
-        //    return null;
-        //}
-
-        //public override bool WantsRangeAttack()
-        //{
-        //    return false;
-        //}
 
         public override void meleeAttack(GameTime gameTime)
         {

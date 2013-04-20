@@ -50,11 +50,7 @@ namespace LandOfAmbrosia.Characters
             base.Update(gameTime);
             wantsRange = false;
             AI_STATE decision = dt.evaluateTree(this);
-
-            if (decision == AI_STATE.ATTACK && target == null)
-            {
-                dt.evaluateTree(this);
-            }
+            Console.WriteLine("Minion decided to: " + decision);
 
             if (decision == AI_STATE.CONTINUE_MOVE)
             {
@@ -63,11 +59,14 @@ namespace LandOfAmbrosia.Characters
             }
             else if (decision == AI_STATE.NEW_MOVE)
             {
+                lastMoved = IDLE_TIME;
                 base.chooseNewIdlePoint();
                 moveToPoint(idleTimeTarget);
             }
             else if (decision == AI_STATE.WAIT)
             {
+                setVelocityX(0);
+                setVelocityY(0);
                 lastMoved -= gameTime.ElapsedGameTime.Milliseconds;
             }
             else if (decision == AI_STATE.ATTACK)
@@ -76,17 +75,66 @@ namespace LandOfAmbrosia.Characters
             }
             else if (decision == AI_STATE.FOLLOW_PATH)
             {
-                //TODO
+                // We already have a path to the target, so move to the closets point
+                Vector2 targetPoint = pathToTarget.Peek();
+                //If we are already close to the first spot in the path, pop it off and move to the next one
+                if (closeTo(targetPoint))
+                {
+                    pathToTarget.Dequeue();
+                    moveToPoint(pathToTarget.Peek());
+                }
+                moveToPoint(targetPoint);
             }
             else if (decision == AI_STATE.CALC_PATH)
             {
-                //TODO
+                // Ask the currentLevel for a path to the target
+                IList<Vector2> path = containingLevel.calculatePath(Constants.UnconvertFromXNAScene(position), Constants.UnconvertFromXNAScene(target.position));
+                pathToTarget.Clear();
+                foreach (Vector2 point in path)
+                {
+                    pathToTarget.Enqueue(point);
+                }
             }
         }
 
-        private void moveToPoint(Vector3 moveTo)
+        public bool closeTo(Vector2 targetPos)
         {
-            //TODO
+            //Let's say we are close to the point if we are within a tile from it
+            //return Vector2.Distance(new Vector2(getX(), getY()), targetPos) < Constants.TILE_SIZE;
+
+            //If the target is in terms of grid location, we can just check to see if we're in the same tile
+            int tileX = containingLevel.GetTileIndexFromXPos(getX());
+            int tileY = containingLevel.GetTileIndexFromYPos(getY());
+
+            return new Vector2(tileX, tileY) == targetPos;
+        }
+
+        private void moveToPoint(Vector2 moveTo)
+        {
+            // Dynamic seek here? Just does left right
+            //Check where I am compared to moveTo. If we are left of it, go right. If we are right of it, go left
+
+            //int xTile = containingLevel.GetTileIndexFromXPos(getX());
+            //setVelocityX(Constants.AI_MAX_SPEED_X * ((xTile < moveTo.X) ? 1 : -1));
+
+
+            //Dynamic seek
+            Vector2 myTile = new Vector2(containingLevel.GetTileIndexFromXPos(getX()), containingLevel.GetTileIndexFromYPos(getY()));
+            Vector2 desiredVel = moveTo - myTile;
+
+            if (desiredVel.Length() < 2)
+            {
+                desiredVel /= 2;
+                if (desiredVel.Length() > Constants.AI_MAX_SPEED_X)
+                {
+                    desiredVel /= desiredVel.Length();
+                }
+            }
+            else
+            {
+                desiredVel /= desiredVel.Length();
+            }
+            setVelocityX(desiredVel.X * Constants.AI_MAX_SPEED_X);
         }
 
         public override bool WantsRangeAttack()

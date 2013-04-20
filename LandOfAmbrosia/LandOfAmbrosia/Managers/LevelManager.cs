@@ -17,15 +17,15 @@ namespace LandOfAmbrosia.Managers
     /// </summary>
     class LevelManager : DrawableGameComponent
     {
-        #region Level Fields
         private Level currentLevel;
         private IList<Projectile> projectiles;
-        //Empty, Ground
-        #endregion
+
+        private bool updateCam;
 
         public LevelManager(Game game)
             : base(game)
         {
+            updateCam = true;
             currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
@@ -39,11 +39,9 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            //currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
-            currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Constants.DEFAULT_SEED);
-            currentLevel.enemies = new List<Character>();
-            currentLevel.enemies.Add(new Minion(currentLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
-                        new Vector3(4 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), currentLevel.players));
+            currentLevel = new Level(true);
+            updateCam = false;
+            //currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -95,7 +93,10 @@ namespace LandOfAmbrosia.Managers
             this.UpdateProjectiles(gameTime);
             this.UpdatePlayers(gameTime);
             this.UpdateEnemies(gameTime);
-            this.UpdateCamera();
+            if (updateCam)
+            {
+                this.UpdateCamera();
+            }
             base.Update(gameTime);
         }
 
@@ -154,7 +155,7 @@ namespace LandOfAmbrosia.Managers
 
         private void UpdateEnemies(GameTime gameTime)
         {
-            // TODO Only update the stuff that is in range...even my computer can't handle all of them. Same with draw
+            // TODO Only update the stuff that is in range...even my computer can't handle all of them,with sys.out calls. Same with draw
             IList<Character> remainingHack = new List<Character>();
             foreach (Character enemy in currentLevel.enemies)
             {

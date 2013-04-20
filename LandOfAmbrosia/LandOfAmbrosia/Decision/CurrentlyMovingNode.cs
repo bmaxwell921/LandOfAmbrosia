@@ -10,7 +10,9 @@ namespace LandOfAmbrosia.Decision
         public override Common.AI_STATE chooseAction(Characters.Minion m)
         {
             //Basically stopped
-            return (m.velocity.Length() <= 0.01) ? Common.AI_STATE.NO : Common.AI_STATE.CONTINUE_MOVE;
+            //return (m.velocity.Length() <= 0.01) ? Common.AI_STATE.NO : Common.AI_STATE.CONTINUE_MOVE;
+
+            return m.closeTo(m.idleTimeTarget) ? Common.AI_STATE.NO : Common.AI_STATE.YES;
         }
     }
 }

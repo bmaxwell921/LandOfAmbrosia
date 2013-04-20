@@ -37,7 +37,7 @@ namespace LandOfAmbrosia.Decision
             //Check if the closest player is within 20 blocks
             if (m.containingLevel.players.Count == 0)
             {
-                m.gotoIdleState();
+                //m.gotoIdleState();
                 return false;
             }
 

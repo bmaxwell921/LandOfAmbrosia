@@ -35,14 +35,31 @@ namespace LandOfAmbrosia.Levels
         {
         }
 
-        public Level(bool testConstructor) : this(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT)
+        public Level(bool testConstructor)
         {
+            players = new List<Character>();
+            enemies = new List<Character>();
+            this.width = 16;
+            this.height = 16;
+            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
             TestLevelSetUp();
         }
 
         //Just for testing, obviously
         private void TestLevelSetUp()
         {
+            this.tiles = new Tile[width, height];
+
+            for (int i = 0; i < width; ++i)
+            {
+                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                    new Vector3(i * Constants.TILE_SIZE, 0 * Constants.TILE_SIZE, 0)));
+            }
+
+            enemies.Add(new Minion(this, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
+            new Vector3(14 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), this.players));
+
+            //players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));  
         }
 
         /// <summary>
@@ -179,6 +196,30 @@ namespace LandOfAmbrosia.Levels
                     enemy.Draw(c);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a list of vertices that will get someone from the starting location to the ending location.
+        /// These points should represent the top left corner of a tile
+        /// 
+        /// M      1 (this row is height 2, because of tile size, width from 0 to 14)
+        /// PPPPPPPP (this row is height 0, width from 0 to 14)
+        /// 
+        /// Returned path should be {(2,2), (3,2), (4,2), (5,2), (6,2), (7,2)}
+        /// The numbers are UNCONVERTED!!!
+        /// </summary>
+        /// <param name="startLoc"></param>
+        /// <param name="endLoc"></param>
+        /// <returns></returns>
+        public IList<Vector2> calculatePath(Vector3 startLoc, Vector3 endLoc)
+        {
+            IList<Vector2> path = new List<Vector2>();
+            /*
+             * Perform A* (Might be able to get away with a heuristic dfs. Heuristic based off straightline distance) to find the shortest path. Have a get neighbors method that 
+             * returns the 3x3 neighbor hood of a tile? Valid edges are only those that are empty.
+             */ 
+
+            return path;
         }
     }
 }

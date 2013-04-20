@@ -11,7 +11,7 @@ namespace LandOfAmbrosia.Levels
 {
     class Tile : ICollidable
     {
-        //Just the indices into the array
+        //3D location, UNCONVERTED
         public Vector3 location;
         public Model model;
         public int width
@@ -39,6 +39,7 @@ namespace LandOfAmbrosia.Levels
         {
             //Location is the actual location in 3D space
             this.location = location;
+            //this.location = Constants.ConvertToXNAScene(location);
             this.model = model;
         }
 
@@ -88,13 +89,11 @@ namespace LandOfAmbrosia.Levels
 
         public float getX()
         {
-            //return Constants.UnconvertFromXNAScene(location).X;
             return location.X;
         }
 
         public float getY()
         {
-            //return Constants.UnconvertFromXNAScene(location).Y;
             return location.Y;
         }
     }
