@@ -30,6 +30,7 @@ namespace LandOfAmbrosia
         public Weapon rangeWeapon;
 
         public StatBox stats;
+        public Level containingLevel;
 
         public Character(Level currentLevel, Model model, Vector3 speed, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon)
         {
@@ -39,6 +40,7 @@ namespace LandOfAmbrosia
             this.meleeWeapon = meleeWeapon;
             this.rangeWeapon = rangeWeapon;
             this.onGround = false;
+            containingLevel = currentLevel;
             SetUpStats();
         }
 

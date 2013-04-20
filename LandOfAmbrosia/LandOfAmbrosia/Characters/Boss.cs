@@ -23,14 +23,19 @@ namespace LandOfAmbrosia.Characters
             throw new NotImplementedException();
         }
 
-        protected override void UpdateState(GameTime gameTime)
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        public override Weapons.Projectile rangeAttack(GameTime gameTime, Character closestEnemy)
         {
             throw new NotImplementedException();
         }
 
-        protected override void MakeDecision()
+        public override bool WantsRangeAttack()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

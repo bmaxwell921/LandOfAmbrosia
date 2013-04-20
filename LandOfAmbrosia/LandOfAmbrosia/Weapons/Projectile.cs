@@ -107,7 +107,7 @@ namespace LandOfAmbrosia.Weapons
 
         protected virtual void CheckKill()
         {
-            //Velocity goes to 0 when we  get close to the guy, so if the velocity is really small let's just say it's good enough
+            //Velocity goes to 0 when we get close to the guy, so if the velocity is really small let's just say it's good enough
             if (velocity.Length() <= 0.01)
             {
                 timeToDie = true;
@@ -144,7 +144,8 @@ namespace LandOfAmbrosia.Weapons
 
         public virtual Matrix GetWorld()
         {
-            return Matrix.CreateTranslation(position);
+            Vector3 hackedPos = Constants.ConvertToXNAScene(Constants.UnconvertFromXNAScene(position) + Constants.MINION_POSITION_HACK);
+            return Matrix.CreateTranslation(hackedPos);
         }
     }
 }

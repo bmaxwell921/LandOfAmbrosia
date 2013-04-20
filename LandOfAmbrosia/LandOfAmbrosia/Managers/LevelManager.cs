@@ -39,7 +39,11 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
+            //currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Environment.TickCount);
+            currentLevel = LevelGenerator.GenerateNewLevel(8, 8, Constants.DEFAULT_SEED);
+            currentLevel.enemies = new List<Character>();
+            currentLevel.enemies.Add(new Minion(currentLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
+                        new Vector3(4 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), currentLevel.players));
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -112,20 +116,10 @@ namespace LandOfAmbrosia.Managers
         private bool ProjectileTileCollision(Projectile proj)
         {
             Vector3 position = Constants.UnconvertFromXNAScene(proj.position);
-             //Get the four corners of the model and check those tile locations for objects
             IList<Vector3> cornerPositions = new List<Vector3>();
 
             //Top left corner
             cornerPositions.Add(new Vector3(position.X, position.Y, position.Z));
-
-            ////Top right corner
-            //cornerPositions.Add(new Vector3(position.X + proj.width, position.Y, position.Z));
-
-            ////Bottom left corner
-            //cornerPositions.Add(new Vector3(position.X, position.Y - proj.height, position.Z));
-
-            ////Bottom right corner
-            //cornerPositions.Add(new Vector3(position.X + proj.width, position.Y - proj.height, position.Z));
 
             for (int i = 0; i < cornerPositions.Count; ++i)
             {
@@ -160,14 +154,15 @@ namespace LandOfAmbrosia.Managers
 
         private void UpdateEnemies(GameTime gameTime)
         {
+            // TODO Only update the stuff that is in range...even my computer can't handle all of them. Same with draw
             IList<Character> remainingHack = new List<Character>();
             foreach (Character enemy in currentLevel.enemies)
             {
                 if (enemy != null && !enemy.isDead())
                 {
                     remainingHack.Add(enemy);
-                    this.UpdateCharacter(enemy, gameTime);
                     enemy.Update(gameTime);
+                    this.UpdateCharacter(enemy, gameTime);
                 }
             }
             currentLevel.enemies = remainingHack;
@@ -259,8 +254,9 @@ namespace LandOfAmbrosia.Managers
             //Check if they attacked with a projectile and add it if they did
             if (character.WantsRangeAttack())
             {
-
-                Projectile proj = character.rangeAttack(gameTime, GetClosestEnemy(character));
+                //Ai characters will handle knowing who to attack, so don't bother passing in a value.
+                //TODO now that the players have a reference to the level they can find the closest enemy themselves
+                Projectile proj = character.rangeAttack(gameTime, character is AICharacter ? null : GetClosestEnemy(character));
                 if (proj != null)
                 {
                     projectiles.Add(proj);

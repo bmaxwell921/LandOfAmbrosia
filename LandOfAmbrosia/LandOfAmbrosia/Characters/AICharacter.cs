@@ -6,43 +6,65 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Levels;
+using LandOfAmbrosia.Decision;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia.Characters
 {
     abstract class AICharacter : Character
     {
-        #region Constants
-        public static Vector3 DEFAULT_SPEED = new Vector3(-5f, 0, 0);
-        #endregion
+        // This Ai's target
+        public Character target;
 
-        protected enum AIState { ATTACKING, PATROLLING, NONE }
+        //The sequence of points that will take this ai to the target's last known location
+        //public IList<Vector3> moveToPoints;
+        public Queue<Vector3> pathToTarget;
 
-        protected AIState currentState;
+        public Vector3 idleTimeTarget;
+
+        //This controlls how often enemies 'patrol'
+        public static readonly int IDLE_TIME = 5000;
+
+        public int lastMoved;
+
+        public Random gen;
+
+        public AI_STATE curState;
+
+        protected DecisionTree dt;
 
         public AICharacter(Level level, Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, IList<Character> players)
-            : base(level, model, DEFAULT_SPEED, position, meleeWeapon, rangeWeapon)
+            : base(level, model, Vector3.Zero, position, meleeWeapon, rangeWeapon)
         {
-            currentState = AIState.NONE;
-        }
-        public override void Update(GameTime gameTime)
-        {
-            UpdateState(gameTime);
-            MakeDecision();
+            target = null;
+            //moveToPoints = new List<Vector3>();
+            gen = new Random();
+            this.gotoIdleState();
         }
 
-        protected abstract void UpdateState(GameTime gameTime);
-
-        protected abstract void MakeDecision();
-
-        public override Projectile rangeAttack(GameTime gametime, Character closestEnemy)
+        public void gotoIdleState()
         {
-            return null;
+            //TODO
+            pathToTarget = null;
+            target = null;
+            //Chooses a random position within the chunk for this ai to move to, then sets it as the idleTimeTarget
+            curState = AI_STATE.WAIT;
         }
 
-        public override bool WantsRangeAttack()
+        protected void chooseNewIdlePoint()
         {
-            return false;
+            //TODO
         }
+
+        //public override Projectile rangeAttack(GameTime gametime, Character closestEnemy)
+        //{
+        //    return null;
+        //}
+
+        //public override bool WantsRangeAttack()
+        //{
+        //    return false;
+        //}
 
         public override void meleeAttack(GameTime gameTime)
         {

@@ -29,7 +29,8 @@ namespace LandOfAmbrosia.Weapons
 
         protected override void UpdateTarget()
         {
-            this.targetPosition = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK : Constants.UnconvertFromXNAScene(target.position);
+            //this.targetPosition = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK : Constants.UnconvertFromXNAScene(target.position);
+            this.targetPosition = Constants.UnconvertFromXNAScene(target.position);
         }
 
         protected override void CheckKill()

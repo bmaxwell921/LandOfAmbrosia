@@ -11,6 +11,10 @@ namespace LandOfAmbrosia.Common
     public enum ATTACK_TYPE { MELEE, RANGE, MAGIC, NONE};
     public enum JUMP_STATE { JUMP, DOUBLE_JUMP, FALLING, NONE };
 
+    //I don't like this, but this enum is being used for both the ai state and the decision tree traversal
+    public enum AI_STATE { NO, YES, 
+        WAIT, NEW_MOVE, CONTINUE_MOVE, CALC_PATH, FOLLOW_PATH, ATTACK };
+
     class Constants
     {
         #region Level Character Reps
@@ -61,6 +65,7 @@ namespace LandOfAmbrosia.Common
         //Character stuff
         public static readonly int DEFAULT_MAX_HEALTH = 100;
         public static readonly float MAX_SPEED_X = 0.25f;
+        public static readonly float AI_MAX_SPEED_X = 0.15f;
         public static readonly Matrix scale = Matrix.CreateScale(1);
 
         public static readonly float CHARACTER_WIDTH = 0.32f;
@@ -69,6 +74,10 @@ namespace LandOfAmbrosia.Common
         public static readonly char MAGIC_CHAR = 'm';
         public static readonly Vector3 MINION_POSITION_HACK = new Vector3(1, -1, 0);
         public static readonly int DEFAULT_MINION_HEALTH = 50;
+
+        //Minions can "see" for 10 blocks
+        public static readonly int MINION_SIGHT = 10;
+        public static readonly int MINION_ATTACK_RANGE = 5;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 128;
