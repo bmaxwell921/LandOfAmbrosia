@@ -92,7 +92,7 @@ namespace LandOfAmbrosia.Managers
         {
             this.UpdateProjectiles(gameTime);
             this.UpdatePlayers(gameTime);
-            //this.UpdateEnemies(gameTime);
+            this.UpdateEnemies(gameTime);
             if (updateCam)
             {
                 this.UpdateCamera();
@@ -155,14 +155,15 @@ namespace LandOfAmbrosia.Managers
 
         private void UpdateEnemies(GameTime gameTime)
         {
-            // TODO Only update the stuff that is in range...even my computer can't handle all of them,with sys.out calls. Same with draw
             IList<Character> remainingHack = new List<Character>();
             foreach (Character enemy in currentLevel.enemies)
             {
                 if (enemy != null && !enemy.isDead())
                 {
                     remainingHack.Add(enemy);
-                    enemy.Update(gameTime);
+                    if (Constants.InRange(enemy, ((LandOfAmbrosiaGame)Game).camera)) {
+                        enemy.Update(gameTime);
+                    }
                     this.UpdateCharacter(enemy, gameTime);
                 }
             }

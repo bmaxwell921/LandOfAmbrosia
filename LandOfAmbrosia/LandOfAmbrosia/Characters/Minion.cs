@@ -50,7 +50,7 @@ namespace LandOfAmbrosia.Characters
             base.Update(gameTime);
             wantsRange = false;
             AI_STATE decision = dt.evaluateTree(this);
-            Console.WriteLine("Minion decided to: " + decision);
+            //Console.WriteLine("Minion decided to: " + decision);
 
             if (decision == AI_STATE.CONTINUE_MOVE)
             {
@@ -72,6 +72,8 @@ namespace LandOfAmbrosia.Characters
             else if (decision == AI_STATE.ATTACK)
             {
                 wantsRange = true;
+                setVelocityX(0);
+                setVelocityY(0);
             }
             else if (decision == AI_STATE.FOLLOW_PATH)
             {
@@ -88,12 +90,12 @@ namespace LandOfAmbrosia.Characters
             else if (decision == AI_STATE.CALC_PATH)
             {
                 // Ask the currentLevel for a path to the target
-                IList<Vector2> path = containingLevel.calculatePath(Constants.UnconvertFromXNAScene(position), Constants.UnconvertFromXNAScene(target.position));
-                pathToTarget.Clear();
-                foreach (Vector2 point in path)
-                {
-                    pathToTarget.Enqueue(point);
-                }
+                //IList<Vector2> path = containingLevel.calculatePath(Constants.UnconvertFromXNAScene(position), Constants.UnconvertFromXNAScene(target.position));
+                //pathToTarget.Clear();
+                //foreach (Vector2 point in path)
+                //{
+                //    pathToTarget.Enqueue(point);
+                //}
             }
         }
 
@@ -105,7 +107,7 @@ namespace LandOfAmbrosia.Characters
             //If the target is in terms of grid location, we can just check to see if we're in the same tile
             int tileX = containingLevel.GetTileIndexFromXPos(getX());
             int tileY = containingLevel.GetTileIndexFromYPos(getY());
-
+            //Console.WriteLine("Checking if we're close to: " + targetPos + " And we're at: " + new Vector2(tileX, tileY));
             return new Vector2(tileX, tileY) == targetPos;
         }
 

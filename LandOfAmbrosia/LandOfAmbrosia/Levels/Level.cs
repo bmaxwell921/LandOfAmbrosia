@@ -57,9 +57,9 @@ namespace LandOfAmbrosia.Levels
             }
 
             enemies.Add(new Minion(this, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
-            new Vector3(14 * Constants.TILE_SIZE, 1 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), this.players));
+                new Vector3(14 * Constants.TILE_SIZE, 4 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), this.players));
 
-            //players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));  
+            players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));  
         }
 
         /// <summary>
@@ -166,12 +166,17 @@ namespace LandOfAmbrosia.Levels
             {
                 for (int j = 0; j < height; ++j)
                 {
-                    if (tiles[i, j] != null)
+                    if (tiles[i, j] != null && tileInRange(i, c))
                     {
                         tiles[i, j].Draw(c);
                     }
                 }
             }
+        }
+
+        private bool tileInRange(int i, CameraComponent c)
+        {
+            return (i * Constants.TILE_SIZE) - c.Position.X < Constants.TILE_SIZE * 30;
         }
 
         //Draws the players
@@ -191,7 +196,7 @@ namespace LandOfAmbrosia.Levels
         {
             foreach (Character enemy in enemies)
             {
-                if (enemy != null)
+                if (enemy != null && Constants.InRange(enemy, c))
                 {
                     enemy.Draw(c);
                 }

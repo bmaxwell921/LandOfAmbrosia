@@ -53,7 +53,7 @@ namespace LandOfAmbrosia.Characters
             //TODO should this be WAIT? Does it matter? Update might just overwrite it anyway...
             curState = AI_STATE.WAIT;
 
-            chooseNewIdlePoint();
+            //chooseNewIdlePoint();
         }
 
         protected void chooseNewIdlePoint()
@@ -104,8 +104,11 @@ namespace LandOfAmbrosia.Characters
                 }
             }
 
-            //Now we have all the tiles that are on the top, so we can choose a random one to move to.
-            idleTimeTarget = closeTopTiles.ElementAt(gen.Next(closeTopTiles.Count));
+            if (closeTopTiles.Count != 0)
+            {
+                //Now we have all the tiles that are on the top, so we can choose a random one to move to.
+                idleTimeTarget = closeTopTiles.ElementAt(gen.Next(closeTopTiles.Count));
+            }
         }
 
         public override void meleeAttack(GameTime gameTime)
