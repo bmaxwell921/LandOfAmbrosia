@@ -219,16 +219,29 @@ namespace LandOfAmbrosia.Levels
         public IList<Vector2> calculatePath(Vector3 startLoc, Vector3 endLoc)
         {
             IList<Vector2> path = new List<Vector2>();
-            /*
-             * Perform A* (Might be able to get away with a heuristic dfs. Heuristic based off straightline distance) to find the shortest path. Have a get neighbors method that 
-             * returns the 3x3 neighbor hood of a tile? Valid edges are only those that are empty.
-             */
             PriorityQueue<float, Vector2> pq = new PriorityQueue<float, Vector2>(10, new Comparator());
+
+            //Key is a node, value is the parent of the node?
             IDictionary<Vector2, Vector2> parents = new Dictionary<Vector2, Vector2>();
+            //IDictionary<Vector2, float> closedSet = new Dictionary<Vector2, float>();
+            ISet<Vector2> closedSet = new HashSet<Vector2>();
 
             Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y));
             Vector2 endTile = new Vector2(GetTileIndexFromXPos(endLoc.X), GetTileIndexFromYPos(endLoc.Y));
-            pq.Enqueue(heuristic(startTile, endTile), startTile);
+
+            float h = heuristic(startTile, endTile);
+            foreach (Vector2 neighbor in getEmptyNeighborsOf(startTile))
+            {
+                pq.Enqueue(heuristic(neighbor, endTile) + h, neighbor);
+                parents.Add(neighbor, startTile);
+            }
+
+            closedSet.Add(startTile);
+
+            while (!pq.IsEmpty)
+            {
+                
+            }
 
             return path;
         }
@@ -242,31 +255,56 @@ namespace LandOfAmbrosia.Levels
         {
             public int Compare(float lhs, float rhs)
             {
-                //float lhsDist = Math.Abs(Vector2.Distance(lhs, target));
-                //float rhsDist = Math.Abs(Vector2.Distance(rhs, target));
-
-                //return (int)(lhsDist - rhsDist);
                 return (int) (lhs - rhs);
             }
         }
 
         //Gets the empty neighbors of a given tile location in the array
+        //Only gets north, south, east, and west. No diagonals
         private IList<Vector2> getEmptyNeighborsOf(Vector2 tile)
         {
+            //Lol how do we handle holes in the ground?
             IList<Vector2> neigh = new List<Vector2>();
 
-            for (int i = (int) tile.X - 1; i < (int) tile.X + 1; ++i)
-            {
-                for (int j = (int) tile.Y - 1; j < (int) tile.Y + 1; ++j)
-                {
-                    if (i >= 0 && i < width && j >= 0 && j < height && tiles[i,j] == null)
-                    {
-                        neigh.Add(new Vector2(i, j));
-                    }
-                }
-            }
+            //for (int i = (int) tile.X - 1; i < (int) tile.X + 1; ++i)
+            //{
+            //    for (int j = (int) tile.Y - 1; j < (int) tile.Y + 1; ++j)
+            //    {
+            //        if (i >= 0 && i < width && j >= 0 && j < height && tiles[i,j] == null)
+            //        {
+            //            neigh.Add(new Vector2(i, j));
+            //        }
+            //    }
+            //}
 
+            Vector2 north = new Vector2(tile.X, tile.Y + 1);
+            Vector2 south = new Vector2(tile.X, tile.Y - 1);
+            Vector2 east = new Vector2(tile.X - 1, tile.Y);
+            Vector2 west = new Vector2(tile.X + 1, tile.Y);
+
+            //Only want empty tiles
+            if (tiles[(int)north.X, (int)north.Y] == null && !isOB(north))
+            {
+                neigh.Add(north);
+            }
+            if (tiles[(int)south.X, (int)south.Y] == null && !isOB(south))
+            {
+                neigh.Add(south);
+            }
+            if (tiles[(int)east.X, (int)east.Y] == null && !isOB(east))
+            {
+                neigh.Add(east);
+            }
+            if (tiles[(int)west.X, (int)west.Y] == null && !isOB(west))
+            {
+                neigh.Add(west);
+            }
             return neigh;
+        }
+
+        private bool isOB(Vector2 tileIndex)
+        {
+            return tileIndex.X < 0 || tileIndex.X >= width || tileIndex.Y < 0 || tileIndex.Y >= height;
         }
     }
 }
