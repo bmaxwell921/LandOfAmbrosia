@@ -43,6 +43,7 @@ namespace LandOfAmbrosia.Characters
             //moveToPoints = new List<Vector3>();
             gen = new Random();
             this.gotoIdleState();
+            this.chooseNewIdlePoint();
         }
 
         public void gotoIdleState()
@@ -52,13 +53,11 @@ namespace LandOfAmbrosia.Characters
 
             //TODO should this be WAIT? Does it matter? Update might just overwrite it anyway...
             curState = AI_STATE.WAIT;
-
-            //chooseNewIdlePoint();
         }
 
         protected void chooseNewIdlePoint()
         {
-            // What if this gets all the top platforms within a 4 tile range and randomly chooses one of them to move on top of?
+            // TODO have the minion choose between 4 - 6 tiles away from it's current location 
 
             //This is going to be a list of grid indicies
             IList<Vector2> allCloseTiles = new List<Vector2>();

@@ -10,9 +10,6 @@ namespace LandOfAmbrosia.Characters
 {
     class Boss : AICharacter
     {
-        public const int DEFAULT_BOSS_HEALTH = 500;
-
-
         public Boss(Level level, Model model, Vector3 position, IList<Character> players)
             : base(level, model, position, null, null, players)
         {

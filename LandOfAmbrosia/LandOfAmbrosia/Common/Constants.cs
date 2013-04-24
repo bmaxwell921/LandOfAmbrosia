@@ -76,8 +76,8 @@ namespace LandOfAmbrosia.Common
         public static readonly int DEFAULT_MINION_HEALTH = 50;
 
         //Minions can "see" for 10 blocks
-        public static readonly int MINION_SIGHT = 10;
-        public static readonly int MINION_ATTACK_RANGE = 5;
+        public static readonly int MINION_SIGHT = 5;
+        public static readonly int MINION_ATTACK_RANGE = 3;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 128;

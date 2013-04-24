@@ -78,14 +78,14 @@ namespace LandOfAmbrosia.Characters
             else if (decision == AI_STATE.FOLLOW_PATH)
             {
                 // We already have a path to the target, so move to the closets point
-                Vector2 targetPoint = pathToTarget.Peek();
-                //If we are already close to the first spot in the path, pop it off and move to the next one
-                if (closeTo(targetPoint))
-                {
-                    pathToTarget.Dequeue();
-                    moveToPoint(pathToTarget.Peek());
-                }
-                moveToPoint(targetPoint);
+                //Vector2 targetPoint = pathToTarget.Peek();
+                ////If we are already close to the first spot in the path, pop it off and move to the next one
+                //if (closeTo(targetPoint))
+                //{
+                //    pathToTarget.Dequeue();
+                //    moveToPoint(pathToTarget.Peek());
+                //}
+                //moveToPoint(targetPoint);
             }
             else if (decision == AI_STATE.CALC_PATH)
             {
@@ -102,8 +102,6 @@ namespace LandOfAmbrosia.Characters
         public bool closeTo(Vector2 targetPos)
         {
             //Let's say we are close to the point if we are within a tile from it
-            //return Vector2.Distance(new Vector2(getX(), getY()), targetPos) < Constants.TILE_SIZE;
-
             //If the target is in terms of grid location, we can just check to see if we're in the same tile
             int tileX = containingLevel.GetTileIndexFromXPos(getX());
             int tileY = containingLevel.GetTileIndexFromYPos(getY());
@@ -113,13 +111,6 @@ namespace LandOfAmbrosia.Characters
 
         private void moveToPoint(Vector2 moveTo)
         {
-            // Dynamic seek here? Just does left right
-            //Check where I am compared to moveTo. If we are left of it, go right. If we are right of it, go left
-
-            //int xTile = containingLevel.GetTileIndexFromXPos(getX());
-            //setVelocityX(Constants.AI_MAX_SPEED_X * ((xTile < moveTo.X) ? 1 : -1));
-
-
             //Dynamic seek
             Vector2 myTile = new Vector2(containingLevel.GetTileIndexFromXPos(getX()), containingLevel.GetTileIndexFromYPos(getY()));
             Vector2 desiredVel = moveTo - myTile;
@@ -136,6 +127,7 @@ namespace LandOfAmbrosia.Characters
             {
                 desiredVel /= desiredVel.Length();
             }
+            //Console.WriteLine("Setting velocity as: " + desiredVel.X * Constants.AI_MAX_SPEED_X);
             setVelocityX(desiredVel.X * Constants.AI_MAX_SPEED_X);
         }
 

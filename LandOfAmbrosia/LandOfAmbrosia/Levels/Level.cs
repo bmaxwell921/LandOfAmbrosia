@@ -222,9 +222,51 @@ namespace LandOfAmbrosia.Levels
             /*
              * Perform A* (Might be able to get away with a heuristic dfs. Heuristic based off straightline distance) to find the shortest path. Have a get neighbors method that 
              * returns the 3x3 neighbor hood of a tile? Valid edges are only those that are empty.
-             */ 
+             */
+            PriorityQueue<float, Vector2> pq = new PriorityQueue<float, Vector2>(10, new Comparator());
+            IDictionary<Vector2, Vector2> parents = new Dictionary<Vector2, Vector2>();
+
+            Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y));
+            Vector2 endTile = new Vector2(GetTileIndexFromXPos(endLoc.X), GetTileIndexFromYPos(endLoc.Y));
+            pq.Enqueue(heuristic(startTile, endTile), startTile);
 
             return path;
+        }
+
+        private float heuristic(Vector2 destination, Vector2 currentLoc)
+        {
+            return Math.Abs(Vector2.Distance(destination, currentLoc));
+        }
+
+        class Comparator : IComparer<float>
+        {
+            public int Compare(float lhs, float rhs)
+            {
+                //float lhsDist = Math.Abs(Vector2.Distance(lhs, target));
+                //float rhsDist = Math.Abs(Vector2.Distance(rhs, target));
+
+                //return (int)(lhsDist - rhsDist);
+                return (int) (lhs - rhs);
+            }
+        }
+
+        //Gets the empty neighbors of a given tile location in the array
+        private IList<Vector2> getEmptyNeighborsOf(Vector2 tile)
+        {
+            IList<Vector2> neigh = new List<Vector2>();
+
+            for (int i = (int) tile.X - 1; i < (int) tile.X + 1; ++i)
+            {
+                for (int j = (int) tile.Y - 1; j < (int) tile.Y + 1; ++j)
+                {
+                    if (i >= 0 && i < width && j >= 0 && j < height && tiles[i,j] == null)
+                    {
+                        neigh.Add(new Vector2(i, j));
+                    }
+                }
+            }
+
+            return neigh;
         }
     }
 }

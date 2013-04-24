@@ -123,6 +123,7 @@
     <Compile Include="Logic\LevelGenerator.cs" />
     <Compile Include="Logic\LevelReader.cs" />
     <Compile Include="Logic\AssetUtil.cs" />
+    <Compile Include="Logic\PriorityQueue.cs" />
     <Compile Include="Managers\IManagable.cs" />
     <Compile Include="Managers\LevelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

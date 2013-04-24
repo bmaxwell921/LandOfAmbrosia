@@ -6,12 +6,6 @@ Content\Skybox\skybox_front.xnb
 Content\Skybox\skybox_back.xnb
 Content\Skybox\skybox_top.xnb
 Content\Skybox\skybox2.xnb
-Content\Skybox\SkyBox_Top_0.xnb
-Content\Skybox\SkyBox_Right_0.xnb
-Content\Skybox\SkyBox_Left_0.xnb
-Content\Skybox\SkyBox_Front_0.xnb
-Content\Skybox\SkyBox_Back_0.xnb
-Content\Skybox\SkyBox_Bottom_0.xnb
 Content\Models\minion3.xnb
 Content\Models\platform.xnb
 Content\Models\minion7.xnb
@@ -21,3 +15,9 @@ Content\Models\player1.xnb
 Content\Models\player2.xnb
 Content\Models\magic.xnb
 Content\Models\magicBig.xnb
+Content\Skybox\SkyBox_Top_0.xnb
+Content\Skybox\SkyBox_Right_0.xnb
+Content\Skybox\SkyBox_Left_0.xnb
+Content\Skybox\SkyBox_Front_0.xnb
+Content\Skybox\SkyBox_Back_0.xnb
+Content\Skybox\SkyBox_Bottom_0.xnb
