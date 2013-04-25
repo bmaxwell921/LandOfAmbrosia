@@ -7,7 +7,6 @@ namespace LandOfAmbrosia.Decision
 {
     class ContinueMoveNode : ADecisionTreeNode
     {
-
         public override Common.AI_STATE chooseAction(Characters.Minion m)
         {
             return Common.AI_STATE.CONTINUE_MOVE;

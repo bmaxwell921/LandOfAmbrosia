@@ -12,7 +12,8 @@ namespace LandOfAmbrosia.Decision
         private bool chooseNextNode(Minion m)
         {
             //We have a path to the target if the queue is not null
-            return m.pathToTarget != null;
+            //???
+            return m.pathToTarget.Count != 0;// && !m.closeTo(m.pathToTarget.Peek());
         }
 
         public override AI_STATE chooseAction(Minion m)

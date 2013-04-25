@@ -40,7 +40,7 @@ namespace LandOfAmbrosia.Characters
             : base(level, model, Vector3.Zero, position, meleeWeapon, rangeWeapon)
         {
             target = null;
-            //moveToPoints = new List<Vector3>();
+            pathToTarget = new Queue<Vector2>();
             gen = new Random();
             this.gotoIdleState();
             this.chooseNewIdlePoint();
@@ -48,9 +48,7 @@ namespace LandOfAmbrosia.Characters
 
         public void gotoIdleState()
         {
-            pathToTarget = null;
             target = null;
-
             //TODO should this be WAIT? Does it matter? Update might just overwrite it anyway...
             curState = AI_STATE.WAIT;
         }

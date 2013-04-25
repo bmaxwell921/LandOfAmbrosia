@@ -210,7 +210,8 @@ namespace LandOfAmbrosia.Levels
         /// M      1 (this row is height 2, because of tile size, width from 0 to 14)
         /// PPPPPPPP (this row is height 0, width from 0 to 14)
         /// 
-        /// Returned path should be {(2,2), (3,2), (4,2), (5,2), (6,2), (7,2)}
+        /// Returned path should be {(1, 2), (2,2), (3,2), (4,2), (5,2), (6,2), (7,2)} 
+        /// As in we don't get the starting location (because we're already there), but we do have the ending location
         /// The numbers are UNCONVERTED!!!
         /// </summary>
         /// <param name="startLoc"></param>
@@ -219,27 +220,91 @@ namespace LandOfAmbrosia.Levels
         public IList<Vector2> calculatePath(Vector3 startLoc, Vector3 endLoc)
         {
             IList<Vector2> path = new List<Vector2>();
+
+            //Duplicate datastructures of the open set so we have constant time look up and logn time 
+            //finding of the minimum prio
             PriorityQueue<float, Vector2> pq = new PriorityQueue<float, Vector2>(10, new Comparator());
+            IDictionary<Vector2, float> openSet = new Dictionary<Vector2, float>();
 
-            //Key is a node, value is the parent of the node?
             IDictionary<Vector2, Vector2> parents = new Dictionary<Vector2, Vector2>();
-            //IDictionary<Vector2, float> closedSet = new Dictionary<Vector2, float>();
-            ISet<Vector2> closedSet = new HashSet<Vector2>();
+            IDictionary<Vector2, float> closedSet = new Dictionary<Vector2, float>();
 
-            Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y));
-            Vector2 endTile = new Vector2(GetTileIndexFromXPos(endLoc.X), GetTileIndexFromYPos(endLoc.Y));
+            Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y) - 1);
+            Vector2 endTile = new Vector2(GetTileIndexFromXPos(endLoc.X), GetTileIndexFromYPos(endLoc.Y) - 1);
 
             float h = heuristic(startTile, endTile);
-            foreach (Vector2 neighbor in getEmptyNeighborsOf(startTile))
-            {
-                pq.Enqueue(heuristic(neighbor, endTile) + h, neighbor);
-                parents.Add(neighbor, startTile);
-            }
+            pq.Enqueue(h, startTile);
+            openSet.Add(startTile, h);
+            //foreach (Vector2 neighbor in getEmptyNeighborsOf(startTile))
+            //{
+            //    float f = heuristic(neighbor, endTile) + h;
+            //    pq.Enqueue(f, neighbor);
+            //    openSet.Add(neighbor, f);
+            //    parents.Add(neighbor, startTile);
+            //}
 
-            closedSet.Add(startTile);
 
             while (!pq.IsEmpty)
             {
+                KeyValuePair<float, Vector2> min = pq.Dequeue();
+                closedSet.Add(min.Value, min.Key);
+                if (min.Value == endTile)
+                {
+                    //Found the end!
+                    break;
+                }
+                foreach (Vector2 neighbor in getEmptyNeighborsOf(min.Value))
+                {
+                    if (closedSet.ContainsKey(neighbor))
+                    {
+                        //Do nothing
+                    }
+                    else
+                    {
+                        if (!openSet.ContainsKey(neighbor))
+                        {
+                            h = heuristic(neighbor, endTile);
+                            pq.Enqueue(h + min.Key, neighbor);
+                            openSet.Add(neighbor, h + min.Key);
+                            parents.Add(neighbor, min.Value);
+                        }
+                        else
+                        {
+                            float currentWeight = openSet[neighbor];
+                            //We need to update the path, cause what we found is better
+                            if (currentWeight > h + min.Key)
+                            {
+                                parents[neighbor] = min.Value;
+                                pq.Remove(new KeyValuePair<float, Vector2>(openSet[neighbor], neighbor));
+                                pq.Enqueue(h + min.Key, neighbor);
+                                openSet[neighbor] = h + min.Key;
+                            }
+                        }
+                    }
+                }
+            }
+
+            IList<Vector2> backwardList = new List<Vector2>();
+            //Follow the parent pointers backward, if we found the target...which should always happen
+            if (!pq.IsEmpty)
+            {
+                //Fill in the path by following the parents, then reverse the list
+                bool done = false;
+                Vector2 cur = endTile;
+                while (!done)
+                {
+                    backwardList.Add(cur);
+                    cur = parents[cur];
+                    if (!parents.ContainsKey(cur) || cur == null)
+                    {
+                        done = true;
+                    }
+                }
+
+                for (int i = backwardList.Count - 1; i >= 0; --i)
+                {
+                    path.Add(backwardList[i]);
+                }
                 
             }
 
@@ -279,23 +344,23 @@ namespace LandOfAmbrosia.Levels
 
             Vector2 north = new Vector2(tile.X, tile.Y + 1);
             Vector2 south = new Vector2(tile.X, tile.Y - 1);
-            Vector2 east = new Vector2(tile.X - 1, tile.Y);
-            Vector2 west = new Vector2(tile.X + 1, tile.Y);
+            Vector2 west = new Vector2(tile.X - 1, tile.Y);
+            Vector2 east = new Vector2(tile.X + 1, tile.Y);
 
             //Only want empty tiles
-            if (tiles[(int)north.X, (int)north.Y] == null && !isOB(north))
+            if (!isOB(north) && tiles[(int)north.X, (int)north.Y] == null)
             {
                 neigh.Add(north);
             }
-            if (tiles[(int)south.X, (int)south.Y] == null && !isOB(south))
+            if (!isOB(south) && tiles[(int)south.X, (int)south.Y] == null)
             {
                 neigh.Add(south);
             }
-            if (tiles[(int)east.X, (int)east.Y] == null && !isOB(east))
+            if (!isOB(east) && tiles[(int)east.X, (int)east.Y] == null)
             {
                 neigh.Add(east);
             }
-            if (tiles[(int)west.X, (int)west.Y] == null && !isOB(west))
+            if (!isOB(west) && tiles[(int)west.X, (int)west.Y] == null)
             {
                 neigh.Add(west);
             }
