@@ -9,6 +9,7 @@ using LandOfAmbrosia.Stats;
 using LandOfAmbrosia.Levels;
 using LandOfAmbrosia.Decision;
 using LandOfAmbrosia.Logic;
+using Microsoft.Xna.Framework.Input;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -49,12 +50,12 @@ namespace LandOfAmbrosia.Characters
             //This should just do animation stuff...if i add it...
             base.Update(gameTime);
             wantsRange = false;
-            AI_STATE decision = dt.evaluateTree(this);
-            Console.WriteLine("Minion decided to: " + decision);
-            if (decision == AI_STATE.CALC_PATH)
+            if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
             {
-                dt.evaluateTree(this);
+                int stop;
             }
+            AI_STATE decision = dt.evaluateTree(this);
+            //Console.WriteLine("Minion decided to: " + decision);
 
             if (decision == AI_STATE.CONTINUE_MOVE)
             {
@@ -81,6 +82,10 @@ namespace LandOfAmbrosia.Characters
             }
             else if (decision == AI_STATE.FOLLOW_PATH)
             {
+                //Just reset the stuff so hopefully it doesn't mess anything up
+                idleTimeTarget = NO_IDLE;
+                lastMoved = 0;
+                lastAttacked = 0;
                 // We already have a path to the target, so move to the closets point
                 Vector2 targetPoint = pathToTarget.Peek();
                 //If we are already close to the first spot in the path, pop it off and move to the next one
@@ -89,13 +94,19 @@ namespace LandOfAmbrosia.Characters
                     pathToTarget.Dequeue();
                     //moveToPoint(pathToTarget.Peek());
                 }
-                moveToPoint(targetPoint);
+                else
+                {
+                    moveToPoint(targetPoint);
+                }
             }
             else if (decision == AI_STATE.CALC_PATH)
             {
                 // Ask the currentLevel for a path to the target
                 IList<Vector2> path = containingLevel.calculatePath(Constants.UnconvertFromXNAScene(position), Constants.UnconvertFromXNAScene(target.position));
                 pathToTarget.Clear();
+                idleTimeTarget = NO_IDLE;
+                lastMoved = 0;
+                lastAttacked = 0;
                 foreach (Vector2 point in path)
                 {
                     pathToTarget.Enqueue(point);
@@ -131,8 +142,13 @@ namespace LandOfAmbrosia.Characters
             {
                 desiredVel /= desiredVel.Length();
             }
-            //Console.WriteLine("Setting velocity as: " + desiredVel.X * Constants.AI_MAX_SPEED_X);
+            //Console.WriteLine("Setting the velocity as: " + desiredVel.X * Constants.AI_MAX_SPEED_X);
             setVelocityX(desiredVel.X * Constants.AI_MAX_SPEED_X);
+
+            if (myTile.Y < moveTo.Y)
+            {
+                jump(false);
+            }
         }
 
         public override bool WantsRangeAttack()

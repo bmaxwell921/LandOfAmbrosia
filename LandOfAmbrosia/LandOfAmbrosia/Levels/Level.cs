@@ -229,7 +229,8 @@ namespace LandOfAmbrosia.Levels
             IDictionary<Vector2, Vector2> parents = new Dictionary<Vector2, Vector2>();
             IDictionary<Vector2, float> closedSet = new Dictionary<Vector2, float>();
 
-            Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y) - 1);
+            //Starts are always where the minion is...and we need to not subtract 1 for them...
+            Vector2 startTile = new Vector2(GetTileIndexFromXPos(startLoc.X), GetTileIndexFromYPos(startLoc.Y));
             Vector2 endTile = new Vector2(GetTileIndexFromXPos(endLoc.X), GetTileIndexFromYPos(endLoc.Y) - 1);
 
             float h = heuristic(startTile, endTile);

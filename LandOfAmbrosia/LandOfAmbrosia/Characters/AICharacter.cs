@@ -13,6 +13,7 @@ namespace LandOfAmbrosia.Characters
 {
     abstract class AICharacter : Character
     {
+        public static Vector2 NO_IDLE = new Vector2(-100, -100);
         // This Ai's target
         public Character target;
 

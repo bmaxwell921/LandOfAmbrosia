@@ -58,7 +58,7 @@ namespace LandOfAmbrosia.Decision
             //Enemy out of sight
             if (dist / Constants.TILE_SIZE > Constants.MINION_SIGHT)
             {
-                m.gotoIdleState();
+                //m.gotoIdleState();
                 return false;
             }
             else

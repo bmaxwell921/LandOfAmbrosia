@@ -17,8 +17,6 @@ namespace LandOfAmbrosia.Characters
     {
         private AbstractInputController inputController;
 
-        private readonly float JUMP_VELOCITY = 0.3f;
-
         private readonly long ATTACK_SPEED = 100;
         private long lastAttacked;
 
@@ -50,7 +48,7 @@ namespace LandOfAmbrosia.Characters
             xVel = inputController.GetMovement().X;
             if (inputController.PressedJump())
             {
-                this.jump(false);
+                jump(false);
             }
             if (xVel != 0)
             {
@@ -60,14 +58,14 @@ namespace LandOfAmbrosia.Characters
         }
 
         //Makes the character jump. Set forceJump to true for an in-air jump
-        private void jump(bool forceJump)
-        {
-            if (onGround || forceJump)
-            {
-                onGround = false;
-                this.setVelocityY(JUMP_VELOCITY);
-            }
-        }
+        //private void jump(bool forceJump)
+        //{
+        //    if (onGround || forceJump)
+        //    {
+        //        onGround = false;
+        //        this.setVelocityY(JUMP_VELOCITY);
+        //    }
+        //}
 
         public override Projectile rangeAttack(GameTime gameTime, Character closestEnemy)
         {

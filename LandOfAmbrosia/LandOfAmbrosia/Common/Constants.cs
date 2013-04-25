@@ -75,9 +75,8 @@ namespace LandOfAmbrosia.Common
         public static readonly Vector3 MINION_POSITION_HACK = new Vector3(1, -1, 0);
         public static readonly int DEFAULT_MINION_HEALTH = 50;
 
-        //Minions can "see" for 10 blocks
-        public static readonly int MINION_SIGHT = 5;
-        public static readonly int MINION_ATTACK_RANGE = 3;
+        public static readonly int MINION_SIGHT = 10;
+        public static readonly int MINION_ATTACK_RANGE = 5;
 
         //Level stuff
         public static readonly int DEFAULT_WIDTH = 128;

@@ -26,6 +26,8 @@ namespace LandOfAmbrosia
 
         public float width, height;
 
+        protected readonly float JUMP_VELOCITY = 0.3f;
+
         public Weapon meleeWeapon;
         public Weapon rangeWeapon;
 
@@ -55,6 +57,15 @@ namespace LandOfAmbrosia
         public virtual void Update(GameTime gameTime)
         {
 
+        }
+
+        protected void jump(bool forceJump)
+        {
+            if (onGround || forceJump)
+            {
+                onGround = false;
+                this.setVelocityY(JUMP_VELOCITY);
+            }
         }
 
         /// <summary>

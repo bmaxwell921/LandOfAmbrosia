@@ -66,9 +66,9 @@ namespace LandOfAmbrosia
             spriteBatch = new SpriteBatch(GraphicsDevice);
             AssetUtil.loadAll(Content);
 
-            //lm = new LevelManager(this);
+            lm = new LevelManager(this);
 
-            lm = new LevelManager(this, true);
+            //lm = new LevelManager(this, true);
             Components.Add(lm);
         }
 
