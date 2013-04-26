@@ -114,6 +114,7 @@
     <Compile Include="Decision\NewMoveNode.cs" />
     <Compile Include="Decision\PathToEnemyNode.cs" />
     <Compile Include="Decision\SeeEnemyNode.cs" />
+    <Compile Include="Decision\StalePathNode.cs" />
     <Compile Include="Decision\TimeToMove.cs" />
     <Compile Include="Decision\WaitNode.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />

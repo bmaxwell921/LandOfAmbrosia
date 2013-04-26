@@ -39,9 +39,9 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            currentLevel = new Level(true);
+            ChunkType[,] chunks = { {ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE}, {ChunkType.STAIRS, ChunkType.EMPTY} };
+            currentLevel = LevelGenerator.GenerateNewLevelFrom(chunks, 2, 2, 1);
             updateCam = false;
-            //currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }

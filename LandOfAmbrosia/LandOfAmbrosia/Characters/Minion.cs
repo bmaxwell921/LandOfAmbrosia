@@ -78,7 +78,6 @@ namespace LandOfAmbrosia.Characters
             {
                 wantsRange = true;
                 setVelocityX(0);
-                setVelocityY(0);
             }
             else if (decision == AI_STATE.FOLLOW_PATH)
             {

@@ -19,7 +19,7 @@ namespace LandOfAmbrosia.Decision
         public override AI_STATE chooseAction(Minion m)
         {
             //If we have a path to the target, follow it, otherwise calculate it
-            return chooseNextNode(m) ? AI_STATE.FOLLOW_PATH : AI_STATE.CALC_PATH;
+            return chooseNextNode(m) ? AI_STATE.YES : AI_STATE.NO;
         }
     }
 }

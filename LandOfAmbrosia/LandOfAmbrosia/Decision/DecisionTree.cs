@@ -35,7 +35,9 @@ namespace LandOfAmbrosia.Decision
          *     /                    \                       /                                \
          *  Is it time to move?     Continue Moving       Do I have a path to him?           Attack
          *  /              \                               /                    \
-         * Wait         New Move                      Calc Path              Follow Path
+         * Wait         New Move                      Calc Path              Is the current path stale?
+         *                                                                   /                          \
+         *                                                             FOLLOW_PATH                  CALC_PATH
          *         
          * Any 'nodes' that aren't questions are actions returned by the parent
          */ 
@@ -58,8 +60,12 @@ namespace LandOfAmbrosia.Decision
             attack.no = pathToEnemy;
             attack.yes = new AttackNode();
 
+            StalePathNode stale = new StalePathNode();
             pathToEnemy.no = new CalcNode();
-            pathToEnemy.yes = new FollowNode();
+            pathToEnemy.yes = stale;
+
+            stale.no = new FollowNode();
+            stale.yes = new CalcNode();
         }
 
         private void setUpBossTree()

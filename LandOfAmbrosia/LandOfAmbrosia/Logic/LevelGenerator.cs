@@ -12,8 +12,6 @@ namespace LandOfAmbrosia.Logic
     class LevelGenerator
     {
         private static Random gen;
-
-        private enum ChunkType { FLOOR, STAIRS, FLOATING_PLATFORMS_SAFE, FLOATING_PLATFORMS_NOT_SAFE, MOUNTAIN_LEFT, MOUNTAIN_RIGHT, JAGGIES_LEFT, JAGGIES_RIGHT, TALL_GROUND, EMPTY }
         /// <summary>
         /// Creates a new, randomly generated level with the given width, height, and seed
         /// 
@@ -27,6 +25,23 @@ namespace LandOfAmbrosia.Logic
         {
             Level ret = new Level(width, height);
             FillLevel(ret, seed);
+            return ret;
+        }
+
+        public static Level GenerateNewLevelFrom(ChunkType[,] chunks, int chunksWidth, int chunksHeight, int numMinions)
+        {
+            gen = new Random(Constants.DEFAULT_SEED);
+            Level ret = new Level(chunksWidth * Constants.CHUNK_SIZE, chunksHeight * Constants.CHUNK_SIZE);
+            ChunkType[,] junk;
+            //PrepareGeneration(ret, out junk);
+            for (int i = 0; i < chunksWidth; ++i)
+            {
+                for (int j = 0; j < chunksHeight; ++j)
+                {
+                    FillChunkWith(ret, new Vector2(i * Constants.CHUNK_SIZE, j * Constants.CHUNK_SIZE), chunks[i, j]);
+                }
+            }
+            FillInMinions(ret, numMinions);
             return ret;
         }
 

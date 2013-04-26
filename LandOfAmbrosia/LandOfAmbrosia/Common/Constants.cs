@@ -10,6 +10,7 @@ namespace LandOfAmbrosia.Common
     public enum INPUT_TYPE { KEYBOARD, GAMEPAD };
     public enum ATTACK_TYPE { MELEE, RANGE, MAGIC, NONE};
     public enum JUMP_STATE { JUMP, DOUBLE_JUMP, FALLING, NONE };
+    public enum ChunkType { FLOOR, STAIRS, FLOATING_PLATFORMS_SAFE, FLOATING_PLATFORMS_NOT_SAFE, MOUNTAIN_LEFT, MOUNTAIN_RIGHT, JAGGIES_LEFT, JAGGIES_RIGHT, TALL_GROUND, EMPTY }
 
     //I don't like this, but this enum is being used for both the ai state and the decision tree traversal
     public enum AI_STATE { NO, YES, 
