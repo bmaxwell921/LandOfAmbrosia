@@ -50,7 +50,7 @@
 
 	Iteration 9.5: Basic UI stuff
 	X	1) Showing player health 
-		1.5) and exp?
+	X	1.5) and exp?
 	X	2) Showing minion health
 
 	Iteration 9.75: Necessary clean up
