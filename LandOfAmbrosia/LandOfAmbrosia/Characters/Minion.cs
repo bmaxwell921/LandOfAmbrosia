@@ -74,7 +74,6 @@ namespace LandOfAmbrosia.Characters
             else if (decision == AI_STATE.WAIT)
             {
                 setVelocityX(0);
-                //setVelocityY(0);
                 lastMoved -= gameTime.ElapsedGameTime.Milliseconds;
             }
             else if (decision == AI_STATE.ATTACK)
@@ -124,7 +123,6 @@ namespace LandOfAmbrosia.Characters
             //If the target is in terms of grid location, we can just check to see if we're in the same tile
             int tileX = containingLevel.GetTileIndexFromXPos(getX());
             int tileY = containingLevel.GetTileIndexFromYPos(getY());
-            //Console.WriteLine("Checking if we're close to: " + targetPos + " And we're at: " + new Vector2(tileX, tileY));
             return new Vector2(tileX, tileY) == targetPos;
         }
 
@@ -146,7 +144,7 @@ namespace LandOfAmbrosia.Characters
             {
                 desiredVel /= desiredVel.Length();
             }
-            //Console.WriteLine("Setting the velocity as: " + desiredVel.X * Constants.AI_MAX_SPEED_X);
+
             setVelocityX(desiredVel.X * Constants.AI_MAX_SPEED_X);
 
             if (myTile.Y < moveTo.Y)

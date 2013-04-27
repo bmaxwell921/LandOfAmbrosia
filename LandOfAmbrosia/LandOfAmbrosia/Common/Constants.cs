@@ -18,27 +18,20 @@ namespace LandOfAmbrosia.Common
 
     class Constants
     {
-        #region Level Character Reps
+        //Level Reader character reps
         public static readonly char PLAYER1_CHAR = '1';
         public static readonly char PLAYER2_CHAR = '2';
         public static readonly char EMPTY_CHAR = ' ';
         public static readonly char PLATFORM_CHAR = 'P';
         public static readonly char MINION_CHAR = 'M';
-        //TODO enemy reps
-        #endregion
+
+        public static readonly float CHARACTER_DEPTH = 1f;
+        public static readonly int TILE_SIZE = 2;
 
         #region Asset Names
         //Tiles
         public static readonly String NULL_MODEL = null;
         public static readonly String PLATFORM = @"Models/platform";
-
-        /*
-         * These two have to be up here otherwise the DEFAULT_PLAYER1_START initializes wrong...apparently because
-         * c# is too stupid to make sure they've been initialized
-         */
-        public static readonly float CHARACTER_DEPTH = 1f;
-
-        public static readonly int TILE_SIZE = 2;
 
         //Skybox
         public static readonly String SKYBOX_EFFECT = @"Skybox/effects";

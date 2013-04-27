@@ -100,8 +100,8 @@
     <Compile Include="Logic\LevelGenerator.cs" />
     <Compile Include="Logic\LevelReader.cs" />
     <Compile Include="Logic\PriorityQueue.cs" />
-    <Compile Include="Managers\IManagable.cs" />
     <Compile Include="Managers\LevelManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />

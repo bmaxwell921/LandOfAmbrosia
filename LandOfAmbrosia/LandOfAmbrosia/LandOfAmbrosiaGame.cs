@@ -31,6 +31,8 @@ namespace LandOfAmbrosia
 
         LevelManager lm;
 
+        SoundManager sm;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -67,9 +69,11 @@ namespace LandOfAmbrosia
             AssetUtil.loadAll(Content);
 
             lm = new LevelManager(this);
-
             //lm = new LevelManager(this, true);
             Components.Add(lm);
+
+            sm = new SoundManager(this, Content);
+            Components.Add(sm);
         }
 
         /// <summary>
