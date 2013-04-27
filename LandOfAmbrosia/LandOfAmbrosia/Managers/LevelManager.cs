@@ -41,7 +41,7 @@ namespace LandOfAmbrosia.Managers
         {
             ChunkType[,] chunks = { {ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE}, {ChunkType.STAIRS, ChunkType.EMPTY} };
             currentLevel = LevelGenerator.GenerateNewLevelFrom(chunks, 2, 2, 1);
-            updateCam = false;
+            updateCam = true;
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
@@ -165,6 +165,7 @@ namespace LandOfAmbrosia.Managers
                         enemy.Update(gameTime);
                     }
                     this.UpdateCharacter(enemy, gameTime);
+                    this.CheckTurnOnGravity(enemy);
                 }
             }
             currentLevel.enemies = remainingHack;

@@ -12,8 +12,8 @@ namespace LandOfAmbrosia.Decision
         {
             //Decide whether the current path to the target is stale. If so, we need to recalculate the path, otherwise just follow the current one
 
-            //Just check if the target is on the path?
-            return Common.AI_STATE.NO;
+            //The path is stale if we haven't calculated it in a long time
+            return m.lastCalced <= 0 ? Common.AI_STATE.YES : Common.AI_STATE.NO;
         }
     }
 }

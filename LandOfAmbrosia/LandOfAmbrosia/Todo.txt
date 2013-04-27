@@ -41,11 +41,15 @@
 	X	1) Add minions to levels
 
 	Iteration 8: Add in minion AI
-		1) Create movement and attack AI methods for minions	
+	X	1) Create movement and attack AI methods for minions	
 
 	Iteration 9: Sound
 		1) Add ambient music
 		2) Add in sounds for hitting stuff?
+
+	Iteration 9.5: Basic UI stuff
+		1) Showing player health and exp?
+		2) Showing minion health
 
 	Iteration 10: Upgrade system
 		1) Implement experience stuff
@@ -56,4 +60,5 @@
 		2) Change from skybox to parallax scrolling background		
 
 	Iteration 12: Other stuff
+		0) Rework the Character class. The position never needs to be converted, just have the GetWorld method do that
 		1) Particle effect dpsf -- free thing	

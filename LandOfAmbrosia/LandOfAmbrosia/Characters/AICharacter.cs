@@ -17,9 +17,6 @@ namespace LandOfAmbrosia.Characters
         // This Ai's target
         public Character target;
 
-        //The sequence of points that will take this ai to the target's last known location
-        //public IList<Vector3> moveToPoints;
-
         //This is in grid coordinates
         public Queue<Vector2> pathToTarget;
 
@@ -33,8 +30,6 @@ namespace LandOfAmbrosia.Characters
 
         public Random gen;
 
-        public AI_STATE curState;
-
         protected DecisionTree dt;
 
         public AICharacter(Level level, Model model, Vector3 position, Weapon meleeWeapon, Weapon rangeWeapon, IList<Character> players)
@@ -44,14 +39,12 @@ namespace LandOfAmbrosia.Characters
             pathToTarget = new Queue<Vector2>();
             gen = new Random();
             this.gotoIdleState();
-            this.chooseNewIdlePoint();
         }
 
         public void gotoIdleState()
         {
             target = null;
-            //TODO should this be WAIT? Does it matter? Update might just overwrite it anyway...
-            curState = AI_STATE.WAIT;
+            this.chooseNewIdlePoint();
         }
 
         protected void chooseNewIdlePoint()

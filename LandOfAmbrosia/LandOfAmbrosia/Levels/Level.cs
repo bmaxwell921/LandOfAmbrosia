@@ -236,14 +236,6 @@ namespace LandOfAmbrosia.Levels
             float h = heuristic(startTile, endTile);
             pq.Enqueue(h, startTile);
             openSet.Add(startTile, h);
-            //foreach (Vector2 neighbor in getEmptyNeighborsOf(startTile))
-            //{
-            //    float f = heuristic(neighbor, endTile) + h;
-            //    pq.Enqueue(f, neighbor);
-            //    openSet.Add(neighbor, f);
-            //    parents.Add(neighbor, startTile);
-            //}
-
 
             while (!pq.IsEmpty)
             {

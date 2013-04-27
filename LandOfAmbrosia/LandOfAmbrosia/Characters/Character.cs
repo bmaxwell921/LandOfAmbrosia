@@ -125,7 +125,7 @@ namespace LandOfAmbrosia
 
         public abstract bool WantsRangeAttack();
 
-        public virtual bool isFlying()
+        public bool isFlying()
         {
             return false;
         }

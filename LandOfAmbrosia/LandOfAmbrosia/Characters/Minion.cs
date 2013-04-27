@@ -22,6 +22,9 @@ namespace LandOfAmbrosia.Characters
         private readonly int ATTACK_SPEED = 1600;
         private int lastAttacked;
 
+        public int lastCalced;
+        private readonly int CALC_DELAY = 1000;
+
         private bool wantsRange;
 
         public Minion(Level level, Model model, Vector3 position, IList<Character> players)
@@ -71,7 +74,7 @@ namespace LandOfAmbrosia.Characters
             else if (decision == AI_STATE.WAIT)
             {
                 setVelocityX(0);
-                setVelocityY(0);
+                //setVelocityY(0);
                 lastMoved -= gameTime.ElapsedGameTime.Milliseconds;
             }
             else if (decision == AI_STATE.ATTACK)
@@ -106,11 +109,13 @@ namespace LandOfAmbrosia.Characters
                 idleTimeTarget = NO_IDLE;
                 lastMoved = 0;
                 lastAttacked = 0;
+                lastCalced = this.CALC_DELAY;
                 foreach (Vector2 point in path)
                 {
                     pathToTarget.Enqueue(point);
                 }
             }
+            lastCalced -= gameTime.ElapsedGameTime.Milliseconds;
         }
 
         public bool closeTo(Vector2 targetPos)
