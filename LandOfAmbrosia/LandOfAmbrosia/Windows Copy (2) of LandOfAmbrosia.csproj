@@ -109,6 +109,7 @@
     <Compile Include="Stats\AStat.cs" />
     <Compile Include="Stats\AttackPower.cs" />
     <Compile Include="Stats\Defence.cs" />
+    <Compile Include="Stats\Experience.cs" />
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs">
       <SubType>Code</SubType>

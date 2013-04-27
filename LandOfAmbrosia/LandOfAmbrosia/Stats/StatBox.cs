@@ -14,12 +14,13 @@ namespace LandOfAmbrosia.Stats
         //Maps, Maps, Maps, I love Maps
         private IDictionary<String, IStat> stats;
 
-        public StatBox(float baseHealth, float baseAttack, float baseDefence)
+        public StatBox(float baseHealth, float baseAttack, float baseDefence, float startingExp)
         {
             stats = new Dictionary<String, IStat>();
             stats.Add(Constants.HEALTH_KEY, new Health(baseHealth));
             stats.Add(Constants.ATTACK_KEY, new AttackPower(baseAttack));
             stats.Add(Constants.DEFENCE_KEY, new Defence(baseDefence));
+            stats.Add(Constants.EXPERIENCE_KEY, new Experience(startingExp));
         }
 
         public bool changeCurrentStat(String statType, float amount)

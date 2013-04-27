@@ -25,6 +25,7 @@ namespace LandOfAmbrosia.Characters
         private readonly float STARTING_HEALTH = 200;
         private readonly float STARTING_ATTACK = 75;
         private readonly float STARTING_DEFENCE = 25;
+        private readonly float STARTING_EXP_REQ = 100;
 
         public UserControlledCharacter(Level level, char character, Model model, Vector3 position) :
             base(level, model, Vector3.Zero, position, null, null)
@@ -39,7 +40,7 @@ namespace LandOfAmbrosia.Characters
 
         protected override void SetUpStats()
         {
-            this.stats = new StatBox(STARTING_HEALTH, STARTING_ATTACK, STARTING_DEFENCE);
+            this.stats = new StatBox(STARTING_HEALTH, STARTING_ATTACK, STARTING_DEFENCE, STARTING_EXP_REQ);
         }
 
         public void CheckInput()

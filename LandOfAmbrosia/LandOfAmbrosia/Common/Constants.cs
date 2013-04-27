@@ -88,6 +88,7 @@ namespace LandOfAmbrosia.Common
         public static readonly String HEALTH_KEY = "Health";
         public static readonly String ATTACK_KEY = "Attack";
         public static readonly String DEFENCE_KEY = "Defence";
+        public static readonly String EXPERIENCE_KEY = "Experience";
 
         //Decision Tree Types
         public static readonly int MINION_TREE = 0;

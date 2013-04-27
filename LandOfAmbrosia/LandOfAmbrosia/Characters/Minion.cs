@@ -18,6 +18,7 @@ namespace LandOfAmbrosia.Characters
         private readonly float START_HEALTH = 100;
         private readonly float START_ATTACK = 50;
         private readonly float START_DEFENCE = 0;
+        private readonly float START_EXPERIENCE_REQ = 0;
 
         private readonly int ATTACK_SPEED = 1600;
         private int lastAttacked;
@@ -39,7 +40,7 @@ namespace LandOfAmbrosia.Characters
 
         protected override void SetUpStats()
         {
-            this.stats = new StatBox(START_HEALTH, START_ATTACK, START_DEFENCE);
+            this.stats = new StatBox(START_HEALTH, START_ATTACK, START_DEFENCE, START_EXPERIENCE_REQ);
         }
 
         public override Matrix GetWorld()
