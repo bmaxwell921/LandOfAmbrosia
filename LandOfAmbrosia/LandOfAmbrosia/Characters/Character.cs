@@ -207,7 +207,6 @@ namespace LandOfAmbrosia
 
         public virtual bool isDead()
         {
-            //return health <= 0;
             return stats.getStatCurrentVal(Constants.HEALTH_KEY) <= 0;
         }
     }

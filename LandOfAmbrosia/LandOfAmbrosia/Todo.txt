@@ -54,13 +54,17 @@
 	X	2) Showing minion health
 
 	Iteration 9.75: Necessary clean up
-		1) Make enemy projectiles hit players
-		1.5) Make player projectiles track better
-		2) Add victory logic
-			- Level number and difficulty - this should be fairly extensive. Add in blue and red block levels?
+	X	1) Make enemy projectiles hit players
+	X	1.5) Make player projectiles track better
+	X	2) Add victory logic
+	X		- Level number and difficulty - this should be fairly extensive. 
+	X			Add in blue and red block levels?
 		3) Add failure logic
-		4) Make both players reset if one falls
-		5) Make enemies not reset if they fall
+	X	4) Make both players reset if one falls
+	X	5) Make enemies not reset if they fall
+		6) The bug where there's an invisible block to the left of the start
+		7) Implement sight for Players
+		8) Make the enemies harder
 
 	Iteration 10: Upgrade system
 		1) Implement experience stuff

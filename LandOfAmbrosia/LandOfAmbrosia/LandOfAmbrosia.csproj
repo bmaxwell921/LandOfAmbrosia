@@ -119,6 +119,7 @@
     <Compile Include="Decision\WaitNode.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
     <Compile Include="Levels\Level.cs" />
+    <Compile Include="Levels\LevelInfo.cs" />
     <Compile Include="Levels\Skybox.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Logic\LevelGenerator.cs" />

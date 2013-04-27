@@ -51,7 +51,7 @@ namespace LandOfAmbrosia.Stats
             return baseValue;
         }
 
-        public void resetStat()
+        public virtual void resetStat()
         {
             currentValue = baseValue;
         }

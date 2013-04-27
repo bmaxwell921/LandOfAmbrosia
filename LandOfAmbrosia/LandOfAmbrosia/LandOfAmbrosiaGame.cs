@@ -67,7 +67,7 @@ namespace LandOfAmbrosia
         {
             AssetUtil.loadAll(Content);
 
-            lm = new LevelManager(this);
+            lm = new LevelManager(this, 1);
             //lm = new LevelManager(this, true);
             Components.Add(lm);
             Services.AddService(typeof(LevelManager), lm);

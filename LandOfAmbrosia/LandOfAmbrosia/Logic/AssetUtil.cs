@@ -69,7 +69,10 @@ namespace LandOfAmbrosia.Logic
         {
             //Is there a better way to do this with the empty tile?
             tileModels.Add(Constants.EMPTY_CHAR, null);
-            tileModels.Add(Constants.PLATFORM_CHAR, content.Load<Model>(Constants.PLATFORM));
+            //tileModels.Add(Constants.PLATFORM_CHAR, content.Load<Model>(Constants.PLATFORM));
+            tileModels.Add(Constants.GREEN_PLATFORM, content.Load<Model>(Constants.GREEN_PLATFORM_ASSET));
+            tileModels.Add(Constants.BLUE_PLATFORM, content.Load<Model>(Constants.BLUE_PLATFORM_ASSET));
+            tileModels.Add(Constants.RED_PLATFORM, content.Load<Model>(Constants.RED_PLATFORM_ASSET));
         }
 
         //Loads the models for the players and fills in the playerModels map

@@ -26,5 +26,10 @@ namespace LandOfAmbrosia.Stats
         {
             this.baseValue = baseValue * (1 + perc);
         }
+
+        public override void resetStat()
+        {
+            //Do nothing!!!
+        }
     }
 }

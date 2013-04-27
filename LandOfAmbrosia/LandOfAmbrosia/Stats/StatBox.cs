@@ -23,6 +23,14 @@ namespace LandOfAmbrosia.Stats
             stats.Add(Constants.EXPERIENCE_KEY, new Experience(startingExp));
         }
 
+        public void resetAllStats()
+        {
+            foreach (String key in stats.Keys)
+            {
+                stats[key].resetStat();
+            }
+        }
+
         public bool changeCurrentStat(String statType, float amount)
         {
             if (!stats.ContainsKey(statType))

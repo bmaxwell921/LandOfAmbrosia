@@ -22,7 +22,12 @@ namespace LandOfAmbrosia.Common
         public static readonly char PLAYER1_CHAR = '1';
         public static readonly char PLAYER2_CHAR = '2';
         public static readonly char EMPTY_CHAR = ' ';
-        public static readonly char PLATFORM_CHAR = 'P';
+        //public static readonly char PLATFORM_CHAR = 'P';
+
+        public static readonly char GREEN_PLATFORM = 'G';
+        public static readonly char BLUE_PLATFORM = 'B';
+        public static readonly char RED_PLATFORM = 'R';
+
         public static readonly char MINION_CHAR = 'M';
 
         public static readonly float CHARACTER_DEPTH = 1f;
@@ -30,22 +35,25 @@ namespace LandOfAmbrosia.Common
 
         #region Asset Names
         //Tiles
-        public static readonly String NULL_MODEL = null;
-        public static readonly String PLATFORM = @"Models/platform";
+        public static readonly string NULL_MODEL = null;
+        //public static readonly string PLATFORM = @"Models/platform";
+        public static readonly string GREEN_PLATFORM_ASSET = @"Models/greenPlatform";
+        public static readonly string BLUE_PLATFORM_ASSET = @"Models/bluePlatform";
+        public static readonly string RED_PLATFORM_ASSET = @"Models/redPlatform";
 
         //Skybox
-        public static readonly String SKYBOX_EFFECT = @"Skybox/effects";
-        public static readonly String SKYBOX_MODEL = @"Skybox/skybox2";
+        public static readonly string SKYBOX_EFFECT = @"Skybox/effects";
+        public static readonly string SKYBOX_MODEL = @"Skybox/skybox2";
 
         //Characters
-        public static readonly String PLAYER1_MODEL = @"Models/player1";
-        public static readonly String PLAYER2_MODEL = @"Models/player2";
+        public static readonly string PLAYER1_MODEL = @"Models/player1";
+        public static readonly string PLAYER2_MODEL = @"Models/player2";
 
         //Minions
-        public static readonly String MINION_MODEL = @"Models/minion3";
+        public static readonly string MINION_MODEL = @"Models/minion3";
 
         //Projectiles
-        public static readonly String MAGIC_MODEL = @"Models/magicBig";
+        public static readonly string MAGIC_MODEL = @"Models/magicBig";
         #endregion
 
         //Default Values
@@ -85,10 +93,10 @@ namespace LandOfAmbrosia.Common
         public static readonly float MAGIC_HEIGHT = 0.05f;
 
         //Stat keys
-        public static readonly String HEALTH_KEY = "Health";
-        public static readonly String ATTACK_KEY = "Attack";
-        public static readonly String DEFENCE_KEY = "Defence";
-        public static readonly String EXPERIENCE_KEY = "Experience";
+        public static readonly string HEALTH_KEY = "Health";
+        public static readonly string ATTACK_KEY = "Attack";
+        public static readonly string DEFENCE_KEY = "Defence";
+        public static readonly string EXPERIENCE_KEY = "Experience";
 
         //Decision Tree Types
         public static readonly int MINION_TREE = 0;

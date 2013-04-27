@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Characters;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Weapons
 {
@@ -16,32 +17,15 @@ namespace LandOfAmbrosia.Weapons
     {
         public Character target;
 
-        //public SmartProjectile(Model model, Vector3 position, Character source, Character target) : base(model, position, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
-        //{
-        //    this.target = target;
-        //}
-
-        public SmartProjectile(Model model, Vector3 position, Character source, Character target)
-            : base(model, position, source, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
+        public SmartProjectile(Level l, Model model, Vector3 position, Character source, Character target)
+            : base(l ,model, position, source, Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK)
         {
             this.target = target;
         }
 
         protected override void UpdateTarget()
         {
-            //this.targetPosition = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + Constants.MINION_POSITION_HACK : Constants.UnconvertFromXNAScene(target.position);
             this.targetPosition = Constants.UnconvertFromXNAScene(target.position);
-        }
-
-        protected override void CheckKill()
-        {
-            base.CheckKill();
-            if (timeToDie)
-            {
-                float damage = source.stats.getStatCurrentVal(Constants.ATTACK_KEY) - target.stats.getStatCurrentVal(Constants.DEFENCE_KEY);
-                target.stats.changeCurrentStat(Constants.HEALTH_KEY, -damage);
-                //target.health -= Constants.DEFAULT_MINION_HEALTH;
-            }
         }
     }
 }

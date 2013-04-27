@@ -31,7 +31,7 @@ namespace LandOfAmbrosia.Levels
         /// </summary>
         /// <param name="seed"></param>
         public Level()
-            : this(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT)
+            : this(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, 2)
         {
         }
 
@@ -52,7 +52,7 @@ namespace LandOfAmbrosia.Levels
 
             for (int i = 0; i < width; ++i)
             {
-                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.GREEN_PLATFORM),
                     new Vector3(i * Constants.TILE_SIZE, 0 * Constants.TILE_SIZE, 0)));
             }
 
@@ -67,7 +67,7 @@ namespace LandOfAmbrosia.Levels
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public Level(int width, int height)
+        public Level(int width, int height, int numPlayer)
         {
             this.width = width;
             this.height = height;
@@ -76,8 +76,11 @@ namespace LandOfAmbrosia.Levels
 
             enemies = new List<Character>();
             players = new List<Character>();
-            players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
-            players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
+            players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));
+            if (numPlayer >= 2)
+            {
+                players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
+            }
         }
 
         /// <summary>

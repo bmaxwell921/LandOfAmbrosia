@@ -9,26 +9,52 @@ using LandOfAmbrosia.Common;
 using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Characters;
 using LandOfAmbrosia.Weapons;
+using Microsoft.Xna.Framework.Input;
 
 namespace LandOfAmbrosia.Managers
 {
+    public enum LevelState { BEGINNING, PLAYING, NEXT_LEVEL, GAME_OVER, VICTORY };
     /// <summary>
     /// A class to manage a level of the game. The Level is made up of Tiles 
     /// </summary>
     class LevelManager : DrawableGameComponent
     {
         private Level currentLevel;
-        private IList<Projectile> projectiles;
+        public IList<LevelInfo> levels;
+        public int curLevelInfo;
 
+        private IList<Projectile> projectiles;
         private bool updateCam;
 
-        public LevelManager(Game game)
+        private LevelGenerator generator;
+
+        public LevelState curState;
+
+        public LevelManager(Game game, int numPlayers)
             : base(game)
         {
+            curState = LevelState.PLAYING;
             updateCam = true;
-            currentLevel = LevelGenerator.GenerateNewLevel(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT, Constants.DEFAULT_SEED);
+            curLevelInfo = 0;
+            setUpLevels();
+            generator = new LevelGenerator(levels, Constants.DEFAULT_SEED);
+            currentLevel = generator.GenerateNewLevel(curLevelInfo, numPlayers);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
+        }
+
+        private void setUpLevels()
+        {
+            levels = new List<LevelInfo>();
+            levels.Add(new LevelInfo(15,  64,   8,  4, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue1
+            levels.Add(new LevelInfo(15,  64,   8,  8, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue2
+            levels.Add(new LevelInfo(15,  64,   8, 12, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue3
+            levels.Add(new LevelInfo(10, 128,  16, 20, 200,  75, 25, Constants.GREEN_PLATFORM));  // green1
+            levels.Add(new LevelInfo( 8, 128,  16, 28, 200,  75, 25, Constants.GREEN_PLATFORM));  // green2
+            levels.Add(new LevelInfo( 6, 128,  16, 36, 200,  75, 25, Constants.GREEN_PLATFORM));  // green3
+            levels.Add(new LevelInfo( 4, 256,  32, 52, 400, 150, 50, Constants.RED_PLATFORM));    // red1
+            levels.Add(new LevelInfo( 2, 256,  32, 68, 400, 150, 50, Constants.RED_PLATFORM));    // red2
+            levels.Add(new LevelInfo( 2, 256,  32, 84, 400, 150, 50, Constants.RED_PLATFORM));    // red2
         }
 
         /// <summary>
@@ -39,25 +65,18 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            ChunkType[,] chunks = { {ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE}, {ChunkType.STAIRS, ChunkType.EMPTY} };
-            currentLevel = LevelGenerator.GenerateNewLevelFrom(chunks, 2, 2, 1);
+            curState = LevelState.PLAYING;
+            ChunkType[,] chunks = { { ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE }, { ChunkType.STAIRS, ChunkType.EMPTY } };
+            levels = new List<LevelInfo>();
+            levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
+            levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.GREEN_PLATFORM));
+
+            generator = new LevelGenerator(levels, Constants.DEFAULT_SEED, chunks);
+            currentLevel = generator.GenerateNewLevel(0, 1);
             updateCam = true;
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
         }
-
-        /// <summary>
-        /// Constructor that creates a level by reading in the level from a file
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="levelFileLoc"></param>
-        //public LevelManager(Game game, String levelFileLoc) :
-        //    base(game)
-        //{
-        //    currentLevel = new Level(levelFileLoc);
-        //    this.SetUpCameraDefault();
-        //    this.projectiles = new List<Projectile>();
-        //}
 
         private void SetUpCameraDefault()
         {
@@ -72,8 +91,11 @@ namespace LandOfAmbrosia.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
-            DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
+            if (curState == LevelState.PLAYING)
+            {
+                currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
+                DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
+            }
             base.Draw(gameTime);
         }
 
@@ -90,14 +112,37 @@ namespace LandOfAmbrosia.Managers
 
         public override void Update(GameTime gameTime)
         {
-            this.UpdateProjectiles(gameTime);
-            this.UpdatePlayers(gameTime);
-            this.UpdateEnemies(gameTime);
-            if (updateCam)
+            if (curState == LevelState.PLAYING)
             {
-                this.UpdateCamera();
+                this.UpdateProjectiles(gameTime);
+                this.UpdatePlayers(gameTime);
+                this.UpdateEnemies(gameTime);
+                if (updateCam)
+                {
+                    this.UpdateCamera();
+                }
+                this.checkEndGame();
+            }
+            else if (curState == LevelState.NEXT_LEVEL)
+            {
+                currentLevel = generator.GenerateNewLevel(curLevelInfo, currentLevel.players.Count);
+                curState = LevelState.PLAYING;
             }
             base.Update(gameTime);
+        }
+
+        private void checkEndGame()
+        {
+            //Victory!
+            if (currentLevel.enemies.Count <= 0)
+            {
+                curState = ++curLevelInfo >= levels.Count ? LevelState.VICTORY : LevelState.NEXT_LEVEL;
+            }
+            //Failure
+            else if (levels[curLevelInfo].numLives < 0)
+            {
+                curState = LevelState.GAME_OVER;
+            }
         }
 
         private void UpdateProjectiles(GameTime gameTime)
@@ -148,6 +193,15 @@ namespace LandOfAmbrosia.Managers
                     this.UpdateCharacter(player, gameTime);
                     player.Update(gameTime);
                     this.CheckTurnOnGravity(player);
+                }
+                if (player != null && player.isDead())
+                {
+                    --levels[curLevelInfo].numLives;
+                    if (levels[curLevelInfo].numLives >= 0)
+                    {
+                        remainingHack.Add(player);
+                        resetCharacters();
+                    }
                 }
             }
             currentLevel.players = remainingHack;
@@ -250,8 +304,15 @@ namespace LandOfAmbrosia.Managers
 
             if (character.getY() < -20)
             {
-                character.position = Constants.ConvertToXNAScene(Constants.DEFAULT_PLAYER1_START);
-                character.velocity = Vector3.Zero;
+                if (character is UserControlledCharacter)
+                {
+                    --levels[curLevelInfo].numLives;
+                    resetCharacters();
+                }
+                else
+                {
+                    character.stats.changeCurrentStat(Constants.HEALTH_KEY, -character.stats.getStatCurrentVal(Constants.HEALTH_KEY));
+                }
             }
 
             //Check if they attacked with a projectile and add it if they did
@@ -264,6 +325,20 @@ namespace LandOfAmbrosia.Managers
                 {
                     projectiles.Add(proj);
                 }
+            }
+        }
+
+        private void resetCharacters()
+        {
+            if (currentLevel.players.Count >= 1)
+            {
+                currentLevel.players[0].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player1Spawn);
+                currentLevel.players[0].stats.resetAllStats();
+            }
+            if (currentLevel.players.Count >= 2)
+            {
+                currentLevel.players[1].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player2Spawn);
+                currentLevel.players[1].stats.resetAllStats();
             }
         }
 

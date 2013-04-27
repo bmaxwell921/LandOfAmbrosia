@@ -6,6 +6,7 @@ using LandOfAmbrosia.Characters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Common;
+using LandOfAmbrosia.Levels;
 
 namespace LandOfAmbrosia.Weapons
 {
@@ -19,7 +20,8 @@ namespace LandOfAmbrosia.Weapons
 
         public Vector3 velocity;
         public Vector3 position;
-        //public Character target;
+
+        public Level currentLevel;
         
         //This vector is UNCONVERTED
         public Vector3 targetPosition;
@@ -27,25 +29,10 @@ namespace LandOfAmbrosia.Weapons
         public bool timeToDie;
 
         public float width, height;
-        /// <summary>
-        /// TargetPosition comes in as UNCONVERTED vector
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="position"></param>
-        /// <param name="targetPosition"></param>
-        //public Projectile(Model model, Vector3 position, Vector3 targetPosition)
-        //{
-        //    width = Constants.MAGIC_WIDTH;
-        //    height = Constants.MAGIC_HEIGHT;
-        //    this.model = model;
-        //    this.position = Constants.ConvertToXNAScene(position);
-        //    this.targetPosition = targetPosition;
-        //    timeToDie = false;
-        //    this.UpdateVelocity();
-        //}
 
-        public Projectile(Model model, Vector3 position, Character source, Vector3 targetPosition)
+        public Projectile(Level l, Model model, Vector3 position, Character source, Vector3 targetPosition)
         {
+            currentLevel = l;
             width = Constants.MAGIC_WIDTH;
             height = Constants.MAGIC_HEIGHT;
             this.model = model;
@@ -63,15 +50,15 @@ namespace LandOfAmbrosia.Weapons
             //2 blocks
             float radius = 4;
             float maxSpeed = 0.5f;
-            //Hack it into the right spot
-            //Vector3 targetPos = (target is Minion) ? Constants.UnconvertFromXNAScene(target.position) + new Vector3(1, -1, 0) : Constants.UnconvertFromXNAScene(target.position);
+
             Vector3 myPos = Constants.UnconvertFromXNAScene(this.position);
 
-            //Vector3 desiredVel = targetPos - myPos;
+            //If the target field is null, then just update using the target Position
+
             Vector3 desiredVel = targetPosition - myPos;
             if (desiredVel.Length() < radius)
             {
-                desiredVel /= 2;
+                desiredVel /= 1.5f;
                 if (desiredVel.Length() > maxSpeed)
                 {
                     desiredVel /= desiredVel.Length();
@@ -102,7 +89,6 @@ namespace LandOfAmbrosia.Weapons
         /// </summary>
         protected virtual void UpdateTarget()
         {
-
         }
 
         protected virtual void CheckKill()
@@ -112,11 +98,38 @@ namespace LandOfAmbrosia.Weapons
             {
                 timeToDie = true;
             }
+
+            //Check if we hit the source's enemies in the level
+            IList<Character> sourceEnemies = source is UserControlledCharacter ? currentLevel.enemies : currentLevel.players;
+            BoundingBox sourceBound = new BoundingBox(new Vector3(getX(), getY(), Constants.CHARACTER_DEPTH), 
+                new Vector3(getX() + width, getY() + height, Constants.CHARACTER_DEPTH));
+            foreach (Character enemy in sourceEnemies)
+            {
+                BoundingBox enemyBound = new BoundingBox(new Vector3(enemy.getX(), enemy.getY(), Constants.CHARACTER_DEPTH), 
+                    new Vector3(enemy.getX() + enemy.width, enemy.getY() + enemy.height, Constants.CHARACTER_DEPTH));
+                if (sourceBound.Intersects(enemyBound))
+                {
+                    timeToDie = true;
+                    float damage = source.stats.getStatCurrentVal(Constants.ATTACK_KEY) - enemy.stats.getStatCurrentVal(Constants.DEFENCE_KEY);
+                    enemy.stats.changeCurrentStat(Constants.HEALTH_KEY, -damage);
+                    Console.WriteLine("Doing " + damage + " points of damage!");
+                    return;
+                }
+            }
+        }
+
+        private float getX()
+        {
+            return Constants.UnconvertFromXNAScene(position).X;
+        }
+
+        private float getY()
+        {
+            return Constants.UnconvertFromXNAScene(position).Y;
         }
 
         public bool ReadyToDie()
         {
-            //return target == null;
             return timeToDie;
         }
 

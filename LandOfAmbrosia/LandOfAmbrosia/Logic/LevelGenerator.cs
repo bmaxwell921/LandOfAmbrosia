@@ -11,73 +11,88 @@ namespace LandOfAmbrosia.Logic
 {
     class LevelGenerator
     {
-        private static Random gen;
+        private Random gen;
+        private LevelInfo currentLevelInfo;
+        private Level curLevel;
+        private ChunkType[,] chunks;
+        private IList<LevelInfo> levelInfos;
+
+        //If this is null, choose randomly what chunks to generate, otherwise use the chunks this says
+        private ChunkType[,] chunksToChoose;
+
+        public LevelGenerator(IList<LevelInfo> lis, int seed) : this(lis, seed, null)
+        {
+            
+        }
+
+        public LevelGenerator(IList<LevelInfo> lis, int seed, ChunkType[,] chunksToChoose)
+        {
+            this.gen = new Random(seed);
+            this.levelInfos = lis;
+            this.chunksToChoose = chunksToChoose;
+        }
         /// <summary>
         /// Creates a new, randomly generated level with the given width, height, and seed
         /// 
         /// Precondition: The map size much divide evenly into 8x8 chunks
         /// </summary>
-        /// <param name="width">The width of the map</param>
-        /// <param name="height">The height of the map</param>
-        /// <param name="seed">The seed used for random generation</param>
         /// <returns>The level that was randomly created</returns>
-        public static Level GenerateNewLevel(int width, int height, int seed)
+        public Level GenerateNewLevel(int level, int numPlayers)
         {
-            Level ret = new Level(width, height);
-            FillLevel(ret, seed);
-            return ret;
+            currentLevelInfo = levelInfos[level];
+            this.curLevel = new Level(currentLevelInfo.width, currentLevelInfo.height, numPlayers);
+            this.chunks = new ChunkType[curLevel.width / Constants.CHUNK_SIZE, curLevel.height / Constants.CHUNK_SIZE];
+            FillLevel();
+            return curLevel;
         }
 
-        public static Level GenerateNewLevelFrom(ChunkType[,] chunks, int chunksWidth, int chunksHeight, int numMinions)
-        {
-            gen = new Random(Constants.DEFAULT_SEED);
-            Level ret = new Level(chunksWidth * Constants.CHUNK_SIZE, chunksHeight * Constants.CHUNK_SIZE);
-            ChunkType[,] junk;
-            //PrepareGeneration(ret, out junk);
-            for (int i = 0; i < chunksWidth; ++i)
-            {
-                for (int j = 0; j < chunksHeight; ++j)
-                {
-                    FillChunkWith(ret, new Vector2(i * Constants.CHUNK_SIZE, j * Constants.CHUNK_SIZE), chunks[i, j]);
-                }
-            }
-            FillInMinions(ret, numMinions);
-            return ret;
-        }
+        //For testing purposes only
+        //public Level GenerateNewLevelFrom(ChunkType[,] chunks, int chunksWidth, int chunksHeight, int numMinions)
+        //{
+        //    gen = new Random(Constants.DEFAULT_SEED);
+        //    Level ret = new Level(chunksWidth * Constants.CHUNK_SIZE, chunksHeight * Constants.CHUNK_SIZE);
+        //    ChunkType[,] junk;
+        //    //PrepareGeneration(ret, out junk);
+        //    for (int i = 0; i < chunksWidth; ++i)
+        //    {
+        //        for (int j = 0; j < chunksHeight; ++j)
+        //        {
+        //            this.FillChunkWith(ret, new Vector2(i * Constants.CHUNK_SIZE, j * Constants.CHUNK_SIZE), chunks[i, j]);
+        //        }
+        //    }
+        //    FillInMinions();
+        //    return ret;
+        //}
 
-        public static void FillLevel(Level level, int seed)
+        public void FillLevel()
         {
-            gen = new Random(seed);
             //This should hold an array of the chunks, which will tell what chunks are all around the current chunk we are creating
             //Fill the left and right sides at the end
-            ChunkType[,] chunks;
-            PrepareGeneration(level, out chunks);
-            //0,0 is the bottom left!!!
-
-            for (int i = 1; i < level.width / Constants.CHUNK_SIZE; ++i)
+            PrepareGeneration();
+            
+            for (int i = chunksToChoose == null ? 1 : 0; i < curLevel.width / Constants.CHUNK_SIZE; ++i)
             {
-                for (int j = 0; j < level.height / Constants.CHUNK_SIZE; ++j)
+                for (int j = 0; j < curLevel.height / Constants.CHUNK_SIZE; ++j)
                 {
-                    GenerateChunk(level, chunks, new Vector2(i, j));
+                    GenerateChunk(new Vector2(i, j));
                 }
             }
 
-            //Fill in Minions
-            FillInMinions(level, (level.width / Constants.CHUNK_SIZE) * (level.height / Constants.CHUNK_SIZE));   
+            FillInMinions();   
         }
 
-        private static void FillInMinions(Level level, int numChunks)
+        private void FillInMinions()
         {
             //Fuck it, let's just randomly put them in places
-            for (int i = 0; i < numChunks; ++i)
+            for (int i = 0; i < currentLevelInfo.numEnemies; ++i)
             {
-                int x = gen.Next(Constants.CHUNK_SIZE, level.width);
-                int y = gen.Next(1, level.height);
+                int x = gen.Next(Constants.CHUNK_SIZE, curLevel.width);
+                int y = gen.Next(1, curLevel.height);
 
-                if (level.GetTile(x, y) == null)
+                if (curLevel.GetTile(x, y) == null)
                 {
-                    level.enemies.Add(new Minion(level, AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
-                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), level.players));
+                    curLevel.enemies.Add(new Minion(curLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
+                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), curLevel.players));
                 }
                 else
                 {
@@ -86,43 +101,42 @@ namespace LandOfAmbrosia.Logic
             }
         }
 
-        private static void PrepareGeneration(Level level, out ChunkType[,] chunks)
+        private void PrepareGeneration()
         {
-            chunks = new ChunkType[level.width / Constants.CHUNK_SIZE, level.height / Constants.CHUNK_SIZE];
             //Clear everything out
-            for (int i = 0; i < level.width; ++i)
+            for (int i = 0; i < curLevel.width; ++i)
             {
-                for (int j = 0; j < level.height; ++j)
+                for (int j = 0; j < curLevel.height; ++j)
                 {
-                    level.SetTile(i, j, null);
+                    curLevel.SetTile(i, j, null);
                     chunks[i / Constants.CHUNK_SIZE, j / Constants.CHUNK_SIZE] = ChunkType.EMPTY;
                 }
             }
 
             //Fill the floor of the First chunk to be safe
-            FillFloor(level, new Vector2(0, 0));
+            FillFloor(new Vector2(0, 0));
         }
 
-        private static void GenerateChunk(Level level, ChunkType[,] chunks, Vector2 chunkLocation)
+        private void GenerateChunk(Vector2 chunkLocation)
         {
             //First, we need to check the chunks to the left and bottom to see if they bind what we need to choose
             //If they do, then choose the chunk that takes care of the most binding chunk
-            ChunkType chunkType = ChooseChunkType(chunks, chunkLocation);
+            ChunkType chunkType = chunksToChoose == null ? ChooseChunkType(chunkLocation) : chunksToChoose[(int)chunkLocation.X, (int)chunkLocation.Y];
             //Otherwise, randomly choose a chunktype
             //Fill in the level and the chunks array to reflect what was chosen
-            FillChunkWith(level, chunkLocation * Constants.CHUNK_SIZE, chunkType);
+            FillChunkWith(chunkLocation * Constants.CHUNK_SIZE, chunkType);
             chunks[(int)chunkLocation.X, (int)chunkLocation.Y] = chunkType;
         }
 
-        private static ChunkType ChooseChunkType(ChunkType[,] chunks, Vector2 chunkLoc)
+        private ChunkType ChooseChunkType(Vector2 chunkLoc)
         {
             //Checks to see if there are any bounds on the chunk type we need to generate and lets us choose randomly from the given stuff
-            IList<ChunkType> possibleChunks = GetPossibleChunks(chunks, chunkLoc);
+            IList<ChunkType> possibleChunks = GetPossibleChunks(chunkLoc);
 
             return possibleChunks[gen.Next(possibleChunks.Count)];
         }
 
-        private static IList<ChunkType> GetPossibleChunks(ChunkType[,] chunks, Vector2 chunkLoc)
+        private IList<ChunkType> GetPossibleChunks(Vector2 chunkLoc)
         {
             IList<ChunkType> possibilities = new List<ChunkType>();
 
@@ -158,48 +172,48 @@ namespace LandOfAmbrosia.Logic
             return possibilities;
         }
 
-        private static bool EndsAtTop(ChunkType leftTile)
+        private bool EndsAtTop(ChunkType leftTile)
         {
             return leftTile == ChunkType.MOUNTAIN_LEFT || leftTile == ChunkType.TALL_GROUND;
         }
 
-        private static void FillChunkWith(Level level, Vector2 bottomLeftLoc, ChunkType chunkType)
+        private void FillChunkWith(Vector2 bottomLeftLoc, ChunkType chunkType)
         {
             if (chunkType == ChunkType.FLOATING_PLATFORMS_SAFE)
             {
-                FillFloatingPlatformsSafe(level, bottomLeftLoc);
+                FillFloatingPlatformsSafe(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.FLOATING_PLATFORMS_NOT_SAFE)
             {
-                FillFloatingPlatformsNotSafe(level, bottomLeftLoc);
+                FillFloatingPlatformsNotSafe(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.FLOOR)
             {
-                FillFloor(level, bottomLeftLoc);
+                FillFloor(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.MOUNTAIN_LEFT)
             {
-                FillMountainLeft(level, bottomLeftLoc);
+                FillMountainLeft(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.MOUNTAIN_RIGHT)
             {
-                FillMountainRight(level, bottomLeftLoc);
+                FillMountainRight(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.STAIRS)
             {
-                FillStairs(level, bottomLeftLoc);
+                FillStairs(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.TALL_GROUND)
             {
-                FillTallGround(level, bottomLeftLoc);
+                FillTallGround(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.JAGGIES_LEFT)
             {
-                FillJaggiesLeft(level, bottomLeftLoc);
+                FillJaggiesLeft(bottomLeftLoc);
             }
             else if (chunkType == ChunkType.JAGGIES_RIGHT)
             {
-                FillJaggiesRight(level, bottomLeftLoc);
+                FillJaggiesRight(bottomLeftLoc);
             }
             else
             {
@@ -222,10 +236,10 @@ namespace LandOfAmbrosia.Logic
          * The bottom is filled, then for each layer higher, a location is chosen that is 2-3
          * blocks away from the platform lower than it
          */
-        private static void FillFloatingPlatformsSafe(Level level, Vector2 bottomLeft)
+        private void FillFloatingPlatformsSafe(Vector2 bottomLeft)
         {
-            FillFloor(level, bottomLeft);
-            FillFloatingPlatformsNotSafe(level, bottomLeft);
+            FillFloor(bottomLeft);
+            FillFloatingPlatformsNotSafe(bottomLeft);
         }
 
         /*
@@ -239,17 +253,17 @@ namespace LandOfAmbrosia.Logic
          *      XX
          * <Empty>
          */
-        private static void FillFloatingPlatformsNotSafe(Level level, Vector2 bottomLeft)
+        private void FillFloatingPlatformsNotSafe(Vector2 bottomLeft)
         {
             //Start out with a platform somewhere in the chunk
             //Minus 2 so we don't go out of bounds on our chunk
             int startX = (int)(gen.Next(Constants.CHUNK_SIZE - 2));
             
             //Left-most tile, compensating for where we are in the chunk
-            level.SetTile(startX + (int) bottomLeft.X, (int)(bottomLeft.Y), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), 
+            curLevel.SetTile(startX + (int) bottomLeft.X, (int)(bottomLeft.Y), new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType), 
                 new Vector3((startX + bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y) * Constants.TILE_SIZE, 0)));
             //Right-most tile
-            level.SetTile(startX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+            curLevel.SetTile(startX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y), new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                 new Vector3((startX + 1 + bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y) * Constants.TILE_SIZE, 0)));
 
             bool lastWasLeft = startX < Constants.CHUNK_SIZE / 2;
@@ -258,10 +272,10 @@ namespace LandOfAmbrosia.Logic
                 //If last time we went to the left, choose a spot on the right and vice versa
                 int newX = (lastWasLeft) ? gen.Next(4, 6) : gen.Next(0, 3);
 
-                level.SetTile(newX + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                curLevel.SetTile(newX + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                 new Vector3((newX + (int) bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y + i) * Constants.TILE_SIZE, 0)));
                 //Right-most tile
-                level.SetTile(newX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                curLevel.SetTile(newX + 1 + (int)bottomLeft.X, (int)(bottomLeft.Y + i), new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                     new Vector3((newX + 1 + bottomLeft.X) * Constants.TILE_SIZE, (bottomLeft.Y + i) * Constants.TILE_SIZE, 0)));
 
                 lastWasLeft = !lastWasLeft;
@@ -273,11 +287,11 @@ namespace LandOfAmbrosia.Logic
          * 
          * XXXXXXXX
          */
-        private static void FillFloor(Level level, Vector2 bottomLeftLoc)
+        private void FillFloor(Vector2 bottomLeftLoc)
         {
             for (int i = 0; i < Constants.CHUNK_SIZE; ++i)
             {
-                level.SetTile((int)(i + bottomLeftLoc.X), (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), 
+                curLevel.SetTile((int)(i + bottomLeftLoc.X), (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType), 
                     new Vector3((i + bottomLeftLoc.X) * Constants.TILE_SIZE, bottomLeftLoc.Y * Constants.TILE_SIZE, 0)));
             }
         }
@@ -293,9 +307,9 @@ namespace LandOfAmbrosia.Logic
          *   XXXXXX
          *  XXXXXXX
          */
-        private static void FillMountainLeft(Level level, Vector2 bottomLeftLoc)
+        private void FillMountainLeft(Vector2 bottomLeftLoc)
         {
-            FillMountainCommon(level, bottomLeftLoc, true);
+            FillMountainCommon(bottomLeftLoc, true);
         }
 
         /*
@@ -309,23 +323,23 @@ namespace LandOfAmbrosia.Logic
          * XXXXXX
          * XXXXXXX
          */
-        private static void FillMountainRight(Level level, Vector2 bottomLeftLoc)
+        private void FillMountainRight(Vector2 bottomLeftLoc)
         {
-            FillMountainCommon(level, bottomLeftLoc, false);
+            FillMountainCommon(bottomLeftLoc, false);
         }
 
-        private static void FillMountainCommon(Level level, Vector2 bottomLeftLoc, bool isLeft)
+        private void FillMountainCommon(Vector2 bottomLeftLoc, bool isLeft)
         {
             for (int i = 0; i < Constants.CHUNK_SIZE; ++i)
             {
                 for (int j = 0; j < i; ++j)
                 {
                     int xPos = (isLeft) ? i : Constants.CHUNK_SIZE - 1 - i;
-                    level.SetTile(xPos + (int)bottomLeftLoc.X, j + (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                    curLevel.SetTile(xPos + (int)bottomLeftLoc.X, j + (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                         new Vector3((xPos + bottomLeftLoc.X) * Constants.TILE_SIZE, (j + bottomLeftLoc.Y) * Constants.TILE_SIZE, 0))); 
                 }
             }
-            FillFloor(level, bottomLeftLoc);
+            FillFloor(bottomLeftLoc);
         }
 
         /*
@@ -338,19 +352,19 @@ namespace LandOfAmbrosia.Logic
          * 
          * Anything not shown is an empty space
          */
-        private static void FillStairs(Level level, Vector2 bottomLeftLoc)
+        private void FillStairs(Vector2 bottomLeftLoc)
         {
             for (int i = 0; i < Constants.CHUNK_SIZE / 2; ++i)
             {
                 for (int j = 0; j < i + 1; ++j)
                 {
                     //Left side of the stairs
-                    level.SetTile((int)bottomLeftLoc.X + i, (int)bottomLeftLoc.Y + j, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR), 
+                    curLevel.SetTile((int)bottomLeftLoc.X + i, (int)bottomLeftLoc.Y + j, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType), 
                         new Vector3((bottomLeftLoc.X + i) * Constants.TILE_SIZE, (bottomLeftLoc.Y + j) * Constants.TILE_SIZE, 0))); 
 
                     //Right side of the stairs
                     //Vector2 rightSide = new Vector2((bottomLeftLoc.X + (Constants.CHUNK_SIZE - 1 - i)) * Constants.CHUNK_SIZE, (bottomLeftLoc.Y + j) * Constants.TILE_SIZE);
-                    level.SetTile((int)bottomLeftLoc.X + (Constants.CHUNK_SIZE - 1 - i), (int)bottomLeftLoc.Y + j, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                    curLevel.SetTile((int)bottomLeftLoc.X + (Constants.CHUNK_SIZE - 1 - i), (int)bottomLeftLoc.Y + j, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                         new Vector3((bottomLeftLoc.X + (Constants.CHUNK_SIZE - 1 - i)) * Constants.TILE_SIZE, (bottomLeftLoc.Y + j) * Constants.TILE_SIZE, 0)));
                 }
             }
@@ -367,14 +381,14 @@ namespace LandOfAmbrosia.Logic
          * XXXXXXXX
          * XXXXXXXX
          */
-        private static void FillTallGround(Level level, Vector2 bottomLeftLoc)
+        private void FillTallGround(Vector2 bottomLeftLoc)
         {
             for (int i = 0; i < Constants.CHUNK_SIZE; ++i)
             {
                 for (int j = 0; j <= 6; ++j)
                 {
-                    level.SetTile((int)(i + bottomLeftLoc.X), j + (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
-                    new Vector3((i + bottomLeftLoc.X) * Constants.TILE_SIZE, (j + bottomLeftLoc.Y) * Constants.TILE_SIZE, 0)));
+                    curLevel.SetTile((int)(i + bottomLeftLoc.X), j + (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
+                        new Vector3((i + bottomLeftLoc.X) * Constants.TILE_SIZE, (j + bottomLeftLoc.Y) * Constants.TILE_SIZE, 0)));
                 }
             }
         }
@@ -390,9 +404,9 @@ namespace LandOfAmbrosia.Logic
          * 
          * XXXXXXXX
          */
-        private static void FillJaggiesLeft(Level level, Vector2 bottomLeftLoc)
+        private void FillJaggiesLeft(Vector2 bottomLeftLoc)
         {
-            FillJaggiesCommon(level, bottomLeftLoc, true);
+            FillJaggiesCommon(bottomLeftLoc, true);
         }
 
         /*
@@ -406,12 +420,12 @@ namespace LandOfAmbrosia.Logic
          * 
          * XXXXXXXX
          */
-        private static void FillJaggiesRight(Level level, Vector2 bottomLeftLoc)
+        private void FillJaggiesRight(Vector2 bottomLeftLoc)
         {
-            FillJaggiesCommon(level, bottomLeftLoc, false);
+            FillJaggiesCommon(bottomLeftLoc, false);
         }
 
-        private static void FillJaggiesCommon(Level level, Vector2 bottomLeftLoc, bool isLeft)
+        private void FillJaggiesCommon(Vector2 bottomLeftLoc, bool isLeft)
         {
             bool fromLeft = isLeft;
             for (int i = 0; i < Constants.CHUNK_SIZE; i += 2)
@@ -420,9 +434,8 @@ namespace LandOfAmbrosia.Logic
                 for (int j = 0; j < Constants.CHUNK_SIZE / 2; ++j)
                 {
                     int xPos = (fromLeft) ? j : Constants.CHUNK_SIZE - 1 - j;
-                    level.SetTile(xPos + (int)bottomLeftLoc.X, i + (int) bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(Constants.PLATFORM_CHAR),
+                    curLevel.SetTile(xPos + (int)bottomLeftLoc.X, i + (int)bottomLeftLoc.Y, new Tile(AssetUtil.GetTileModel(currentLevelInfo.platformType),
                         new Vector3((xPos + (int)bottomLeftLoc.X) * Constants.TILE_SIZE, (i + (int)bottomLeftLoc.Y) * Constants.TILE_SIZE, 0)));
-
                 }
 
                 fromLeft = !fromLeft;

@@ -44,18 +44,37 @@ namespace LandOfAmbrosia.Managers
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
-            //Draw the health bars over the minions
-            this.DrawEnemyHealth();
+            LevelManager lm = (LevelManager)Game.Services.GetService(typeof(LevelManager));
+            if (lm.curState == LevelState.PLAYING)
+            {
+                //Draw the lives left in the level
+                this.DrawLivesLeft();
 
-            //Draw the health of the players
-            this.DrawPlayerHealth();
+                //Draw the health bars over the minions
+                this.DrawEnemyHealth();
 
-            //Draw the number of enemies left
-            this.DrawEnemiesLeft();
-            //Draw the Level number
+                //Draw the health of the players
+                this.DrawPlayerHealth();
+
+                //Draw the number of enemies left
+                this.DrawEnemiesLeft();
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+
+        private void DrawLivesLeft()
+        {
+            LevelManager lm = ((LevelManager)Game.Services.GetService(typeof(LevelManager)));
+            int lives = lm.levels[lm.curLevelInfo].numLives;
+
+            string message = "Lives Left: " + lives;
+            int height = Game.GraphicsDevice.Viewport.Height;
+            int width = Game.GraphicsDevice.Viewport.Width;
+            Vector2 messageSize = font.MeasureString(message);
+            spriteBatch.DrawString(font, message, new Vector2((width / 2) - (messageSize.X / 2), height - font.MeasureString(message).Y - BUFFER), Color.Yellow);
         }
 
         private void DrawEnemyHealth()
@@ -94,7 +113,7 @@ namespace LandOfAmbrosia.Managers
             int enemiesLeft = ((LevelManager)Game.Services.GetService(typeof(LevelManager))).getEnemies().Count;
             int height = Game.GraphicsDevice.Viewport.Height;
             string message = "Enemies left: " + enemiesLeft;
-            spriteBatch.DrawString(font, message, new Vector2(5, height - font.MeasureString(message).Y - 5), Color.Yellow); 
+            spriteBatch.DrawString(font, message, new Vector2(BUFFER, height - font.MeasureString(message).Y - BUFFER), Color.Yellow); 
         }
 
         private void DrawCharacterInfo(Character c, Vector2 location)
