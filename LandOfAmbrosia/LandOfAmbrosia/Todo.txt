@@ -51,14 +51,16 @@
 	Iteration 9.5: Basic UI stuff
 	X	1) Showing player health 
 		1.5) and exp?
-		2) Showing minion health
+	X	2) Showing minion health
 
 	Iteration 9.75: Necessary clean up
 		1) Make enemy projectiles hit players
 		1.5) Make player projectiles track better
 		2) Add victory logic
-			- Level number and difficulty
+			- Level number and difficulty - this should be fairly extensive. Add in blue and red block levels?
 		3) Add failure logic
+		4) Make both players reset if one falls
+		5) Make enemies not reset if they fall
 
 	Iteration 10: Upgrade system
 		1) Implement experience stuff
@@ -73,3 +75,4 @@
 		1) Particle effect dpsf -- free thing	
 		2) Add in player hop in/ hop out functionality?
 		3) Fix the camera movement, it's not exactly right
+		4) Make the enemies left count not be outlined in black

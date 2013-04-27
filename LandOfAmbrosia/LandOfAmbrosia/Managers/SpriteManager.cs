@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LandOfAmbrosia.Common;
 using Microsoft.Xna.Framework.Content;
+using LandOfAmbrosia.Characters;
 
 namespace LandOfAmbrosia.Managers
 {
@@ -21,6 +22,8 @@ namespace LandOfAmbrosia.Managers
 
         private readonly int MINION_MAX_HEALTH_WIDTH = 50;
         private readonly int MINION_HEALTH_HEIGHT = 5;
+
+        private readonly int BUFFER = 5;
 
         public SpriteManager(Game game, SpriteBatch sb, ContentManager content )
             : base(game)
@@ -61,14 +64,7 @@ namespace LandOfAmbrosia.Managers
             {
                 Vector3 enemyPos = new Vector3(e.getX(), e.getY(), Constants.CHARACTER_DEPTH);
                 Vector3 drawPos = Game.GraphicsDevice.Viewport.Project(new Vector3(e.getX(), e.getY(), Constants.CHARACTER_DEPTH), cam.ProjectionMatrix, cam.ViewMatrix, Matrix.Identity);
-
-                spriteBatch.Draw(healthBackground, new Rectangle((int) drawPos.X, (int) drawPos.Y, MINION_MAX_HEALTH_WIDTH, MINION_HEALTH_HEIGHT), Color.White);
-
-                float curHealth = e.stats.getStatCurrentVal(Constants.HEALTH_KEY);
-                float baseHealth = e.stats.getStatBaseVal(Constants.HEALTH_KEY);
-
-                int pixWide = (int)((curHealth / baseHealth) * this.MINION_MAX_HEALTH_WIDTH);
-                spriteBatch.Draw(healthTexture, new Rectangle((int) drawPos.X, (int) drawPos.Y, pixWide, MINION_HEALTH_HEIGHT), Color.White);
+                this.DrawCharacterInfo(e, new Vector2(drawPos.X, drawPos.Y));
             }
         }
 
@@ -80,28 +76,12 @@ namespace LandOfAmbrosia.Managers
             //Draw player1's health
             if (players.Count >= 1 && players[0] != null)
             {
-                //Drawing background color TODO why is this in front of the red?
-                spriteBatch.Draw(healthBackground, new Rectangle(5, 5, PLAYER_MAX_HEALTH_WIDTH, PLAYER_HEALTH_HEIGHT), Color.White);
-
-                float p1CurHealth = players[0].stats.getStatCurrentVal(Constants.HEALTH_KEY);
-                float p1BaseHealth = players[0].stats.getStatBaseVal(Constants.HEALTH_KEY);
-
-                int pixWide = (int) ((p1CurHealth / p1BaseHealth) * this.PLAYER_MAX_HEALTH_WIDTH);
-                spriteBatch.Draw(healthTexture, new Rectangle(5, 5, pixWide, PLAYER_HEALTH_HEIGHT), Color.White);
+                this.DrawCharacterInfo(players[0], new Vector2(BUFFER, BUFFER));
             }
 
             if (players.Count >= 2 && players[1] != null)
             {
-                //Drawing background color
-                spriteBatch.Draw(healthBackground, new Rectangle(5, 5, PLAYER_MAX_HEALTH_WIDTH, PLAYER_HEALTH_HEIGHT), Color.White);
-
-                float p2CurHealth = players[1].stats.getStatCurrentVal(Constants.HEALTH_KEY);
-                float p2BaseHealth = players[1].stats.getStatBaseVal(Constants.HEALTH_KEY);
-
-                int pixWide = (int) ((p2CurHealth / p2BaseHealth) * this.PLAYER_MAX_HEALTH_WIDTH);
-                int leftStart = Game.GraphicsDevice.Viewport.Width - this.PLAYER_MAX_HEALTH_WIDTH - 5;
-                Console.WriteLine("Starting player 2 health at: " + leftStart);
-                spriteBatch.Draw(healthTexture, new Rectangle(leftStart, 5, pixWide, PLAYER_HEALTH_HEIGHT), Color.White);
+                this.DrawCharacterInfo(players[1], new Vector2(Game.GraphicsDevice.Viewport.Width - this.PLAYER_MAX_HEALTH_WIDTH - BUFFER, BUFFER));
             }
         }
 
@@ -111,6 +91,24 @@ namespace LandOfAmbrosia.Managers
             int height = Game.GraphicsDevice.Viewport.Height;
             string message = "Enemies left: " + enemiesLeft;
             spriteBatch.DrawString(font, message, new Vector2(5, height - font.MeasureString(message).Y - 5), Color.Yellow); 
+        }
+
+        private void DrawCharacterInfo(Character c, Vector2 location)
+        {
+            float curHealth = c.stats.getStatCurrentVal(Constants.HEALTH_KEY);
+            float baseHealth = c.stats.getStatBaseVal(Constants.HEALTH_KEY);
+            int maxWidth = (c is UserControlledCharacter) ? PLAYER_MAX_HEALTH_WIDTH : MINION_MAX_HEALTH_WIDTH;
+            int height = (c is UserControlledCharacter) ? PLAYER_HEALTH_HEIGHT : MINION_HEALTH_HEIGHT;
+
+            int pixWide = (int) ((curHealth / baseHealth) * maxWidth);
+
+            spriteBatch.Draw(healthBackground, new Rectangle((int)location.X, (int)location.Y, maxWidth, height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(healthTexture, new Rectangle((int)location.X, (int)location.Y, pixWide, height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
+
+            if (c is UserControlledCharacter)
+            {
+                //Draw experience stuff
+            }
         }
     }
 }
