@@ -33,8 +33,9 @@ namespace LandOfAmbrosia
 
         SoundManager sm;
 
+        SpriteManager spm;
+
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
 
         public LandOfAmbrosiaGame()
         {
@@ -64,16 +65,18 @@ namespace LandOfAmbrosia
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             AssetUtil.loadAll(Content);
 
             lm = new LevelManager(this);
             //lm = new LevelManager(this, true);
             Components.Add(lm);
+            Services.AddService(typeof(LevelManager), lm);
 
-            sm = new SoundManager(this, Content);
-            Components.Add(sm);
+            //sm = new SoundManager(this, Content);
+            //Components.Add(sm);
+
+            spm = new SpriteManager(this, new SpriteBatch(GraphicsDevice), Content);
+            Components.Add(spm);
         }
 
         /// <summary>
@@ -82,7 +85,6 @@ namespace LandOfAmbrosia
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -95,8 +97,6 @@ namespace LandOfAmbrosia
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }

@@ -49,8 +49,16 @@
 			- lol
 
 	Iteration 9.5: Basic UI stuff
-		1) Showing player health and exp?
+	X	1) Showing player health 
+		1.5) and exp?
 		2) Showing minion health
+
+	Iteration 9.75: Necessary clean up
+		1) Make enemy projectiles hit players
+		1.5) Make player projectiles track better
+		2) Add victory logic
+			- Level number and difficulty
+		3) Add failure logic
 
 	Iteration 10: Upgrade system
 		1) Implement experience stuff
@@ -63,3 +71,5 @@
 	Iteration 12: Other stuff
 		0) Rework the Character class. The position never needs to be converted, just have the GetWorld method do that
 		1) Particle effect dpsf -- free thing	
+		2) Add in player hop in/ hop out functionality?
+		3) Fix the camera movement, it's not exactly right

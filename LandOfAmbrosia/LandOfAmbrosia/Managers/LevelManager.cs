@@ -359,5 +359,15 @@ namespace LandOfAmbrosia.Managers
             }
             return tilePt;
         }
+
+        public IList<Character> getEnemies()
+        {
+            return currentLevel.enemies;
+        }
+
+        public IList<Character> getPlayers()
+        {
+            return currentLevel.players;
+        }
     }
 }

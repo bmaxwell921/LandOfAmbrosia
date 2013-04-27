@@ -77,7 +77,7 @@ namespace LandOfAmbrosia.Levels
             enemies = new List<Character>();
             players = new List<Character>();
             players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));    
-            players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
+            //players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
         }
 
         /// <summary>
