@@ -128,6 +128,7 @@
     <Compile Include="Logic\AssetUtil.cs" />
     <Compile Include="Logic\PriorityQueue.cs" />
     <Compile Include="Managers\LevelManager.cs" />
+    <Compile Include="Managers\MenuManager.cs" />
     <Compile Include="Managers\SoundManager.cs" />
     <Compile Include="Managers\SpriteManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,6 +140,8 @@
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\StatBox.cs" />
+    <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\StartMenu.cs" />
     <Compile Include="Weapons\Projectile.cs" />
     <Compile Include="Weapons\SmartProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />

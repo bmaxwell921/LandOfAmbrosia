@@ -14,7 +14,11 @@ namespace LandOfAmbrosia.Experience
         private readonly int LIFETIME = 10000;
         private int timeLeft;
 
+        public int width, height;
+
         public bool isAlive;
+
+        public int amount;
 
         public Model model
         {
@@ -30,10 +34,17 @@ namespace LandOfAmbrosia.Experience
             this.position = position;
             timeLeft = LIFETIME;
             isAlive = true;
+            amount = 25;
+            width = 1;
+            height = 1;
         }
 
         public void Draw(CameraComponent c)
         {
+            if (!isAlive)
+            {
+                return;
+            }
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
@@ -53,6 +64,10 @@ namespace LandOfAmbrosia.Experience
 
         public void Update(GameTime gameTime)
         {
+            if (!isAlive)
+            {
+                return;
+            }
             if (timeLeft <= 0)
             {
                 this.isAlive = false;
@@ -62,7 +77,7 @@ namespace LandOfAmbrosia.Experience
 
         private Matrix GetWorld()
         {
-            return Matrix.Identity * Matrix.CreateTranslation(Constants.ConvertToXNAScene(position));
+            return Matrix.Identity * Matrix.CreateTranslation(Constants.ConvertToXNAScene(position) + Constants.MINION_POSITION_HACK);
         }
     }
 }

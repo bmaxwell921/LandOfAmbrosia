@@ -10,6 +10,7 @@ using LandOfAmbrosia.Weapons;
 using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Stats;
 using LandOfAmbrosia.Levels;
+using LandOfAmbrosia.Experience;
 
 namespace LandOfAmbrosia.Characters
 {
@@ -36,9 +37,10 @@ namespace LandOfAmbrosia.Characters
             height = Constants.CHARACTER_HEIGHT;
             lastAttacked = 0;
             lastDirWasLeft = false;
+            SetUpStats();
         }
 
-        protected override void SetUpStats()
+        protected void SetUpStats()
         {
             this.stats = new StatBox(STARTING_HEALTH, STARTING_ATTACK, STARTING_DEFENCE, STARTING_EXP_REQ);
         }
@@ -78,6 +80,20 @@ namespace LandOfAmbrosia.Characters
             }
             lastAttacked -= gameTime.ElapsedGameTime.Milliseconds;
             return null;
+        }
+
+        public void applyExperience(ExperienceOrb exp)
+        {
+            stats.changeCurrentStat(Constants.EXPERIENCE_KEY, exp.amount);
+
+            //Check if we leveled up
+            float leftOver = stats.getStatCurrentVal(Constants.EXPERIENCE_KEY) - stats.getStatBaseVal(Constants.EXPERIENCE_KEY);
+            if (leftOver >= 0)
+            {
+                //Level up will increase all the base values and then reset the stats, so we can just add the left overs after
+                stats.levelUpAllStats();
+                stats.changeCurrentStat(Constants.EXPERIENCE_KEY, leftOver);
+            }
         }
 
         public override bool WantsRangeAttack()

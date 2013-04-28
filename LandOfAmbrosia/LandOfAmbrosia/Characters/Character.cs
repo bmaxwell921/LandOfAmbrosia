@@ -43,10 +43,7 @@ namespace LandOfAmbrosia
             this.rangeWeapon = rangeWeapon;
             this.onGround = false;
             containingLevel = currentLevel;
-            SetUpStats();
         }
-
-        protected abstract void SetUpStats();
 
         /// <summary>
         /// Method to update the character from it's 

@@ -23,6 +23,8 @@ namespace LandOfAmbrosia.Stats
         public override void levelUpStat(float perc)
         {
             this.baseValue = this.baseValue * (1 + perc);
+            this.currentValue = this.currentValue + (baseValue * perc);
+            this.currentValue = (currentValue > baseValue) ? baseValue : currentValue;
         }
     }
 }

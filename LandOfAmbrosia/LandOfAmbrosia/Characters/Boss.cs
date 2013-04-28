@@ -13,9 +13,10 @@ namespace LandOfAmbrosia.Characters
         public Boss(Level level, Model model, Vector3 position, IList<Character> players)
             : base(level, model, position, null, null, players)
         {
+            SetUpStats();
         }
 
-        protected override void SetUpStats()
+        protected void SetUpStats()
         {
             throw new NotImplementedException();
         }

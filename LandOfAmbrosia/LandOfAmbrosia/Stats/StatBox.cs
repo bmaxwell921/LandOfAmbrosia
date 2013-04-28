@@ -31,6 +31,26 @@ namespace LandOfAmbrosia.Stats
             }
         }
 
+        public void resetAllNormalStats()
+        {
+            foreach (String key in stats.Keys)
+            {
+                if (key != Constants.HEALTH_KEY)
+                {
+                    stats[key].resetStat();
+                }
+            }
+        }
+
+        public void levelUpAllStats()
+        {
+            foreach (String key in stats.Keys)
+            {
+                stats[key].levelUpStat();
+            }
+            resetAllNormalStats();
+        }
+
         public bool changeCurrentStat(String statType, float amount)
         {
             if (!stats.ContainsKey(statType))

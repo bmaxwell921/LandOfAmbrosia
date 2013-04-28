@@ -19,7 +19,11 @@ namespace LandOfAmbrosia.Managers
         {
             gen = new Random();
             this.loadSounds(content);
-            unchosenSize = soundTracks.Count;
+            unchosenSize = soundTracks.Count;      
+        }
+
+        public void startPlayback()
+        {
             playNextSong();
         }
 

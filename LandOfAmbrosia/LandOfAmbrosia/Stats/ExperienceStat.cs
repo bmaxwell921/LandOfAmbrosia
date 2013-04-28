@@ -29,7 +29,7 @@ namespace LandOfAmbrosia.Stats
 
         public override void resetStat()
         {
-            //Do nothing!!!
+            this.currentValue = 0;
         }
     }
 }

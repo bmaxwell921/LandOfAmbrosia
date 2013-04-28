@@ -14,7 +14,6 @@ using LandOfAmbrosia.Experience;
 
 namespace LandOfAmbrosia.Managers
 {
-    public enum LevelState { BEGINNING, PLAYING, NEXT_LEVEL, GAME_OVER, VICTORY };
     /// <summary>
     /// A class to manage a level of the game. The Level is made up of Tiles 
     /// </summary>
@@ -32,16 +31,15 @@ namespace LandOfAmbrosia.Managers
 
         private LevelGenerator generator;
 
-        public LevelState curState;
-
         public LevelManager(Game game, int numPlayers)
             : base(game)
         {
-            curState = LevelState.PLAYING;
             updateCam = true;
             curLevelInfo = 0;
             setUpLevels();
-            generator = new LevelGenerator(levels, Constants.DEFAULT_SEED);
+
+            currentLevel = new Level(levels[curLevelInfo].width, levels[curLevelInfo].height, numPlayers);
+            generator = new LevelGenerator(currentLevel, levels, new Random().Next());
             currentLevel = generator.GenerateNewLevel(curLevelInfo, numPlayers);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
@@ -70,13 +68,15 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            curState = LevelState.PLAYING;
+            ((LandOfAmbrosiaGame)Game).curState = GameState.PLAYING;
             ChunkType[,] chunks = { { ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE }, { ChunkType.STAIRS, ChunkType.EMPTY } };
             levels = new List<LevelInfo>();
             levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
             levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.GREEN_PLATFORM));
 
-            generator = new LevelGenerator(levels, Constants.DEFAULT_SEED, chunks);
+            currentLevel = new Level(levels[0].width, levels[0].height, 1);
+
+            generator = new LevelGenerator(currentLevel, levels, Constants.DEFAULT_SEED, chunks);
             currentLevel = generator.GenerateNewLevel(0, 1);
             updateCam = true;
             this.SetUpCameraDefault();
@@ -97,7 +97,7 @@ namespace LandOfAmbrosia.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            if (curState == LevelState.PLAYING)
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
             {
                 currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
                 DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
@@ -130,28 +130,51 @@ namespace LandOfAmbrosia.Managers
 
         public override void Update(GameTime gameTime)
         {
-            if (curState == LevelState.PLAYING)
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
             {
                 this.UpdateProjectiles(gameTime);
                 this.UpdatePlayers(gameTime);
                 this.UpdateEnemies(gameTime);
                 this.UpdateExperience(gameTime);
+                this.checkExperienceGrabs();
                 if (updateCam)
                 {
                     this.UpdateCamera();
                 }
                 this.checkEndGame();
             }
-            else if (curState == LevelState.NEXT_LEVEL)
+            else if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL)
             {
                 currentLevel = generator.GenerateNewLevel(curLevelInfo, currentLevel.players.Count);
-                curState = LevelState.PLAYING;
+                resetCharacterPositions();
+                ((LandOfAmbrosiaGame)Game).curState = GameState.PLAYING;
             }
-            else if (curState == LevelState.GAME_OVER)
+            else if (((LandOfAmbrosiaGame)Game).curState == GameState.GAME_OVER)
             {
                 Game.Exit();
             }
             base.Update(gameTime);
+        }
+
+        private void checkExperienceGrabs()
+        {
+            foreach (Character player in currentLevel.players)
+            {
+                BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY(), Constants.CHARACTER_DEPTH), new Vector3(player.getX() + player.width, player.getY() + player.height, Constants.CHARACTER_DEPTH));
+                foreach (ExperienceOrb exp in expOrbs)
+                {
+                    if (exp.isAlive)
+                    {
+                        BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y, Constants.CHARACTER_DEPTH), new Vector3(exp.position.X + exp.width, exp.position.Y + exp.height, Constants.CHARACTER_DEPTH));
+                        if (playerbox.Intersects(expBox))
+                        {
+                            ((UserControlledCharacter)player).applyExperience(exp);
+                            exp.isAlive = false;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void UpdateExperience(GameTime gameTime)
@@ -173,13 +196,13 @@ namespace LandOfAmbrosia.Managers
             //Victory!
             if (currentLevel.enemies.Count <= 0)
             {
-                curState = ++curLevelInfo >= levels.Count ? LevelState.VICTORY : LevelState.NEXT_LEVEL;
+                ((LandOfAmbrosiaGame)Game).curState = ++curLevelInfo >= levels.Count ? GameState.VICTORY : GameState.NEXT_LEVEL;
                 expOrbs.Clear();
             }
             //Failure
             else if (levels[curLevelInfo].numLives < 0)
             {
-                curState = LevelState.GAME_OVER;
+                ((LandOfAmbrosiaGame)Game).curState = GameState.GAME_OVER;
                 expOrbs.Clear();
             }
         }
@@ -236,6 +259,7 @@ namespace LandOfAmbrosia.Managers
                 if (player != null && player.isDead())
                 {
                     --levels[curLevelInfo].numLives;
+                    Console.WriteLine("Decrementing lives to: " + levels[curLevelInfo].numLives);
                     if (levels[curLevelInfo].numLives >= 0)
                     {
                         remainingHack.Add(player);
@@ -351,7 +375,8 @@ namespace LandOfAmbrosia.Managers
                 if (character is UserControlledCharacter)
                 {
                     --levels[curLevelInfo].numLives;
-                    resetCharacters();
+                    Console.WriteLine("Decrementing lives to: " + levels[curLevelInfo].numLives);
+                    resetCharacterPositions();
                 }
                 else
                 {
@@ -372,17 +397,30 @@ namespace LandOfAmbrosia.Managers
             }
         }
 
+        //Used when players are killed by the enemy. Resets everything
         private void resetCharacters()
         {
+            resetCharacterPositions();
             if (currentLevel.players.Count >= 1)
             {
-                currentLevel.players[0].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player1Spawn);
                 currentLevel.players[0].stats.resetAllStats();
             }
             if (currentLevel.players.Count >= 2)
             {
-                currentLevel.players[1].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player2Spawn);
                 currentLevel.players[1].stats.resetAllStats();
+            }
+        }
+
+        //Used when players fall off the side, only resets position
+        private void resetCharacterPositions()
+        {
+            if (currentLevel.players.Count >= 1)
+            {
+                currentLevel.players[0].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player1Spawn);
+            }
+            if (currentLevel.players.Count >= 2)
+            {
+                currentLevel.players[1].position = Constants.ConvertToXNAScene(levels[curLevelInfo].player2Spawn);
             }
         }
 

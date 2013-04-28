@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using LandOfAmbrosia.Managers;
 using LandOfAmbrosia.Logic;
 using System.IO;
+using LandOfAmbrosia.Common;
 
 namespace LandOfAmbrosia
 {
@@ -19,8 +20,6 @@ namespace LandOfAmbrosia
     /// </summary>
     public class LandOfAmbrosiaGame : Microsoft.Xna.Framework.Game
     {
-        public string levelLoc = @"G:\Documents\GitRepos\LandOfAmbrosia\LandOfAmbrosia\LandOfAmbrosia\PreLoadedLevels\OneChunkLevel.txt";
-
         /* This camera needs to be shared between the LevelManager and the CharacterManager:
          * The LevelManager sets it up based on the width and height of the level, but 
          * the CharacterManage knows where the characters are so it will need to move the camera
@@ -35,10 +34,15 @@ namespace LandOfAmbrosia
 
         SpriteManager spm;
 
+        MenuManager mm;
+
         GraphicsDeviceManager graphics;
+
+        public GameState curState;
 
         public LandOfAmbrosiaGame()
         {
+            curState = GameState.START_SCREEN;
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -54,7 +58,6 @@ namespace LandOfAmbrosia
             //This will get overridden in the LevelManager constructor
             camera = new CameraComponent(this, Vector3.Zero);
 
-            //TODO take off this part and the camera won't be able to move unless I make it move
             Components.Add(camera);
             base.Initialize();
         }
@@ -72,11 +75,16 @@ namespace LandOfAmbrosia
             Components.Add(lm);
             Services.AddService(typeof(LevelManager), lm);
 
-            //sm = new SoundManager(this, Content);
-            //Components.Add(sm);
+            sm = new SoundManager(this, Content);
+            Components.Add(sm);
 
-            spm = new SpriteManager(this, new SpriteBatch(GraphicsDevice), Content);
+            spm = new SpriteManager(this, new SpriteBatch(GraphicsDevice));
             Components.Add(spm);
+
+            mm = new MenuManager(this, new SpriteBatch(GraphicsDevice), true);
+            Components.Add(mm);
+
+            TransitionToState(GameState.START_SCREEN);
         }
 
         /// <summary>
@@ -107,7 +115,7 @@ namespace LandOfAmbrosia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             //Stops the models from being all jacked up
             RasterizerState rs = new RasterizerState();
@@ -118,6 +126,71 @@ namespace LandOfAmbrosia
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             base.Draw(gameTime);
+        }
+
+        protected void TransitionToState(GameState newState)
+        {
+            if (newState == GameState.START_SCREEN)
+            {
+                EnableDisableDrawable(lm, false);
+                EnableDisableDrawable(spm, false);
+                EnableDisableComponent(sm, false);
+                EnableDisableDrawable(mm, true);
+            }
+            else if (newState == GameState.PLAYING)
+            {
+                EnableDisableDrawable(lm, true);
+                EnableDisableDrawable(spm, true);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, false);
+            }
+            else if (newState == GameState.PAUSE)
+            {
+                EnableDisableDrawable(lm, false);
+                EnableDisableDrawable(spm, false);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, true);
+            }
+            else if (newState == GameState.NEXT_LEVEL)
+            {
+                EnableDisableDrawable(lm, true);
+                EnableDisableDrawable(spm, true);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, false);
+            }
+            else if (newState == GameState.JUST_DIED)
+            {
+                EnableDisableDrawable(lm, true);
+                EnableDisableDrawable(spm, true);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, false);
+            }
+            else if (newState == GameState.GAME_OVER)
+            {
+                EnableDisableDrawable(lm, false);
+                EnableDisableDrawable(spm, false);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, true);
+            }
+            else if (newState == GameState.VICTORY)
+            {
+                EnableDisableDrawable(lm, false);
+                EnableDisableDrawable(spm, false);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, true);
+            }
+
+            curState = newState;
+        }
+
+        private void EnableDisableDrawable(DrawableGameComponent dgc, bool enabled)
+        {
+            dgc.Visible = enabled;
+            dgc.Enabled = enabled;
+        }
+        private void EnableDisableComponent(GameComponent gc, bool enabled)
+        {
+            gc.Enabled = enabled;
         }
     }
 }

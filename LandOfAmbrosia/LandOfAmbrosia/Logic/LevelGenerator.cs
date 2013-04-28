@@ -20,13 +20,14 @@ namespace LandOfAmbrosia.Logic
         //If this is null, choose randomly what chunks to generate, otherwise use the chunks this says
         private ChunkType[,] chunksToChoose;
 
-        public LevelGenerator(IList<LevelInfo> lis, int seed) : this(lis, seed, null)
+        public LevelGenerator(Level workingLevel, IList<LevelInfo> lis, int seed) : this(workingLevel, lis, seed, null)
         {
             
         }
 
-        public LevelGenerator(IList<LevelInfo> lis, int seed, ChunkType[,] chunksToChoose)
+        public LevelGenerator(Level workingLevel, IList<LevelInfo> lis, int seed, ChunkType[,] chunksToChoose)
         {
+            curLevel = workingLevel;
             this.gen = new Random(seed);
             this.levelInfos = lis;
             this.chunksToChoose = chunksToChoose;
@@ -40,29 +41,12 @@ namespace LandOfAmbrosia.Logic
         public Level GenerateNewLevel(int level, int numPlayers)
         {
             currentLevelInfo = levelInfos[level];
-            this.curLevel = new Level(currentLevelInfo.width, currentLevelInfo.height, numPlayers);
+            //this.curLevel = new Level(currentLevelInfo.width, currentLevelInfo.height, numPlayers);
+            this.curLevel.updateLevelTo(currentLevelInfo);
             this.chunks = new ChunkType[curLevel.width / Constants.CHUNK_SIZE, curLevel.height / Constants.CHUNK_SIZE];
             FillLevel();
             return curLevel;
         }
-
-        //For testing purposes only
-        //public Level GenerateNewLevelFrom(ChunkType[,] chunks, int chunksWidth, int chunksHeight, int numMinions)
-        //{
-        //    gen = new Random(Constants.DEFAULT_SEED);
-        //    Level ret = new Level(chunksWidth * Constants.CHUNK_SIZE, chunksHeight * Constants.CHUNK_SIZE);
-        //    ChunkType[,] junk;
-        //    //PrepareGeneration(ret, out junk);
-        //    for (int i = 0; i < chunksWidth; ++i)
-        //    {
-        //        for (int j = 0; j < chunksHeight; ++j)
-        //        {
-        //            this.FillChunkWith(ret, new Vector2(i * Constants.CHUNK_SIZE, j * Constants.CHUNK_SIZE), chunks[i, j]);
-        //        }
-        //    }
-        //    FillInMinions();
-        //    return ret;
-        //}
 
         public void FillLevel()
         {
@@ -92,7 +76,7 @@ namespace LandOfAmbrosia.Logic
                 if (curLevel.GetTile(x, y) == null)
                 {
                     curLevel.enemies.Add(new Minion(curLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
-                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), curLevel.players));
+                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), curLevel.players, currentLevelInfo));
                 }
                 else
                 {

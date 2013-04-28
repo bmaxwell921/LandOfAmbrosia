@@ -26,7 +26,7 @@ namespace LandOfAmbrosia.Managers
 
         private readonly int BUFFER = 5;
 
-        public SpriteManager(Game game, SpriteBatch sb, ContentManager content )
+        public SpriteManager(Game game, SpriteBatch sb)
             : base(game)
         {
             spriteBatch = sb;
@@ -38,14 +38,13 @@ namespace LandOfAmbrosia.Managers
 
             statBackground = new Texture2D(Game.GraphicsDevice, 1, 1);
             statBackground.SetData(new Color[] { Color.Gray });
-            font = content.Load<SpriteFont>(@"Fonts\UIFont");
+            font = Game.Content.Load<SpriteFont>(@"Fonts\UIFont");
         }
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
-            LevelManager lm = (LevelManager)Game.Services.GetService(typeof(LevelManager));
-            if (lm.curState == LevelState.PLAYING)
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
             {
                 //Draw the lives left in the level
                 this.DrawLivesLeft();

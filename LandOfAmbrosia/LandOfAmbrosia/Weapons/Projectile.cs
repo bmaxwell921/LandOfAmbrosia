@@ -112,7 +112,6 @@ namespace LandOfAmbrosia.Weapons
                     timeToDie = true;
                     float damage = source.stats.getStatCurrentVal(Constants.ATTACK_KEY) - enemy.stats.getStatCurrentVal(Constants.DEFENCE_KEY);
                     enemy.stats.changeCurrentStat(Constants.HEALTH_KEY, -damage);
-                    Console.WriteLine("Doing " + damage + " points of damage!");
                     return;
                 }
             }

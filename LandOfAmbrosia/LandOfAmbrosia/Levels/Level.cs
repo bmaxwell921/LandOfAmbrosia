@@ -35,33 +35,6 @@ namespace LandOfAmbrosia.Levels
         {
         }
 
-        public Level(bool testConstructor)
-        {
-            players = new List<Character>();
-            enemies = new List<Character>();
-            this.width = 16;
-            this.height = 16;
-            this.skybox = new Skybox(AssetUtil.skyboxModel, AssetUtil.skyboxTextures);
-            TestLevelSetUp();
-        }
-
-        //Just for testing, obviously
-        private void TestLevelSetUp()
-        {
-            this.tiles = new Tile[width, height];
-
-            for (int i = 0; i < width; ++i)
-            {
-                SetTile(i, 0, new Tile(AssetUtil.GetTileModel(Constants.GREEN_PLATFORM),
-                    new Vector3(i * Constants.TILE_SIZE, 0 * Constants.TILE_SIZE, 0)));
-            }
-
-            enemies.Add(new Minion(this, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
-                new Vector3(14 * Constants.TILE_SIZE, 4 * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), this.players));
-
-            players.Add(new UserControlledCharacter(this, Constants.PLAYER1_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER1_CHAR), Constants.DEFAULT_PLAYER1_START));  
-        }
-
         /// <summary>
         /// Creates an empty Level with the given height and width
         /// </summary>
@@ -81,6 +54,13 @@ namespace LandOfAmbrosia.Levels
             {
                 players.Add(new UserControlledCharacter(this, Constants.PLAYER2_CHAR, AssetUtil.GetPlayerModel(Constants.PLAYER2_CHAR), Constants.DEFAULT_PLAYER2_START));
             }
+        }
+
+        public void updateLevelTo(LevelInfo li)
+        {
+            tiles = new Tile[li.width, li.height];
+            this.width = li.width;
+            this.height = li.height;
         }
 
         /// <summary>

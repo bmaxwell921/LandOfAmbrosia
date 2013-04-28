@@ -66,18 +66,21 @@
 	X	7) Make the enemies harder
 
 	Iteration 10: Upgrade system
-		1) Implement experience stuff
-		2) Implement the level system		
+	X	1) Implement experience stuff
+	X	2) Implement the level system		
 
 	Iteration 11: UI
 		1) Implement the UI
 		2) Change from skybox to parallax scrolling background		
 
 	Iteration 12: Other stuff
-		0) Rework the Character class. The position never needs to be converted, just have the GetWorld method do that
+		0) Rework the Character classes. The position never needs to be converted, just have the GetWorld method do that
+			- Might need to put together a GameObject class so I don't have duplicated code for draws. Also, then I can do
+				the bounding box collision detection stuff in there.
 		1) Particle effect dpsf -- free thing	
 		2) Add in player hop in/ hop out functionality?
 		3) Fix the camera movement, it's not exactly right
 		4) Make the enemies left count not be outlined in black
 		5) Implement sight for Players and a way to see where the closest 
 			enemy is
+		6) Collision with exp is a little bit off
