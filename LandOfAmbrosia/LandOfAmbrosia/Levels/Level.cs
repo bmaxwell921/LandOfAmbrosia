@@ -130,6 +130,11 @@ namespace LandOfAmbrosia.Levels
         /// <returns></returns>
         public int GetTileIndexFromXPos(float x)
         {
+            //Special case! :D
+            if (x < 0)
+            {
+                return -1;
+            }
             return (int)(x / Constants.TILE_SIZE);
         }
 

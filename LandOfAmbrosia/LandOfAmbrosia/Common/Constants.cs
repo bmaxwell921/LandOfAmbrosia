@@ -22,11 +22,12 @@ namespace LandOfAmbrosia.Common
         public static readonly char PLAYER1_CHAR = '1';
         public static readonly char PLAYER2_CHAR = '2';
         public static readonly char EMPTY_CHAR = ' ';
-        //public static readonly char PLATFORM_CHAR = 'P';
 
         public static readonly char GREEN_PLATFORM = 'G';
         public static readonly char BLUE_PLATFORM = 'B';
         public static readonly char RED_PLATFORM = 'R';
+
+        public static readonly char EXPERIENCE = 'E';
 
         public static readonly char MINION_CHAR = 'M';
 
@@ -36,7 +37,6 @@ namespace LandOfAmbrosia.Common
         #region Asset Names
         //Tiles
         public static readonly string NULL_MODEL = null;
-        //public static readonly string PLATFORM = @"Models/platform";
         public static readonly string GREEN_PLATFORM_ASSET = @"Models/greenPlatform";
         public static readonly string BLUE_PLATFORM_ASSET = @"Models/bluePlatform";
         public static readonly string RED_PLATFORM_ASSET = @"Models/redPlatform";
@@ -51,6 +51,8 @@ namespace LandOfAmbrosia.Common
 
         //Minions
         public static readonly string MINION_MODEL = @"Models/minion3";
+
+        public static readonly string EXPERIENCE_ASSET = @"Models/experience";
 
         //Projectiles
         public static readonly string MAGIC_MODEL = @"Models/magicBig";

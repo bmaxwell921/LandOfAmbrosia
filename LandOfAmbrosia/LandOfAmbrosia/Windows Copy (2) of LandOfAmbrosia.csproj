@@ -93,6 +93,7 @@
     <Compile Include="Decision\TimeToMove.cs" />
     <Compile Include="Decision\SeeEnemyNode.cs" />
     <Compile Include="Decision\WaitNode.cs" />
+    <Compile Include="Experience\ExperienceOrb.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\LevelInfo.cs" />
     <Compile Include="Levels\Skybox.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Stats\AStat.cs" />
     <Compile Include="Stats\AttackPower.cs" />
     <Compile Include="Stats\Defence.cs" />
-    <Compile Include="Stats\Experience.cs" />
+    <Compile Include="Stats\ExperienceStat.cs" />
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs">
       <SubType>Code</SubType>
@@ -199,6 +200,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

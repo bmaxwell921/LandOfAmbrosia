@@ -94,7 +94,6 @@ namespace LandOfAmbrosia.Characters
                 if (closeTo(targetPoint))
                 {
                     pathToTarget.Dequeue();
-                    //moveToPoint(pathToTarget.Peek());
                 }
                 else
                 {
@@ -165,12 +164,10 @@ namespace LandOfAmbrosia.Characters
             if (WantsRangeAttack() && lastAttacked <= 0)
             {
                 lastAttacked = ATTACK_SPEED;
-                //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
                 Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
-                //wantsRange = false;
                 return new Weapons.Projectile(containingLevel, AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, Constants.UnconvertFromXNAScene(target.position));
             }
-            //wantsRange = false;
+            wantsRange = false;
             lastAttacked -= gameTime.ElapsedGameTime.Milliseconds;
             return null;
         }

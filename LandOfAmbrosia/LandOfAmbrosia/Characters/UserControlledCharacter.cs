@@ -58,16 +58,6 @@ namespace LandOfAmbrosia.Characters
             this.setVelocityX(xVel);
         }
 
-        //Makes the character jump. Set forceJump to true for an in-air jump
-        //private void jump(bool forceJump)
-        //{
-        //    if (onGround || forceJump)
-        //    {
-        //        onGround = false;
-        //        this.setVelocityY(JUMP_VELOCITY);
-        //    }
-        //}
-
         public override Projectile rangeAttack(GameTime gameTime, Character closestEnemy)
         {
             if (WantsRangeAttack() && lastAttacked <= 0)
@@ -75,18 +65,14 @@ namespace LandOfAmbrosia.Characters
                 lastAttacked = ATTACK_SPEED;
                 if (closestEnemy != null)
                 {
-                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0,0,Constants.CHARACTER_DEPTH);
                     Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
-                    //return new SmartProjectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, closestEnemy);
                     return new SmartProjectile(containingLevel, AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, closestEnemy);
                 }
                 else
                 {
                     //Just blast some magic 'forward.' Who doesn't love just blasting spells
-                    //Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + Constants.MINION_POSITION_HACK + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
                     Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
                     Vector3 target = projStart + new Vector3(5 * ((lastDirWasLeft) ? -Constants.TILE_SIZE : Constants.TILE_SIZE), 0, 0);
-                    //return new Projectile(AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, target);
                     return new Projectile(containingLevel, AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, target);
                 }
             }
@@ -103,7 +89,7 @@ namespace LandOfAmbrosia.Characters
         {
             if (inputController.GetAttackType() == ATTACK_TYPE.MELEE)
             {
-                //TODO
+                //TODON'T
             }
         }
 

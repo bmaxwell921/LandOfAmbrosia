@@ -117,6 +117,7 @@
     <Compile Include="Decision\StalePathNode.cs" />
     <Compile Include="Decision\TimeToMove.cs" />
     <Compile Include="Decision\WaitNode.cs" />
+    <Compile Include="Experience\ExperienceOrb.cs" />
     <Compile Include="LandOfAmbrosiaGame.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\LevelInfo.cs" />
@@ -134,7 +135,7 @@
     <Compile Include="Stats\AStat.cs" />
     <Compile Include="Stats\AttackPower.cs" />
     <Compile Include="Stats\Defence.cs" />
-    <Compile Include="Stats\Experience.cs" />
+    <Compile Include="Stats\ExperienceStat.cs" />
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\StatBox.cs" />

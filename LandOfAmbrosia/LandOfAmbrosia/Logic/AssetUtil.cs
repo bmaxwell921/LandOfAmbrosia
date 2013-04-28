@@ -22,6 +22,8 @@ namespace LandOfAmbrosia.Logic
         //Map of character representation to model for projectiles
         private static IDictionary<char, Model> projectileModels = new Dictionary<char, Model>();
 
+        private static IDictionary<char, Model> experienceModels = new Dictionary<char, Model>();
+
         //The actual cube for the skybox
         public static Model skyboxModel
         {
@@ -61,7 +63,13 @@ namespace LandOfAmbrosia.Logic
             loadPlayerModels(content);
             loadEnemyModels(content);
             loadProjectileModels(content);
+            loadExperienceModels(content);
             loadSkyboxAssets(content);
+        }
+
+        private static void loadExperienceModels(ContentManager content)
+        {
+            experienceModels.Add(Constants.EXPERIENCE, content.Load<Model>(Constants.EXPERIENCE_ASSET));
         }
 
         //Loads the models for the tiles and fills in the tileModels map
@@ -69,7 +77,6 @@ namespace LandOfAmbrosia.Logic
         {
             //Is there a better way to do this with the empty tile?
             tileModels.Add(Constants.EMPTY_CHAR, null);
-            //tileModels.Add(Constants.PLATFORM_CHAR, content.Load<Model>(Constants.PLATFORM));
             tileModels.Add(Constants.GREEN_PLATFORM, content.Load<Model>(Constants.GREEN_PLATFORM_ASSET));
             tileModels.Add(Constants.BLUE_PLATFORM, content.Load<Model>(Constants.BLUE_PLATFORM_ASSET));
             tileModels.Add(Constants.RED_PLATFORM, content.Load<Model>(Constants.RED_PLATFORM_ASSET));
@@ -159,6 +166,15 @@ namespace LandOfAmbrosia.Logic
             if (projectileModels.ContainsKey(proj))
             {
                 return projectileModels[proj];
+            }
+            return null;
+        }
+
+        public static Model GetExperienceModel(char exp)
+        {
+            if (experienceModels.ContainsKey(exp))
+            {
+                return experienceModels[exp];
             }
             return null;
         }

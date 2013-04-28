@@ -59,12 +59,11 @@
 	X	2) Add victory logic
 	X		- Level number and difficulty - this should be fairly extensive. 
 	X			Add in blue and red block levels?
-		3) Add failure logic
+	X	3) Add failure logic
 	X	4) Make both players reset if one falls
 	X	5) Make enemies not reset if they fall
-		6) The bug where there's an invisible block to the left of the start
-		7) Implement sight for Players
-		8) Make the enemies harder
+	X	6) The bug where there's an invisible block to the left of the start
+	X	7) Make the enemies harder
 
 	Iteration 10: Upgrade system
 		1) Implement experience stuff
@@ -80,3 +79,5 @@
 		2) Add in player hop in/ hop out functionality?
 		3) Fix the camera movement, it's not exactly right
 		4) Make the enemies left count not be outlined in black
+		5) Implement sight for Players and a way to see where the closest 
+			enemy is

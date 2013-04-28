@@ -10,6 +10,7 @@ using LandOfAmbrosia.Logic;
 using LandOfAmbrosia.Characters;
 using LandOfAmbrosia.Weapons;
 using Microsoft.Xna.Framework.Input;
+using LandOfAmbrosia.Experience;
 
 namespace LandOfAmbrosia.Managers
 {
@@ -24,6 +25,9 @@ namespace LandOfAmbrosia.Managers
         public int curLevelInfo;
 
         private IList<Projectile> projectiles;
+
+        private IList<ExperienceOrb> expOrbs;
+
         private bool updateCam;
 
         private LevelGenerator generator;
@@ -41,20 +45,21 @@ namespace LandOfAmbrosia.Managers
             currentLevel = generator.GenerateNewLevel(curLevelInfo, numPlayers);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
+            this.expOrbs = new List<ExperienceOrb>();
         }
 
         private void setUpLevels()
         {
             levels = new List<LevelInfo>();
-            levels.Add(new LevelInfo(15,  64,   8,  4, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue1
-            levels.Add(new LevelInfo(15,  64,   8,  8, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue2
-            levels.Add(new LevelInfo(15,  64,   8, 12, 100,  50,  0, Constants.BLUE_PLATFORM));   // blue3
-            levels.Add(new LevelInfo(10, 128,  16, 20, 200,  75, 25, Constants.GREEN_PLATFORM));  // green1
-            levels.Add(new LevelInfo( 8, 128,  16, 28, 200,  75, 25, Constants.GREEN_PLATFORM));  // green2
-            levels.Add(new LevelInfo( 6, 128,  16, 36, 200,  75, 25, Constants.GREEN_PLATFORM));  // green3
-            levels.Add(new LevelInfo( 4, 256,  32, 52, 400, 150, 50, Constants.RED_PLATFORM));    // red1
-            levels.Add(new LevelInfo( 2, 256,  32, 68, 400, 150, 50, Constants.RED_PLATFORM));    // red2
-            levels.Add(new LevelInfo( 2, 256,  32, 84, 400, 150, 50, Constants.RED_PLATFORM));    // red2
+            levels.Add(new LevelInfo(5, 64, 8, 4, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue1
+            levels.Add(new LevelInfo(5, 64, 8, 8, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue2
+            levels.Add(new LevelInfo(5, 64, 8, 12, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue3
+            levels.Add(new LevelInfo(3, 128, 16, 20, 200, 75, 25, Constants.GREEN_PLATFORM));  // green1
+            levels.Add(new LevelInfo(3, 128, 16, 28, 200, 75, 25, Constants.GREEN_PLATFORM));  // green2
+            levels.Add(new LevelInfo(3, 128, 16, 36, 200, 75, 25, Constants.GREEN_PLATFORM));  // green3
+            levels.Add(new LevelInfo(1, 128,  24, 52, 400, 150, 50, Constants.RED_PLATFORM));    // red1
+            levels.Add(new LevelInfo(1, 128,  24, 68, 400, 150, 50, Constants.RED_PLATFORM));    // red2
+            levels.Add(new LevelInfo(1, 128,  24, 84, 400, 150, 50, Constants.RED_PLATFORM));    // red2
         }
 
         /// <summary>
@@ -76,6 +81,7 @@ namespace LandOfAmbrosia.Managers
             updateCam = true;
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
+            this.expOrbs = new List<ExperienceOrb>();
         }
 
         private void SetUpCameraDefault()
@@ -95,6 +101,7 @@ namespace LandOfAmbrosia.Managers
             {
                 currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
                 DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
+                DrawExperience(((LandOfAmbrosiaGame)Game).camera);
             }
             base.Draw(gameTime);
         }
@@ -110,6 +117,17 @@ namespace LandOfAmbrosia.Managers
             }
         }
 
+        private void DrawExperience(CameraComponent c)
+        {
+            foreach (ExperienceOrb exp in expOrbs)
+            {
+                if (exp != null)
+                {
+                    exp.Draw(c);
+                }
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (curState == LevelState.PLAYING)
@@ -117,6 +135,7 @@ namespace LandOfAmbrosia.Managers
                 this.UpdateProjectiles(gameTime);
                 this.UpdatePlayers(gameTime);
                 this.UpdateEnemies(gameTime);
+                this.UpdateExperience(gameTime);
                 if (updateCam)
                 {
                     this.UpdateCamera();
@@ -128,7 +147,25 @@ namespace LandOfAmbrosia.Managers
                 currentLevel = generator.GenerateNewLevel(curLevelInfo, currentLevel.players.Count);
                 curState = LevelState.PLAYING;
             }
+            else if (curState == LevelState.GAME_OVER)
+            {
+                Game.Exit();
+            }
             base.Update(gameTime);
+        }
+
+        private void UpdateExperience(GameTime gameTime)
+        {
+            IList<ExperienceOrb> expHack = new List<ExperienceOrb>();
+            foreach (ExperienceOrb exp in expOrbs)
+            {
+                if (exp != null && exp.isAlive)
+                {
+                    expHack.Add(exp);
+                    exp.Update(gameTime);
+                }
+            }
+            expOrbs = expHack;
         }
 
         private void checkEndGame()
@@ -137,11 +174,13 @@ namespace LandOfAmbrosia.Managers
             if (currentLevel.enemies.Count <= 0)
             {
                 curState = ++curLevelInfo >= levels.Count ? LevelState.VICTORY : LevelState.NEXT_LEVEL;
+                expOrbs.Clear();
             }
             //Failure
             else if (levels[curLevelInfo].numLives < 0)
             {
                 curState = LevelState.GAME_OVER;
+                expOrbs.Clear();
             }
         }
 
@@ -220,6 +259,11 @@ namespace LandOfAmbrosia.Managers
                     }
                     this.UpdateCharacter(enemy, gameTime);
                     this.CheckTurnOnGravity(enemy);
+                }
+                //If they just died then spawn an experience at their position!
+                else if (enemy != null)
+                {
+                    expOrbs.Add(new ExperienceOrb(Constants.UnconvertFromXNAScene(enemy.position), AssetUtil.GetExperienceModel(Constants.EXPERIENCE)));
                 }
             }
             currentLevel.enemies = remainingHack;

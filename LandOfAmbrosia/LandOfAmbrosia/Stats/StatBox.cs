@@ -20,7 +20,7 @@ namespace LandOfAmbrosia.Stats
             stats.Add(Constants.HEALTH_KEY, new Health(baseHealth));
             stats.Add(Constants.ATTACK_KEY, new AttackPower(baseAttack));
             stats.Add(Constants.DEFENCE_KEY, new Defence(baseDefence));
-            stats.Add(Constants.EXPERIENCE_KEY, new Experience(startingExp));
+            stats.Add(Constants.EXPERIENCE_KEY, new ExperienceStat(startingExp));
         }
 
         public void resetAllStats()
