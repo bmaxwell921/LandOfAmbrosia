@@ -1,38 +1,46 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace LandOfAmbrosia.UI
 {
-    class StartMenu : TwoChoiceMenu
+    class GameOverMenu : TwoChoiceMenu
     {
 
-        public StartMenu(Game game) : base(game)
+        public GameOverMenu(Game game)
+            : base(game)
         {
             base.setTitleFont(game.Content.Load<SpriteFont>(@"Fonts\Title"));
             base.setChoicesFont(game.Content.Load<SpriteFont>(@"Fonts\StartScreen"));
         }
 
-        public override void ConfirmSelection()
-        {
-            ((LandOfAmbrosiaGame)game).startGame(base.leftSelected ? 1 : 2);            
-        }
-
         protected override string getTitleMessage()
         {
-            return "Land of Ambrosia";
+            return "Game Over";
         }
 
         protected override IList<string> getChoices()
         {
             IList<string> ret = new List<string>();
-            ret.Add("One Player");
-            ret.Add("Two Player");
+            ret.Add("Main Menu");
+            ret.Add("Quit");
             return ret;
+        }
+
+        public override void ConfirmSelection()
+        {
+            if (leftSelected)
+            {
+                ((LandOfAmbrosiaGame)game).restartGame();
+            }
+            else
+            {
+                game.Exit();
+            }
         }
     }
 }

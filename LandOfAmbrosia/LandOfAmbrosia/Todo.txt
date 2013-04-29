@@ -84,3 +84,4 @@
 		5) Implement sight for Players and a way to see where the closest 
 			enemy is
 		6) Collision with exp is a little bit off
+		7) Make minions spawn only in tiles right above a platform. Then I can make it so the minions don't just die when they fall off

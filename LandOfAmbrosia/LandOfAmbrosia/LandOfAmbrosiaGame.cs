@@ -69,20 +69,12 @@ namespace LandOfAmbrosia
         protected override void LoadContent()
         {
             AssetUtil.loadAll(Content);
+            mm = new MenuManager(this, new SpriteBatch(GraphicsDevice), true);
+            Components.Add(mm);
 
-            lm = new LevelManager(this, 1);
-            //lm = new LevelManager(this, true);
-            Components.Add(lm);
-            Services.AddService(typeof(LevelManager), lm);
 
             sm = new SoundManager(this, Content);
             Components.Add(sm);
-
-            spm = new SpriteManager(this, new SpriteBatch(GraphicsDevice));
-            Components.Add(spm);
-
-            mm = new MenuManager(this, new SpriteBatch(GraphicsDevice), true);
-            Components.Add(mm);
 
             TransitionToState(GameState.START_SCREEN);
         }
@@ -128,13 +120,13 @@ namespace LandOfAmbrosia
             base.Draw(gameTime);
         }
 
-        protected void TransitionToState(GameState newState)
+        public void TransitionToState(GameState newState)
         {
             if (newState == GameState.START_SCREEN)
             {
                 EnableDisableDrawable(lm, false);
                 EnableDisableDrawable(spm, false);
-                EnableDisableComponent(sm, false);
+                EnableDisableComponent(sm, true);
                 EnableDisableDrawable(mm, true);
             }
             else if (newState == GameState.PLAYING)
@@ -151,7 +143,14 @@ namespace LandOfAmbrosia
                 EnableDisableComponent(sm, true);
                 EnableDisableDrawable(mm, true);
             }
-            else if (newState == GameState.NEXT_LEVEL)
+            else if (newState == GameState.NEXT_LEVEL_WAIT)
+            {
+                EnableDisableDrawable(lm, true);
+                EnableDisableDrawable(spm, true);
+                EnableDisableComponent(sm, true);
+                EnableDisableDrawable(mm, false);
+            }
+            else if (curState == GameState.NEXT_LEVEL_GENERATE)
             {
                 EnableDisableDrawable(lm, true);
                 EnableDisableDrawable(spm, true);
@@ -183,14 +182,41 @@ namespace LandOfAmbrosia
             curState = newState;
         }
 
+        public void startGame(int numPlayers)
+        {
+            lm = new LevelManager(this, numPlayers);
+            Components.Add(lm);
+            Services.AddService(typeof(LevelManager), lm);
+
+            spm = new SpriteManager(this, new SpriteBatch(GraphicsDevice));
+            Components.Add(spm);
+
+            TransitionToState(GameState.PLAYING);
+        }
+
+        public void restartGame()
+        {
+            //Remove them so we can re add them later
+            Components.Remove(lm);
+            Services.RemoveService(typeof(LevelManager));
+
+            TransitionToState(GameState.START_SCREEN);
+        }
+
         private void EnableDisableDrawable(DrawableGameComponent dgc, bool enabled)
         {
-            dgc.Visible = enabled;
-            dgc.Enabled = enabled;
+            if (dgc != null)
+            {
+                dgc.Visible = enabled;
+                dgc.Enabled = enabled;
+            }
         }
         private void EnableDisableComponent(GameComponent gc, bool enabled)
         {
-            gc.Enabled = enabled;
+            if (gc != null)
+            {
+                gc.Enabled = enabled;
+            }
         }
     }
 }

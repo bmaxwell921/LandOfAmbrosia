@@ -44,7 +44,7 @@ namespace LandOfAmbrosia.Managers
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
-            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING || (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT))
             {
                 //Draw the lives left in the level
                 this.DrawLivesLeft();
@@ -59,10 +59,26 @@ namespace LandOfAmbrosia.Managers
                 this.DrawEnemiesLeft();
             }
 
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT)
+            {
+                //Draw the message to move to the next level
+                this.DrawGotoNextMessage();
+            }
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
 
+        private void DrawGotoNextMessage()
+        {
+            string message = "Press Y to progress to the next level";
+            int height = Game.GraphicsDevice.Viewport.Height;
+            int width = Game.GraphicsDevice.Viewport.Width;
+
+            Vector2 messageSize = font.MeasureString(message);
+
+            spriteBatch.DrawString(font, message, new Vector2((width / 2f) - (messageSize.X / 2), height * (3f / 8f)), Color.White);
+        }
 
         private void DrawLivesLeft()
         {

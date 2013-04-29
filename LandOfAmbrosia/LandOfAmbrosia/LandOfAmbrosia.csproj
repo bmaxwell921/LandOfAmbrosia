@@ -140,8 +140,10 @@
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\StatBox.cs" />
+    <Compile Include="UI\GameOverMenu.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\StartMenu.cs" />
+    <Compile Include="UI\TwoChoiceMenu.cs" />
     <Compile Include="Weapons\Projectile.cs" />
     <Compile Include="Weapons\SmartProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />

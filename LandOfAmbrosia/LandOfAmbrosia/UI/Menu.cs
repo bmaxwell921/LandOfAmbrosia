@@ -12,5 +12,11 @@ namespace LandOfAmbrosia.UI
         void Draw(SpriteBatch sb, Game game);
 
         void Update(bool leftPressed, bool rightPressed);
+
+        //void LeftPressed();
+
+        //void RightPressed();
+
+        void ConfirmSelection();
     }
 }

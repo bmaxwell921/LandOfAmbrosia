@@ -31,6 +31,8 @@ namespace LandOfAmbrosia.Managers
 
         private LevelGenerator generator;
 
+        private bool progress = false;
+
         public LevelManager(Game game, int numPlayers)
             : base(game)
         {
@@ -68,7 +70,6 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            ((LandOfAmbrosiaGame)Game).curState = GameState.PLAYING;
             ChunkType[,] chunks = { { ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE }, { ChunkType.STAIRS, ChunkType.EMPTY } };
             levels = new List<LevelInfo>();
             levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
@@ -97,7 +98,7 @@ namespace LandOfAmbrosia.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING || (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT))
             {
                 currentLevel.Draw(((LandOfAmbrosiaGame)Game).camera, Game.GraphicsDevice);
                 DrawProjectiles(((LandOfAmbrosiaGame)Game).camera);
@@ -130,30 +131,50 @@ namespace LandOfAmbrosia.Managers
 
         public override void Update(GameTime gameTime)
         {
-            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
+            //Console.WriteLine("Current Game State: " + ((LandOfAmbrosiaGame)Game).curState);
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING || (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT))
             {
                 this.UpdateProjectiles(gameTime);
                 this.UpdatePlayers(gameTime);
                 this.UpdateEnemies(gameTime);
                 this.UpdateExperience(gameTime);
                 this.checkExperienceGrabs();
+                this.checkProgress();
                 if (updateCam)
                 {
                     this.UpdateCamera();
                 }
                 this.checkEndGame();
             }
-            else if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL)
+            else if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_GENERATE)
             {
-                currentLevel = generator.GenerateNewLevel(curLevelInfo, currentLevel.players.Count);
+                currentLevel = generator.GenerateNewLevel(++curLevelInfo, currentLevel.players.Count);
                 resetCharacterPositions();
                 ((LandOfAmbrosiaGame)Game).curState = GameState.PLAYING;
             }
             else if (((LandOfAmbrosiaGame)Game).curState == GameState.GAME_OVER)
             {
-                Game.Exit();
+                //Game.Exit();
             }
+
+            if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT && progress)
+            {
+                ((LandOfAmbrosiaGame)Game).TransitionToState(GameState.NEXT_LEVEL_GENERATE);
+            }
+
             base.Update(gameTime);
+        }
+
+        private void checkProgress()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y) || GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Y))
+            {
+                progress = true;
+            }
+            else
+            {
+                progress = false;
+            }
         }
 
         private void checkExperienceGrabs()
@@ -194,15 +215,14 @@ namespace LandOfAmbrosia.Managers
         private void checkEndGame()
         {
             //Victory!
-            if (currentLevel.enemies.Count <= 0)
+            if (currentLevel.enemies.Count <= 0 && ((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
             {
-                ((LandOfAmbrosiaGame)Game).curState = ++curLevelInfo >= levels.Count ? GameState.VICTORY : GameState.NEXT_LEVEL;
-                expOrbs.Clear();
+                ((LandOfAmbrosiaGame)Game).TransitionToState(curLevelInfo >= levels.Count ? GameState.VICTORY : GameState.NEXT_LEVEL_WAIT);
             }
             //Failure
             else if (levels[curLevelInfo].numLives < 0)
             {
-                ((LandOfAmbrosiaGame)Game).curState = GameState.GAME_OVER;
+                ((LandOfAmbrosiaGame)Game).TransitionToState(GameState.GAME_OVER);
                 expOrbs.Clear();
             }
         }
@@ -259,7 +279,6 @@ namespace LandOfAmbrosia.Managers
                 if (player != null && player.isDead())
                 {
                     --levels[curLevelInfo].numLives;
-                    Console.WriteLine("Decrementing lives to: " + levels[curLevelInfo].numLives);
                     if (levels[curLevelInfo].numLives >= 0)
                     {
                         remainingHack.Add(player);
@@ -375,12 +394,12 @@ namespace LandOfAmbrosia.Managers
                 if (character is UserControlledCharacter)
                 {
                     --levels[curLevelInfo].numLives;
-                    Console.WriteLine("Decrementing lives to: " + levels[curLevelInfo].numLives);
                     resetCharacterPositions();
                 }
                 else
                 {
                     character.stats.changeCurrentStat(Constants.HEALTH_KEY, -character.stats.getStatCurrentVal(Constants.HEALTH_KEY));
+                    //((Minion)character).respawn();
                 }
             }
 

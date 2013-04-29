@@ -24,9 +24,12 @@ namespace LandOfAmbrosia.Characters
 
         private bool wantsRange;
 
+        private Vector3 spawn;
+
         public Minion(Level level, Model model, Vector3 position, IList<Character> players, LevelInfo li)
             : base(level, model, position, null, null, players)
         {
+            spawn = Constants.ConvertToXNAScene(position);
             width = .5f;
             height = 1f;
             wantsRange = false;
@@ -168,6 +171,11 @@ namespace LandOfAmbrosia.Characters
             wantsRange = false;
             lastAttacked -= gameTime.ElapsedGameTime.Milliseconds;
             return null;
+        }
+
+        internal void respawn()
+        {
+            this.position = spawn;
         }
     }
 }

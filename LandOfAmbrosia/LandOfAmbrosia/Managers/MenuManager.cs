@@ -17,13 +17,20 @@ namespace LandOfAmbrosia.Managers
     class MenuManager : DrawableGameComponent
     {
         private SpriteBatch sb;
+        private readonly int START_SCREEN = 0;
+        private readonly int GAME_OVER = 1;
+        private readonly int VICTORY = 2;
+        private readonly int PAUSE = 3;
+        int currentMenu;
 
         IList<Menu> menus;
 
-        int currentMenu;
+        private readonly int WAIT = 50;
+        private int lastRead;
 
         bool leftPressed = true;
         bool rightPressed = false;
+        bool confirmPressed = false;
 
         bool isXbox;
 
@@ -33,65 +40,98 @@ namespace LandOfAmbrosia.Managers
             this.sb = sb;
             menus = new List<Menu>();
             menus.Add(new StartMenu(Game));
+            menus.Add(new GameOverMenu(Game));
             this.isXbox = isXbox;
+            currentMenu = START_SCREEN;
+        }
 
-            currentMenu = 0;
+        private void updateCurrentMenu()
+        {
+            GameState curState = ((LandOfAmbrosiaGame)Game).curState;
+            if (curState == GameState.START_SCREEN)
+            {
+                currentMenu = START_SCREEN;
+            }
+            else if (curState == GameState.GAME_OVER)
+            {
+                currentMenu = GAME_OVER;
+            }
+            else if (curState == GameState.VICTORY)
+            {
+                currentMenu = VICTORY;
+            }
+            else
+            {
+                currentMenu = PAUSE;
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             GameState curState = ((LandOfAmbrosiaGame)Game).curState;
 
-            checkInput();
+            checkInput(gameTime);
+            updateCurrentMenu();
 
             if (curState == GameState.START_SCREEN || curState == GameState.PAUSE || curState == GameState.GAME_OVER || curState == GameState.VICTORY)
             {
                 menus[currentMenu].Update(leftPressed, rightPressed);
+
+                if (confirmPressed)
+                {
+                    menus[currentMenu].ConfirmSelection();
+                    confirmPressed = false;
+                }
             }
         }
 
 
-        private void checkInput()
+        private void checkInput(GameTime gameTime)
         {
-            if (!isXbox)
+            if (lastRead <= 0)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.J))
+                if (!isXbox)
                 {
-                    Console.WriteLine("Moving Left!");
-                    leftPressed = true;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.L))
-                {
-                    rightPressed = true;
-                }
+                    if (Keyboard.GetState().IsKeyDown(Keys.J))
+                    {
+                        leftPressed = true;
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.L))
+                    {
+                        rightPressed = true;
+                    }
 
-                if (Keyboard.GetState().IsKeyUp(Keys.J))
-                {
-                    leftPressed = false;
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    {
+                        confirmPressed = true;
+                    }
                 }
-                if (Keyboard.GetState().IsKeyUp(Keys.L))
+                else
                 {
-                    rightPressed = false;
+                    if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
+                    {
+                        leftPressed = true;
+                    }
+
+                    if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+                    {
+                        rightPressed = true;
+                    }
+
+                    if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y))
+                    {
+                        Console.WriteLine("Confirm pressed");
+                        confirmPressed = true;
+                    }
                 }
+                lastRead = WAIT;
             }
             else
             {
-                if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadLeft))
-                {
-                    leftPressed = true;
-                }
-                if (GamePad.GetState(PlayerIndex.One).IsButtonUp(Buttons.DPadLeft))
-                {
-                    leftPressed = false;
-                }
-                if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadRight))
-                {
-                    rightPressed = true;
-                }
-                if (GamePad.GetState(PlayerIndex.One).IsButtonUp(Buttons.DPadRight))
-                {
-                    rightPressed = false;
-                }
+                lastRead -= gameTime.ElapsedGameTime.Milliseconds;
+                leftPressed = false;
+                rightPressed = false;
+                confirmPressed = false;
             }
         }
 
@@ -99,7 +139,7 @@ namespace LandOfAmbrosia.Managers
         public override void Draw(GameTime gameTime)
         {
             GameState curState = ((LandOfAmbrosiaGame)Game).curState;
-
+            updateCurrentMenu();
             //sb.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
             sb.Begin();
 
