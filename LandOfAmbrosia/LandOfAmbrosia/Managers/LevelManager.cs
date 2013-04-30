@@ -51,15 +51,16 @@ namespace LandOfAmbrosia.Managers
         private void setUpLevels()
         {
             levels = new List<LevelInfo>();
-            levels.Add(new LevelInfo(5, 64, 8, 4, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue1
-            levels.Add(new LevelInfo(5, 64, 8, 8, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue2
-            levels.Add(new LevelInfo(5, 64, 8, 12, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue3
-            levels.Add(new LevelInfo(3, 128, 16, 20, 200, 75, 25, Constants.GREEN_PLATFORM));  // green1
-            levels.Add(new LevelInfo(3, 128, 16, 28, 200, 75, 25, Constants.GREEN_PLATFORM));  // green2
-            levels.Add(new LevelInfo(3, 128, 16, 36, 200, 75, 25, Constants.GREEN_PLATFORM));  // green3
-            levels.Add(new LevelInfo(1, 128,  24, 52, 400, 150, 50, Constants.RED_PLATFORM));    // red1
-            levels.Add(new LevelInfo(1, 128,  24, 68, 400, 150, 50, Constants.RED_PLATFORM));    // red2
-            levels.Add(new LevelInfo(1, 128,  24, 84, 400, 150, 50, Constants.RED_PLATFORM));    // red2
+            //levels.Add(new LevelInfo(5, 64, 8, 1, 100, 50, 0, Constants.BLUE_PLATFORM));
+            levels.Add(new LevelInfo("Blue 1", 5, 64, 8, 4, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue1
+            levels.Add(new LevelInfo("Blue 2", 5, 64, 8, 8, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue2
+            levels.Add(new LevelInfo("Blue 3", 5, 64, 8, 12, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue3
+            levels.Add(new LevelInfo("Green 1", 3, 128, 16, 20, 200, 75, 25, Constants.GREEN_PLATFORM));  // green1
+            levels.Add(new LevelInfo("Green 2", 3, 128, 16, 28, 200, 75, 25, Constants.GREEN_PLATFORM));  // green2
+            levels.Add(new LevelInfo("Green 3", 3, 128, 16, 36, 200, 75, 25, Constants.GREEN_PLATFORM));  // green3
+            levels.Add(new LevelInfo("Red 1", 1, 128,  24, 52, 400, 150, 50, Constants.RED_PLATFORM));    // red1
+            levels.Add(new LevelInfo("Red 2", 1, 128,  24, 68, 400, 150, 50, Constants.RED_PLATFORM));    // red2
+            levels.Add(new LevelInfo("Red 3", 1, 128,  24, 84, 400, 150, 50, Constants.RED_PLATFORM));    // red2
         }
 
         /// <summary>
@@ -72,8 +73,8 @@ namespace LandOfAmbrosia.Managers
         {
             ChunkType[,] chunks = { { ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE }, { ChunkType.STAIRS, ChunkType.EMPTY } };
             levels = new List<LevelInfo>();
-            levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
-            levels.Add(new LevelInfo(1, 16, 16, 1, 100, 0, 0, Constants.GREEN_PLATFORM));
+            levels.Add(new LevelInfo("Test", 1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
+            levels.Add(new LevelInfo("Test", 1, 16, 16, 1, 100, 0, 0, Constants.GREEN_PLATFORM));
 
             currentLevel = new Level(levels[0].width, levels[0].height, 1);
 
@@ -188,12 +189,19 @@ namespace LandOfAmbrosia.Managers
         {
             foreach (Character player in currentLevel.players)
             {
-                BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY(), Constants.CHARACTER_DEPTH), new Vector3(player.getX() + player.width, player.getY() + player.height, Constants.CHARACTER_DEPTH));
+                //BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY(), Constants.CHARACTER_DEPTH), 
+                //    new Vector3(player.getX() + player.width, player.getY() + player.height, Constants.CHARACTER_DEPTH));
+                BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY() - player.height, Constants.CHARACTER_DEPTH),
+                    new Vector3(player.getX() + player.width, player.getY(), Constants.CHARACTER_DEPTH));
                 foreach (ExperienceOrb exp in expOrbs)
                 {
                     if (exp.isAlive)
                     {
-                        BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y, Constants.CHARACTER_DEPTH), new Vector3(exp.position.X + exp.width, exp.position.Y + exp.height, Constants.CHARACTER_DEPTH));
+                        //BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y, Constants.CHARACTER_DEPTH), 
+                        //    new Vector3(exp.position.X + exp.width, exp.position.Y + exp.height, Constants.CHARACTER_DEPTH));
+                        BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y - exp.height, Constants.CHARACTER_DEPTH),
+                            new Vector3(exp.position.X + exp.width, exp.position.Y, Constants.CHARACTER_DEPTH));
+                        
                         if (playerbox.Intersects(expBox))
                         {
                             ((UserControlledCharacter)player).applyExperience(exp);
@@ -353,7 +361,7 @@ namespace LandOfAmbrosia.Managers
             float yCam = (maxY + minY) / 2;
 
             Vector3 target = new Vector3(xCam, yCam, 0);
-            Vector3 eye = target + new Vector3(0, 0, 30 + (maxX - minX) / 2);
+            Vector3 eye = target + new Vector3(0, 0, 40 + (maxX - minX) / 2);
             ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
         }
 
