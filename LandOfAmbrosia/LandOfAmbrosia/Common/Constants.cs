@@ -130,12 +130,6 @@ namespace LandOfAmbrosia.Common
 
         public static bool InRange(Character c, CameraComponent cam)
         {
-            //Vector2 cPos = new Vector2(c.getX(), c.getY());
-            //CameraComponent cam = ((LandOfAmbrosiaGame)Game).camera;
-            //Vector2 cameraPos = new Vector2(cam.Position.X, cam.Position.Y);
-
-            //return Vector2.Distance(cPos, cameraPos) < Constants.TILE_SIZE * 5;
-
             return Math.Abs(c.getX() - cam.Position.X) < Constants.TILE_SIZE * 30;
         }
     }
