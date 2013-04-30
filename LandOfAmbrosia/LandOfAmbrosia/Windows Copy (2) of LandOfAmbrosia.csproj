@@ -119,9 +119,15 @@
     </Compile>
     <Compile Include="Stats\StatBox.cs" />
     <Compile Include="UI\GameOverMenu.cs" />
+    <Compile Include="UI\ImageScreen.cs" />
     <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\PauseMenu.cs" />
+    <Compile Include="UI\RespawnMenu.cs" />
+    <Compile Include="UI\Screen.cs" />
     <Compile Include="UI\StartMenu.cs" />
+    <Compile Include="UI\TextScreen.cs" />
     <Compile Include="UI\TwoChoiceMenu.cs" />
+    <Compile Include="UI\VictoryMenu.cs" />
     <Compile Include="Weapons\Projectile.cs" />
     <Compile Include="Weapons\SmartProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />

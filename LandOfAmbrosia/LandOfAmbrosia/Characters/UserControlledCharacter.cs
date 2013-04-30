@@ -31,8 +31,8 @@ namespace LandOfAmbrosia.Characters
         public UserControlledCharacter(Level level, char character, Model model, Vector3 position) :
             base(level, model, Vector3.Zero, position, null, null)
         {
-            //inputController = new KeyboardInput();
-            inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
+            inputController = new KeyboardInput();
+            //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
             width = Constants.CHARACTER_WIDTH;
             height = Constants.CHARACTER_HEIGHT;
             lastAttacked = 0;
@@ -67,13 +67,13 @@ namespace LandOfAmbrosia.Characters
                 lastAttacked = ATTACK_SPEED;
                 if (closestEnemy != null)
                 {
-                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
+                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, -Constants.TILE_SIZE * (1f / 8f), Constants.CHARACTER_DEPTH);
                     return new SmartProjectile(containingLevel, AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, closestEnemy);
                 }
                 else
                 {
                     //Just blast some magic 'forward.' Who doesn't love just blasting spells
-                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, 0, Constants.CHARACTER_DEPTH);
+                    Vector3 projStart = Constants.UnconvertFromXNAScene(this.position) + new Vector3(0, -Constants.TILE_SIZE * (1f / 8f), Constants.CHARACTER_DEPTH);
                     Vector3 target = projStart + new Vector3(5 * ((lastDirWasLeft) ? -Constants.TILE_SIZE : Constants.TILE_SIZE), 0, 0);
                     return new Projectile(containingLevel, AssetUtil.GetProjectileModel(Constants.MAGIC_CHAR), projStart, this, target);
                 }

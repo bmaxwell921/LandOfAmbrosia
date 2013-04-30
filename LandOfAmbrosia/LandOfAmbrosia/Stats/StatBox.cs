@@ -23,11 +23,17 @@ namespace LandOfAmbrosia.Stats
             stats.Add(Constants.EXPERIENCE_KEY, new ExperienceStat(startingExp));
         }
 
+        /// <summary>
+        /// Resets all the character's stats when they die, except for experience
+        /// </summary>
         public void resetAllStats()
         {
             foreach (String key in stats.Keys)
             {
-                stats[key].resetStat();
+                if (key != Constants.EXPERIENCE_KEY)
+                {
+                    stats[key].resetStat();
+                }
             }
         }
 

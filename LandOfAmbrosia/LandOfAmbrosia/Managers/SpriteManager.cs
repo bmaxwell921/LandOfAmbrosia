@@ -18,10 +18,10 @@ namespace LandOfAmbrosia.Managers
         Texture2D statBackground;
         SpriteFont font;
 
-        private readonly int PLAYER_MAX_STAT_WIDTH = 200;
+        private readonly int PLAYER_MAX_STAT_WIDTH;// = 200;
         private readonly int PLAYER_STAT_HEIGHT = 10;
 
-        private readonly int MINION_MAX_HEALTH_WIDTH = 50;
+        private readonly int MINION_MAX_HEALTH_WIDTH;// = 50;
         private readonly int MINION_HEALTH_HEIGHT = 5;
 
         private readonly int BUFFER = 5;
@@ -39,6 +39,10 @@ namespace LandOfAmbrosia.Managers
             statBackground = new Texture2D(Game.GraphicsDevice, 1, 1);
             statBackground.SetData(new Color[] { Color.Gray });
             font = Game.Content.Load<SpriteFont>(@"Fonts\UIFont");
+
+            PLAYER_MAX_STAT_WIDTH = (int) (game.GraphicsDevice.Viewport.Width / 4f);
+            MINION_MAX_HEALTH_WIDTH = PLAYER_MAX_STAT_WIDTH / 4;
+            
         }
 
         public override void Draw(GameTime gameTime)

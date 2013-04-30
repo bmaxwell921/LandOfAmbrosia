@@ -20,12 +20,14 @@ namespace LandOfAmbrosia.Managers
         private readonly int START_SCREEN = 0;
         private readonly int GAME_OVER = 1;
         private readonly int VICTORY = 2;
-        private readonly int PAUSE = 3;
+        private readonly int RESPAWN = 3;
+        private readonly int PAUSE = 4;
         int currentMenu;
 
-        IList<Menu> menus;
+        //IList<Menu> menus;
+        IDictionary<int, Menu> menus;
 
-        private readonly int WAIT = 50;
+        private readonly int WAIT = 75;
         private int lastRead;
 
         bool leftPressed = true;
@@ -38,9 +40,17 @@ namespace LandOfAmbrosia.Managers
             : base(game)
         {
             this.sb = sb;
-            menus = new List<Menu>();
-            menus.Add(new StartMenu(Game));
-            menus.Add(new GameOverMenu(Game));
+            //menus = new List<Menu>();
+            //menus.Add(new StartMenu(Game));
+            //menus.Add(new GameOverMenu(Game));
+
+            menus = new Dictionary<int, Menu>();
+            menus.Add(START_SCREEN, new StartMenu(Game));
+            menus.Add(GAME_OVER, new GameOverMenu(Game));
+            menus.Add(RESPAWN, new RespawnMenu(Game));
+            menus.Add(VICTORY, new VictoryMenu(Game));
+            menus.Add(PAUSE, new PauseMenu(Game));
+
             this.isXbox = isXbox;
             currentMenu = START_SCREEN;
         }
@@ -60,6 +70,10 @@ namespace LandOfAmbrosia.Managers
             {
                 currentMenu = VICTORY;
             }
+            else if (curState == GameState.RESPAWN)
+            {
+                currentMenu = RESPAWN;
+            }
             else
             {
                 currentMenu = PAUSE;
@@ -73,7 +87,7 @@ namespace LandOfAmbrosia.Managers
             checkInput(gameTime);
             updateCurrentMenu();
 
-            if (curState == GameState.START_SCREEN || curState == GameState.PAUSE || curState == GameState.GAME_OVER || curState == GameState.VICTORY)
+            if (curState == GameState.START_SCREEN || curState == GameState.PAUSE || curState == GameState.GAME_OVER || curState == GameState.VICTORY || curState == GameState.RESPAWN)
             {
                 menus[currentMenu].Update(leftPressed, rightPressed);
 
@@ -101,7 +115,7 @@ namespace LandOfAmbrosia.Managers
                         rightPressed = true;
                     }
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Y))
                     {
                         confirmPressed = true;
                     }
@@ -143,7 +157,7 @@ namespace LandOfAmbrosia.Managers
             //sb.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
             sb.Begin();
 
-            if (curState == GameState.START_SCREEN || curState == GameState.PAUSE || curState == GameState.GAME_OVER || curState == GameState.VICTORY)
+            if (curState == GameState.START_SCREEN || curState == GameState.PAUSE || curState == GameState.GAME_OVER || curState == GameState.VICTORY || curState == GameState.RESPAWN)
             {
                 menus[currentMenu].Draw(sb, Game);
             }

@@ -2,38 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using LandOfAmbrosia.Managers;
 
 namespace LandOfAmbrosia.UI
 {
-    class GameOverMenu : TwoChoiceMenu
+    class RespawnMenu : TwoChoiceMenu
     {
 
-        public GameOverMenu(Game game)
+        public RespawnMenu(Game game)
             : base(game)
         {
         }
 
         protected override string getTitleMessage()
         {
-            return "Game Over";
+            return "You are Dead";
         }
 
         protected override IList<string> getChoices()
         {
             IList<string> ret = new List<string>();
-            ret.Add("Main Menu");
-            ret.Add("Quit");
+            ret.Add("Respawn");
+            ret.Add("Rage Quit");
             return ret;
+        }
+
+        protected override string getDetailMessage()
+        {
+            LevelManager lm = (LevelManager)game.Services.GetService(typeof(LevelManager));
+            return "Lives left: " + lm.levels[lm.curLevelInfo].numLives + ". " + base.getDetailMessage();
         }
 
         public override void ConfirmSelection()
         {
             if (leftSelected)
             {
-                ((LandOfAmbrosiaGame)game).restartGame();
+                ((LandOfAmbrosiaGame)game).TransitionToState(Common.GameState.PLAYING);
             }
             else
             {

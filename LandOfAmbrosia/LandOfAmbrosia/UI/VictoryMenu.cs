@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace LandOfAmbrosia.UI
 {
-    class GameOverMenu : TwoChoiceMenu
+    class VictoryMenu : TwoChoiceMenu
     {
-
-        public GameOverMenu(Game game)
+        public VictoryMenu(Game game)
             : base(game)
         {
-        }
 
+        }
         protected override string getTitleMessage()
         {
-            return "Game Over";
+            return "YOU WIN!";
         }
 
         protected override IList<string> getChoices()

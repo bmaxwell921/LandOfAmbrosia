@@ -13,8 +13,6 @@ namespace LandOfAmbrosia.UI
 
         public StartMenu(Game game) : base(game)
         {
-            base.setTitleFont(game.Content.Load<SpriteFont>(@"Fonts\Title"));
-            base.setChoicesFont(game.Content.Load<SpriteFont>(@"Fonts\StartScreen"));
         }
 
         public override void ConfirmSelection()

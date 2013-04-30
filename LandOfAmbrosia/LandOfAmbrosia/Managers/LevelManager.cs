@@ -145,29 +145,36 @@ namespace LandOfAmbrosia.Managers
                     this.UpdateCamera();
                 }
                 this.checkEndGame();
+                this.checkPause();
             }
             else if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_GENERATE)
             {
                 currentLevel = generator.GenerateNewLevel(++curLevelInfo, currentLevel.players.Count);
-                resetCharacterPositions();
+                //resetCharacterPositions();
+                resetCharacters();
                 ((LandOfAmbrosiaGame)Game).curState = GameState.PLAYING;
-            }
-            else if (((LandOfAmbrosiaGame)Game).curState == GameState.GAME_OVER)
-            {
-                //Game.Exit();
             }
 
             if (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT && progress)
             {
                 ((LandOfAmbrosiaGame)Game).TransitionToState(GameState.NEXT_LEVEL_GENERATE);
+                progress = false;
             }
 
             base.Update(gameTime);
         }
 
+        private void checkPause()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.P) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) || GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start))
+            {
+                ((LandOfAmbrosiaGame)Game).TransitionToState(GameState.PAUSE);
+            }
+        }
+
         private void checkProgress()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y) || GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Y))
+            if (Keyboard.GetState().IsKeyDown(Keys.Y) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y) || GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Y))
             {
                 progress = true;
             }
@@ -217,7 +224,7 @@ namespace LandOfAmbrosia.Managers
             //Victory!
             if (currentLevel.enemies.Count <= 0 && ((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING)
             {
-                ((LandOfAmbrosiaGame)Game).TransitionToState(curLevelInfo >= levels.Count ? GameState.VICTORY : GameState.NEXT_LEVEL_WAIT);
+                ((LandOfAmbrosiaGame)Game).TransitionToState(curLevelInfo + 1 >= levels.Count ? GameState.VICTORY : GameState.NEXT_LEVEL_WAIT);
             }
             //Failure
             else if (levels[curLevelInfo].numLives < 0)
@@ -394,7 +401,8 @@ namespace LandOfAmbrosia.Managers
                 if (character is UserControlledCharacter)
                 {
                     --levels[curLevelInfo].numLives;
-                    resetCharacterPositions();
+                    //resetCharacterPositions();
+                    resetCharacters();
                 }
                 else
                 {
@@ -428,6 +436,8 @@ namespace LandOfAmbrosia.Managers
             {
                 currentLevel.players[1].stats.resetAllStats();
             }
+
+            ((LandOfAmbrosiaGame)Game).TransitionToState(GameState.RESPAWN);
         }
 
         //Used when players fall off the side, only resets position
