@@ -100,6 +100,7 @@ namespace LandOfAmbrosia.Common
         public static readonly string ATTACK_KEY = "Attack";
         public static readonly string DEFENCE_KEY = "Defence";
         public static readonly string EXPERIENCE_KEY = "Experience";
+        public static readonly string LEVEL_NUMBER_KEY = "Level";
 
         //Decision Tree Types
         public static readonly int MINION_TREE = 0;

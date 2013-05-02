@@ -237,7 +237,7 @@ namespace LandOfAmbrosia
         private Behavior behavior;
         private bool preferTargetYAxisOrbiting;
 
-        private float fovx;
+        public float fovx;
         private float aspectRatio;
         private float znear;
         private float zfar;
@@ -1156,6 +1156,11 @@ namespace LandOfAmbrosia
 
             Rectangle clientBounds = Game.Window.ClientBounds;
             Mouse.SetPosition(clientBounds.Width / 2, clientBounds.Height / 2);
+        }
+
+        public float getFov()
+        {
+            return camera.fovx;
         }
 
         /// <summary>

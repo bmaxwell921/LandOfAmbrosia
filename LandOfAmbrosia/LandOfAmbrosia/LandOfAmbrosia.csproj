@@ -139,6 +139,7 @@
     <Compile Include="Stats\ExperienceStat.cs" />
     <Compile Include="Stats\Health.cs" />
     <Compile Include="Stats\IStat.cs" />
+    <Compile Include="Stats\LevelNumber.cs" />
     <Compile Include="Stats\StatBox.cs" />
     <Compile Include="UI\GameOverMenu.cs" />
     <Compile Include="UI\ImageScreen.cs" />

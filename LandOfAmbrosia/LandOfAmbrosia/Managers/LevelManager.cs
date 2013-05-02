@@ -329,36 +329,47 @@ namespace LandOfAmbrosia.Managers
             {
                 return;
             }
-            float maxX = currentLevel.players.ElementAt(0).getX();
-            float minX = currentLevel.players.ElementAt(0).getX();
-            float maxY = currentLevel.players.ElementAt(0).getY();
-            float minY = currentLevel.players.ElementAt(0).getY();
-            foreach (UserControlledCharacter player in currentLevel.players)
+            else if (currentLevel.players.Count == 1)
             {
-                if (player.getX() > maxX)
-                {
-                    maxX = player.getX();
-                }
-                if (player.getX() < minX)
-                {
-                    minX = player.getX();
-                }
-                if (player.getY() > maxY)
-                {
-                    maxY = player.getY();
-                }
-                if (player.getY() < minY)
-                {
-                    minY = player.getY();
-                }
+                Character p = currentLevel.players[0];
+                Vector3 target = new Vector3(p.getX(), p.getY(), Constants.CHARACTER_DEPTH);
+                Vector3 eye = target + new Vector3(0, 0, 40);
+                ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
             }
+            else
+            {
+                float maxX = currentLevel.players.ElementAt(0).getX();
+                float minX = currentLevel.players.ElementAt(0).getX();
+                float maxY = currentLevel.players.ElementAt(0).getY();
+                float minY = currentLevel.players.ElementAt(0).getY();
+                foreach (UserControlledCharacter player in currentLevel.players)
+                {
+                    if (player.getX() > maxX)
+                    {
+                        maxX = player.getX();
+                    }
+                    if (player.getX() < minX)
+                    {
+                        minX = player.getX();
+                    }
+                    if (player.getY() > maxY)
+                    {
+                        maxY = player.getY();
+                    }
+                    if (player.getY() < minY)
+                    {
+                        minY = player.getY();
+                    }
+                }
 
-            float xCam = (maxX + minX) / 2;
-            float yCam = (maxY + minY) / 2;
-
-            Vector3 target = new Vector3(xCam, yCam, 0);
-            Vector3 eye = target + new Vector3(0, 0, 40 + (maxX - minX) / 2);
-            ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
+                float xCam = (maxX + minX) / 2;
+                float yCam = (maxY + minY) / 2;
+                float fov = ((LandOfAmbrosiaGame)Game).camera.getFov();
+                float dist = (float) ((maxX - minX) / (2 * Math.Tan(MathHelper.ToRadians( fov / 2))));
+                Vector3 target = new Vector3(xCam, yCam, 0);
+                Vector3 eye = target + new Vector3(0, 0, dist + 40 );
+                ((LandOfAmbrosiaGame)Game).camera.LookAt(eye, target, Vector3.Up);
+            }
         }
 
         //Updates the player position and handles collisions

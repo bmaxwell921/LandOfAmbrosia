@@ -21,6 +21,7 @@ namespace LandOfAmbrosia.Stats
             stats.Add(Constants.ATTACK_KEY, new AttackPower(baseAttack));
             stats.Add(Constants.DEFENCE_KEY, new Defence(baseDefence));
             stats.Add(Constants.EXPERIENCE_KEY, new ExperienceStat(startingExp));
+            stats.Add(Constants.LEVEL_NUMBER_KEY, new LevelNumber());
         }
 
         /// <summary>

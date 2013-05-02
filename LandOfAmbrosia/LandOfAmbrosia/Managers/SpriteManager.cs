@@ -18,10 +18,10 @@ namespace LandOfAmbrosia.Managers
         Texture2D statBackground;
         SpriteFont font;
 
-        private readonly int PLAYER_MAX_STAT_WIDTH;// = 200;
+        private readonly int PLAYER_MAX_STAT_WIDTH;
         private readonly int PLAYER_STAT_HEIGHT = 10;
 
-        private readonly int MINION_MAX_HEALTH_WIDTH;// = 50;
+        private readonly int MINION_MAX_HEALTH_WIDTH;
         private readonly int MINION_HEALTH_HEIGHT = 5;
 
         private readonly int BUFFER = 5;
@@ -41,13 +41,12 @@ namespace LandOfAmbrosia.Managers
             font = Game.Content.Load<SpriteFont>(@"Fonts\UIFont");
 
             PLAYER_MAX_STAT_WIDTH = (int) (game.GraphicsDevice.Viewport.Width / 4f);
-            MINION_MAX_HEALTH_WIDTH = PLAYER_MAX_STAT_WIDTH / 4;
-            
+            MINION_MAX_HEALTH_WIDTH = PLAYER_MAX_STAT_WIDTH / 4;   
         }
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
             if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING || (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT))
             {
                 //Draw the level name
@@ -171,6 +170,9 @@ namespace LandOfAmbrosia.Managers
 
                 spriteBatch.Draw(statBackground, new Rectangle((int)location.X, (int)location.Y + BUFFER + height, maxWidth, height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                 spriteBatch.Draw(expTexture, new Rectangle((int)location.X, (int)location.Y + BUFFER + height, expPixWide, height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
+                string level = "Level: " + c.stats.getStatBaseVal(Constants.LEVEL_NUMBER_KEY);
+                Vector2 levelSize = font.MeasureString(level);
+                spriteBatch.DrawString(font, level, new Vector2(location.X, location.Y + BUFFER + levelSize.Y), Color.Yellow);
             }
         }
     }

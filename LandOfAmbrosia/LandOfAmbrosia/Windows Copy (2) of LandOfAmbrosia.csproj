@@ -117,6 +117,7 @@
     <Compile Include="Stats\IStat.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Stats\LevelNumber.cs" />
     <Compile Include="Stats\StatBox.cs" />
     <Compile Include="UI\GameOverMenu.cs" />
     <Compile Include="UI\ImageScreen.cs" />
