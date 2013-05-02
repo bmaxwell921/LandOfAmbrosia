@@ -77,7 +77,8 @@
 		0) Rework the Character classes. The position never needs to be converted, just have the GetWorld method do that
 			- Might need to put together a GameObject class so I don't have duplicated code for draws. Also, then I can do
 				the bounding box collision detection stuff in there.
-		1) Particle effect dpsf -- free thing	
+		1) Particle effect dpsf -- free thing
+			-Explosion when you level up	
 		2) Add in player hop in/ hop out functionality?
 		3) Fix the camera movement, it's not exactly right
 		4) Make the enemies left count not be outlined in black
