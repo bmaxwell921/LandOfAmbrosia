@@ -76,7 +76,7 @@
 
 	Iteration 12: Other stuff
 	X	1) Collision with exp is a little bit off
-		2) Make minions spawn only in tiles right above a platform. Then I can make it so the minions don't just die when they fall off
+	X	2) Make minions spawn only in tiles right above a platform. Then I can make it so the minions don't just die when they fall off
 		3) Make the enemies left count not be outlined in black
 		4) Fix the camera movement, it's not exactly right
 		5) Implement sight for Players and a way to see where the closest 

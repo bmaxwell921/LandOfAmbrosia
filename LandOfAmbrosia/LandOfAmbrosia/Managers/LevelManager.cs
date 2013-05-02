@@ -189,16 +189,12 @@ namespace LandOfAmbrosia.Managers
         {
             foreach (Character player in currentLevel.players)
             {
-                //BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY(), Constants.CHARACTER_DEPTH), 
-                //    new Vector3(player.getX() + player.width, player.getY() + player.height, Constants.CHARACTER_DEPTH));
                 BoundingBox playerbox = new BoundingBox(new Vector3(player.getX(), player.getY() - player.height, Constants.CHARACTER_DEPTH),
                     new Vector3(player.getX() + player.width, player.getY(), Constants.CHARACTER_DEPTH));
                 foreach (ExperienceOrb exp in expOrbs)
                 {
                     if (exp.isAlive)
                     {
-                        //BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y, Constants.CHARACTER_DEPTH), 
-                        //    new Vector3(exp.position.X + exp.width, exp.position.Y + exp.height, Constants.CHARACTER_DEPTH));
                         BoundingBox expBox = new BoundingBox(new Vector3(exp.position.X, exp.position.Y - exp.height, Constants.CHARACTER_DEPTH),
                             new Vector3(exp.position.X + exp.width, exp.position.Y, Constants.CHARACTER_DEPTH));
                         
@@ -414,8 +410,8 @@ namespace LandOfAmbrosia.Managers
                 }
                 else
                 {
-                    character.stats.changeCurrentStat(Constants.HEALTH_KEY, -character.stats.getStatCurrentVal(Constants.HEALTH_KEY));
-                    //((Minion)character).respawn();
+                    //character.stats.changeCurrentStat(Constants.HEALTH_KEY, -character.stats.getStatCurrentVal(Constants.HEALTH_KEY));
+                    ((Minion)character).respawn();
                 }
             }
 

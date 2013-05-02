@@ -54,7 +54,11 @@ namespace LandOfAmbrosia.Controllers
             {
                 return ATTACK_TYPE.MELEE;
             }
-            if (GamePad.GetState(player).Buttons.B == ButtonState.Pressed)
+            //if (GamePad.GetState(player).Buttons.B == ButtonState.Pressed)
+            //{
+            //    return ATTACK_TYPE.MAGIC;
+            //}
+            if (GamePad.GetState(player).Triggers.Right > 0)
             {
                 return ATTACK_TYPE.MAGIC;
             }

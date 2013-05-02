@@ -348,7 +348,7 @@ namespace LandOfAmbrosia.Levels
             return neigh;
         }
 
-        private bool isOB(Vector2 tileIndex)
+        public bool isOB(Vector2 tileIndex)
         {
             return tileIndex.X < 0 || tileIndex.X >= width || tileIndex.Y < 0 || tileIndex.Y >= height;
         }

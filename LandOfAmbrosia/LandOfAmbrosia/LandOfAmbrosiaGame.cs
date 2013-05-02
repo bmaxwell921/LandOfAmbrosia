@@ -80,8 +80,8 @@ namespace LandOfAmbrosia
             Components.Add(mm);
 
 
-            sm = new SoundManager(this, Content);
-            Components.Add(sm);
+            //sm = new SoundManager(this, Content);
+            //Components.Add(sm);
 
             TransitionToState(GameState.START_SCREEN);
         }

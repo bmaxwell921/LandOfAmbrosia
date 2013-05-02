@@ -67,21 +67,31 @@ namespace LandOfAmbrosia.Logic
 
         private void FillInMinions()
         {
-            //Fuck it, let's just randomly put them in places
+            //First find all the "safe blocks": mean blocks that are on top of a platform
+            IList<Vector2> safes = new List<Vector2>();
+            for (int i = 0; i < curLevel.width; ++i)
+            {
+                for (int j = 0; j < curLevel.height; ++j)
+                {
+                    // If this is a platform, check the spot above
+                    if (i >= 8 && curLevel.GetTile(i, j) != null)
+                    {
+                        //If it's off the bounds of the level it's safe and if it's not a platform it is also safe
+                        if (curLevel.isOB(new Vector2(i, j + 1)) || curLevel.GetTile(i, j + 1) == null)
+                        {
+                            safes.Add(new Vector2(i, j + 1));
+                        }
+                    }
+                }
+            }
+
             for (int i = 0; i < currentLevelInfo.numEnemies; ++i)
             {
-                int x = gen.Next(Constants.CHUNK_SIZE, curLevel.width);
-                int y = gen.Next(1, curLevel.height);
+                int index = gen.Next(safes.Count);
+                Vector2 addLoc = safes[index];
+                curLevel.enemies.Add(new Minion(curLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR),
+                        new Vector3(addLoc.X * Constants.TILE_SIZE, addLoc.Y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), curLevel.players, currentLevelInfo));
 
-                if (curLevel.GetTile(x, y) == null)
-                {
-                    curLevel.enemies.Add(new Minion(curLevel, AssetUtil.GetEnemyModel(Constants.MINION_CHAR), 
-                        new Vector3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, 2 * Constants.CHARACTER_DEPTH), curLevel.players, currentLevelInfo));
-                }
-                else
-                {
-                    --i;
-                }
             }
         }
 

@@ -55,10 +55,6 @@ namespace LandOfAmbrosia.Characters
             //This should just do animation stuff...if i add it...
             base.Update(gameTime);
             wantsRange = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
-            {
-                int stop;
-            }
             AI_STATE decision = dt.evaluateTree(this);
             //Console.WriteLine("Minion decided to: " + decision);
 
