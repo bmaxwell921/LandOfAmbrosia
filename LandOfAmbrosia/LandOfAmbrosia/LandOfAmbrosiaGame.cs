@@ -45,6 +45,13 @@ namespace LandOfAmbrosia
             curState = GameState.START_SCREEN;
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
+
+#if !DEBUG
+            graphics.IsFullScreen = true;
+#endif
         }
 
         /// <summary>
@@ -107,7 +114,7 @@ namespace LandOfAmbrosia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            //GraphicsDevice.Clear(Color.Black);
 
             //Stops the models from being all jacked up
             RasterizerState rs = new RasterizerState();
@@ -157,12 +164,12 @@ namespace LandOfAmbrosia
                 EnableDisableComponent(sm, true);
                 EnableDisableDrawable(mm, false);
             }
-            else if (newState == GameState.JUST_DIED)
+            else if (newState == GameState.RESPAWN)
             {
-                EnableDisableDrawable(lm, true);
-                EnableDisableDrawable(spm, true);
+                EnableDisableDrawable(lm, false);
+                EnableDisableDrawable(spm, false);
                 EnableDisableComponent(sm, true);
-                EnableDisableDrawable(mm, false);
+                EnableDisableDrawable(mm, true);
             }
             else if (newState == GameState.GAME_OVER)
             {

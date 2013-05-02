@@ -11,7 +11,7 @@ namespace LandOfAmbrosia.Common
     public enum ATTACK_TYPE { MELEE, RANGE, MAGIC, NONE};
     public enum JUMP_STATE { JUMP, DOUBLE_JUMP, FALLING, NONE };
     public enum ChunkType { FLOOR, STAIRS, FLOATING_PLATFORMS_SAFE, FLOATING_PLATFORMS_NOT_SAFE, MOUNTAIN_LEFT, MOUNTAIN_RIGHT, JAGGIES_LEFT, JAGGIES_RIGHT, TALL_GROUND, EMPTY }
-    public enum GameState { START_SCREEN, PLAYING, PAUSE, NEXT_LEVEL_WAIT, NEXT_LEVEL_GENERATE, JUST_DIED, GAME_OVER, VICTORY };
+    public enum GameState { START_SCREEN, PLAYING, PAUSE, NEXT_LEVEL_WAIT, NEXT_LEVEL_GENERATE, RESPAWN, GAME_OVER, VICTORY };
 
     //I don't like this, but this enum is being used for both the ai state and the decision tree traversal
     public enum AI_STATE { NO, YES, 
@@ -130,12 +130,6 @@ namespace LandOfAmbrosia.Common
 
         public static bool InRange(Character c, CameraComponent cam)
         {
-            //Vector2 cPos = new Vector2(c.getX(), c.getY());
-            //CameraComponent cam = ((LandOfAmbrosiaGame)Game).camera;
-            //Vector2 cameraPos = new Vector2(cam.Position.X, cam.Position.Y);
-
-            //return Vector2.Distance(cPos, cameraPos) < Constants.TILE_SIZE * 5;
-
             return Math.Abs(c.getX() - cam.Position.X) < Constants.TILE_SIZE * 30;
         }
     }

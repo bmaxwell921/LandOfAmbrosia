@@ -18,10 +18,10 @@ namespace LandOfAmbrosia.Managers
         Texture2D statBackground;
         SpriteFont font;
 
-        private readonly int PLAYER_MAX_STAT_WIDTH = 200;
+        private readonly int PLAYER_MAX_STAT_WIDTH;// = 200;
         private readonly int PLAYER_STAT_HEIGHT = 10;
 
-        private readonly int MINION_MAX_HEALTH_WIDTH = 50;
+        private readonly int MINION_MAX_HEALTH_WIDTH;// = 50;
         private readonly int MINION_HEALTH_HEIGHT = 5;
 
         private readonly int BUFFER = 5;
@@ -39,6 +39,10 @@ namespace LandOfAmbrosia.Managers
             statBackground = new Texture2D(Game.GraphicsDevice, 1, 1);
             statBackground.SetData(new Color[] { Color.Gray });
             font = Game.Content.Load<SpriteFont>(@"Fonts\UIFont");
+
+            PLAYER_MAX_STAT_WIDTH = (int) (game.GraphicsDevice.Viewport.Width / 4f);
+            MINION_MAX_HEALTH_WIDTH = PLAYER_MAX_STAT_WIDTH / 4;
+            
         }
 
         public override void Draw(GameTime gameTime)
@@ -46,6 +50,9 @@ namespace LandOfAmbrosia.Managers
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque);
             if (((LandOfAmbrosiaGame)Game).curState == GameState.PLAYING || (((LandOfAmbrosiaGame)Game).curState == GameState.NEXT_LEVEL_WAIT))
             {
+                //Draw the level name
+                this.DrawLevelName();
+
                 //Draw the lives left in the level
                 this.DrawLivesLeft();
 
@@ -80,6 +87,17 @@ namespace LandOfAmbrosia.Managers
             spriteBatch.DrawString(font, message, new Vector2((width / 2f) - (messageSize.X / 2), height * (3f / 8f)), Color.White);
         }
 
+        private void DrawLevelName()
+        {
+            LevelManager lm = (LevelManager)Game.Services.GetService(typeof(LevelManager));
+            string levelName = lm.levels[lm.curLevelInfo].levelName;
+
+            int height = Game.GraphicsDevice.Viewport.Height;
+            int width = Game.GraphicsDevice.Viewport.Width;
+            Vector2 messageSize = font.MeasureString(levelName);
+            spriteBatch.DrawString(font, levelName, new Vector2((width / 2) - (messageSize.X / 2), BUFFER), Color.Yellow);
+        }
+
         private void DrawLivesLeft()
         {
             LevelManager lm = ((LevelManager)Game.Services.GetService(typeof(LevelManager)));
@@ -89,7 +107,7 @@ namespace LandOfAmbrosia.Managers
             int height = Game.GraphicsDevice.Viewport.Height;
             int width = Game.GraphicsDevice.Viewport.Width;
             Vector2 messageSize = font.MeasureString(message);
-            spriteBatch.DrawString(font, message, new Vector2((width / 2) - (messageSize.X / 2), height - font.MeasureString(message).Y - BUFFER), Color.Yellow);
+            spriteBatch.DrawString(font, message, new Vector2((width / 2) - (messageSize.X / 2), height - messageSize.Y - BUFFER), Color.Yellow);
         }
 
         private void DrawEnemyHealth()

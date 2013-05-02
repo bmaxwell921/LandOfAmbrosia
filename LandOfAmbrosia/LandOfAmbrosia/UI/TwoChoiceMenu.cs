@@ -11,6 +11,7 @@ namespace LandOfAmbrosia.UI
     {
         private SpriteFont titleFont;
         private SpriteFont choicesFont;
+        private SpriteFont detailsFont;
 
         private Texture2D selectedText;
         private Texture2D backgroundSelected;
@@ -21,6 +22,8 @@ namespace LandOfAmbrosia.UI
 
         public TwoChoiceMenu(Game game)
         {
+            this.game = game;
+
             selectedText = new Texture2D(game.GraphicsDevice, 1, 1);
             selectedText.SetData(new Color[] { Color.White });
 
@@ -29,17 +32,29 @@ namespace LandOfAmbrosia.UI
 
             leftSelected = true;
 
-            this.game = game;
+            setTitleFont();
+            setChoicesFont();
+            setDetailsFont();
         }
 
-        protected void setTitleFont(SpriteFont font)
+        protected virtual void setTitleFont()
         {
-            titleFont = font;
+            titleFont = game.Content.Load<SpriteFont>(@"Fonts\Title");
         }
 
-        protected void setChoicesFont(SpriteFont font)
+        protected virtual void setChoicesFont()
         {
-            choicesFont = font;
+            choicesFont = game.Content.Load<SpriteFont>(@"Fonts\Options");
+        }
+
+        protected virtual void setDetailsFont()
+        {
+            detailsFont = game.Content.Load<SpriteFont>(@"Fonts\Details");
+        }
+
+        protected virtual string getDetailMessage()
+        {
+            return "Press Y to confirm";
         }
 
         protected abstract string getTitleMessage();
@@ -50,6 +65,7 @@ namespace LandOfAmbrosia.UI
         {
             game.GraphicsDevice.Clear(Color.Black);
 
+            //Drawing title
             string title = getTitleMessage();
             IList<string> choices = getChoices();
 
@@ -59,6 +75,7 @@ namespace LandOfAmbrosia.UI
 
             sb.DrawString(titleFont, title, new Vector2(windowWidth / 2 - titleSize.X / 2, windowHeight * (3 / 8f) - titleSize.Y / 2), Color.White);
 
+            //Drawing the options
             Vector2 oneSize = choicesFont.MeasureString(choices[0]);
             Vector2 twoSize = choicesFont.MeasureString(choices[1]);
 
@@ -76,6 +93,12 @@ namespace LandOfAmbrosia.UI
             sb.DrawString(choicesFont, choices[0], new Vector2(oneStartX, windowHeight * (5 / 8f)), Color.White);
             sb.DrawString(choicesFont, choices[1], new Vector2(twoStartX, windowHeight * (5 / 8f)), Color.White);
 
+            //Drawing the Details
+            string detes = getDetailMessage();
+            Vector2 detailsSize = detailsFont.MeasureString(detes);
+
+
+            sb.DrawString(detailsFont, detes, new Vector2(windowWidth / 2 - detailsSize.X / 2, windowHeight * (7 / 8f) - detailsSize.Y / 2), Color.White);
         }
 
         public void Update(bool leftPressed, bool rightPressed)

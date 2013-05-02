@@ -11,8 +11,6 @@ namespace LandOfAmbrosia.Controllers
 {
     class XboxController : AbstractInputController
     {
-        //TODO pause stuff?
-
         PlayerIndex player;
 
         public XboxController(PlayerIndex player)
