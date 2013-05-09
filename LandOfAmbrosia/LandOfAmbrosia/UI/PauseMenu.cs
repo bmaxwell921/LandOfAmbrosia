@@ -31,7 +31,7 @@ namespace LandOfAmbrosia.UI
 
         private void LoadImages()
         {
-            screens.Add(new ImageScreen(game, @"Images\xboxController"));
+            screens.Add(new ImageScreen(game, @"Images\xboxControllerNew"));
             screens.Add(new ImageScreen(game, @"Images\inGame"));
             screens.Add(new ImageScreen(game, @"Images\text"));
         }
@@ -70,6 +70,17 @@ namespace LandOfAmbrosia.UI
 
                 sb.DrawString(choiceFont, right, new Vector2(windowWidth - (rightSize.X) - 5, windowHeight / 2), Color.White);
             }
+
+            string detes = getDetailMessage();
+            Vector2 detailsSize = detailsFont.MeasureString(detes);
+
+
+            sb.DrawString(detailsFont, detes, new Vector2(windowWidth / 2 - detailsSize.X / 2, windowHeight * (15 / 16f) - detailsSize.Y / 2), Color.White);
+        }
+
+        private string getDetailMessage()
+        {
+            return "Press Y to unpause";
         }
 
         public void Update(bool leftPressed, bool rightPressed)
