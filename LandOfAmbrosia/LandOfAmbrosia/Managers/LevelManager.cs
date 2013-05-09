@@ -51,7 +51,6 @@ namespace LandOfAmbrosia.Managers
         private void setUpLevels()
         {
             levels = new List<LevelInfo>();
-            //levels.Add(new LevelInfo(5, 64, 8, 1, 100, 50, 0, Constants.BLUE_PLATFORM));
             levels.Add(new LevelInfo("Blue 1", 5, 64, 8, 4, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue1
             levels.Add(new LevelInfo("Blue 2", 5, 64, 8, 8, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue2
             levels.Add(new LevelInfo("Blue 3", 5, 64, 8, 12, 100, 50, 0, Constants.BLUE_PLATFORM));   // blue3
@@ -71,16 +70,14 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
-            ChunkType[,] chunks = { { ChunkType.FLOOR, ChunkType.FLOATING_PLATFORMS_NOT_SAFE }, { ChunkType.STAIRS, ChunkType.EMPTY } };
+            updateCam = false;
+            curLevelInfo = 0;
             levels = new List<LevelInfo>();
-            levels.Add(new LevelInfo("Test", 1, 16, 16, 1, 100, 0, 0, Constants.RED_PLATFORM));
-            levels.Add(new LevelInfo("Test", 1, 16, 16, 1, 100, 0, 0, Constants.GREEN_PLATFORM));
+            levels.Add(new LevelInfo("Green 3", 3, 128, 16, 1, 200, 0, 25, Constants.GREEN_PLATFORM)); 
 
-            currentLevel = new Level(levels[0].width, levels[0].height, 1);
-
-            generator = new LevelGenerator(currentLevel, levels, Constants.DEFAULT_SEED, chunks);
-            currentLevel = generator.GenerateNewLevel(0, 1);
-            updateCam = true;
+            currentLevel = new Level(levels[curLevelInfo].width, levels[curLevelInfo].height, 1);
+            generator = new LevelGenerator(currentLevel, levels, new Random().Next());
+            currentLevel = generator.GenerateNewLevel(curLevelInfo, 1);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
             this.expOrbs = new List<ExperienceOrb>();

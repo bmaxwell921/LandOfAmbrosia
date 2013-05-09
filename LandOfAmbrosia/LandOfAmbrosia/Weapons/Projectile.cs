@@ -111,6 +111,7 @@ namespace LandOfAmbrosia.Weapons
                 {
                     timeToDie = true;
                     float damage = source.stats.getStatCurrentVal(Constants.ATTACK_KEY) - enemy.stats.getStatCurrentVal(Constants.DEFENCE_KEY);
+                    damage = damage < 0 ? 0 : damage;
                     enemy.stats.changeCurrentStat(Constants.HEALTH_KEY, -damage);
                     return;
                 }

@@ -191,6 +191,7 @@ namespace LandOfAmbrosia
 
         public void startGame(int numPlayers)
         {
+            //lm = new LevelManager(this, true);
             lm = new LevelManager(this, numPlayers);
             Components.Add(lm);
             Services.AddService(typeof(LevelManager), lm);
