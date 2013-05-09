@@ -31,8 +31,8 @@ namespace LandOfAmbrosia.Characters
         public UserControlledCharacter(Level level, char character, Model model, Vector3 position) :
             base(level, model, Vector3.Zero, position, null, null)
         {
-            //inputController = new KeyboardInput();
-            inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
+            inputController = new KeyboardInput();
+            //inputController = new XboxController((character == Constants.PLAYER1_CHAR) ? PlayerIndex.One : PlayerIndex.Two);
             width = Constants.CHARACTER_WIDTH;
             height = Constants.CHARACTER_HEIGHT;
             lastAttacked = 0;

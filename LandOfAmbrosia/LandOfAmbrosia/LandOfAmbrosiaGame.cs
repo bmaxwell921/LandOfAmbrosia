@@ -76,7 +76,7 @@ namespace LandOfAmbrosia
         protected override void LoadContent()
         {
             AssetUtil.loadAll(Content);
-            mm = new MenuManager(this, new SpriteBatch(GraphicsDevice), true);
+            mm = new MenuManager(this, new SpriteBatch(GraphicsDevice), false);
             Components.Add(mm);
 
 
