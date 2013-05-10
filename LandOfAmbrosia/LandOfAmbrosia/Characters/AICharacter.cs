@@ -23,7 +23,7 @@ namespace LandOfAmbrosia.Characters
         //This is going to be in grid coordinates
         public Vector2 idleTimeTarget;
 
-        //This controlls how often enemies 'patrol'
+        //This controls how often enemies 'patrol'
         public static readonly int IDLE_TIME = 5000;
 
         public int lastMoved;
