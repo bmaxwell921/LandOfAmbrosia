@@ -164,7 +164,7 @@ namespace LandOfAmbrosia.Levels
 
         private bool tileInRange(int i, CameraComponent c)
         {
-            return (i * Constants.TILE_SIZE) - c.Position.X < Constants.TILE_SIZE * 30;
+            return Math.Abs((i * Constants.TILE_SIZE) - c.Position.X) < Constants.TILE_SIZE * 30;
         }
 
         //Draws the players

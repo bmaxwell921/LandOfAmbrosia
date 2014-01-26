@@ -70,17 +70,27 @@ namespace LandOfAmbrosia.Managers
         public LevelManager(Game game, bool testConstructor)
             : base(game)
         {
+            //updateCam = false;
+            //curLevelInfo = 0;
+            //levels = new List<LevelInfo>();
+            //currentLevel = new Level();
+            ////levels.Add(new LevelInfo("", 3, 72, 8, 1, 200, 0, 25, Constants.RED_PLATFORM));
+            ////generator = new LevelGenerator(currentLevel, levels, 42, new ChunkType[,] { {ChunkType.FLOOR}, {ChunkType.STAIRS}, {ChunkType.FLOATING_PLATFORMS_SAFE}, 
+            ////    {ChunkType.FLOATING_PLATFORMS_NOT_SAFE}, {ChunkType.MOUNTAIN_LEFT}, {ChunkType.MOUNTAIN_RIGHT}, {ChunkType.JAGGIES_LEFT}, {ChunkType.JAGGIES_RIGHT}, 
+            ////    {ChunkType.TALL_GROUND}});
+            //levels.Add(new LevelInfo("", 3, 8, 8, 0, 200, 0, 0, Constants.RED_PLATFORM));
+            //generator = new LevelGenerator(currentLevel, levels, 42, new ChunkType[,] { {ChunkType.TALL_GROUND}});
+            //currentLevel = generator.GenerateNewLevel(0, 1);
+            //this.SetUpCameraDefault();
+            //this.projectiles = new List<Projectile>();
+            //this.expOrbs = new List<ExperienceOrb>();
             updateCam = false;
             curLevelInfo = 0;
-            levels = new List<LevelInfo>();
-            currentLevel = new Level();
-            //levels.Add(new LevelInfo("", 3, 72, 8, 1, 200, 0, 25, Constants.RED_PLATFORM));
-            //generator = new LevelGenerator(currentLevel, levels, 42, new ChunkType[,] { {ChunkType.FLOOR}, {ChunkType.STAIRS}, {ChunkType.FLOATING_PLATFORMS_SAFE}, 
-            //    {ChunkType.FLOATING_PLATFORMS_NOT_SAFE}, {ChunkType.MOUNTAIN_LEFT}, {ChunkType.MOUNTAIN_RIGHT}, {ChunkType.JAGGIES_LEFT}, {ChunkType.JAGGIES_RIGHT}, 
-            //    {ChunkType.TALL_GROUND}});
-            levels.Add(new LevelInfo("", 3, 8, 8, 0, 200, 0, 0, Constants.RED_PLATFORM));
-            generator = new LevelGenerator(currentLevel, levels, 42, new ChunkType[,] { {ChunkType.TALL_GROUND}});
-            currentLevel = generator.GenerateNewLevel(0, 1);
+            setUpLevels();
+
+            currentLevel = new Level(levels[curLevelInfo].width, levels[curLevelInfo].height, 1);
+            generator = new LevelGenerator(currentLevel, levels, new Random().Next());
+            currentLevel = generator.GenerateNewLevel(curLevelInfo, 1);
             this.SetUpCameraDefault();
             this.projectiles = new List<Projectile>();
             this.expOrbs = new List<ExperienceOrb>();

@@ -46,12 +46,12 @@ namespace LandOfAmbrosia
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
 
-#if !DEBUG
-            graphics.IsFullScreen = true;
-#endif
+//#if !DEBUG
+//            graphics.IsFullScreen = true;
+//#endif
         }
 
         /// <summary>
